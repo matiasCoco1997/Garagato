@@ -7,39 +7,24 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Garagato.MVC.styles.css" asp-append-version="true" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-
-        .bg-primary{
-            background-color: #FCD1C5;
-        }
-        .bg-secondary{
-            background-color: #D7263D;
-        }
-
-        .bg-special {
-            background-color: #F46036;
-        }
-
-        .bg-dark {
-            background-color: #2E294E;
-        }
-    </style>
 </head>
-<body class="bg-primary">
-    <header class="bg-secondary p-5 mb-2">
+<body class="bg-primary flex flex-col h-screen flex-wrap">
+
+    <header class="bg-secondary p-5 w-full">
         <h1 class="text-white text-2xl font-bold">Garagato</h1>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted bg-dark p-5">
-        <div class="container text-xl font-bold text-white">
-            &copy; 2024 - Garagato.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+     <main role="main" class="flex-1">
+        @RenderBody()
+     </main>
+
+
+    <footer class="footer text-muted bg-dark p-5 w-full">
+        <div class="text-xl font-bold text-white text-center">
+            &copy; 2024 - Garagato.MVC
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
