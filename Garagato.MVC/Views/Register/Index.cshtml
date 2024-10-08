@@ -4,14 +4,29 @@
 @{
 }
 
-<div>
-    <h1 class="text-2xl font-bold ml-4">
-        /\_/\
-    </h1>
-    <h1 class="text-2xl font-bold ml-2">
-        ( o.o ) Me estoy construyendo...
-    </h1>
-    <h1 class="text-2xl font-bold ml-4">
-        >^<
-    </h1>
+<div class="flex justify-center items-center">
+
+    <div class="p-10 shadow-lg rounded-lg w-[90%] md:w-[70%] lg:w-[40%] bg-white mt-8">
+        <h2 class="text-2xl font-bold text-center mb-2">Creá tu cuenta</h2>
+        <form action="/login" method="post" class="flex flex-col gap-4">
+            <div class="flex flex-col">
+                <label class="text-gray-700 mb-1">Nombre de usuario: </label>
+                <input type="text" class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="flex flex-col">
+                <label class="text-gray-700 mb-1">Email: </label>
+                <input type="email" class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="flex flex-col">
+                <label class="text-gray-700 mb-1">Contraseña: </label>
+                <input type="password" class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="flex flex-col">
+                <label class="text-gray-700 mb-1">Repetir contraseña: </label>
+                <input type="password" class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <button type="submit" class="bg-secondary text-white py-2 px-4 rounded">Registrarte</button>
+        </form>
+    </div>
+
 </div>
