@@ -20,34 +20,3 @@ html {
 body {
   margin-bottom: 60px;
 }
-
-/*Colores de la página*/
-.bg-primary {
-    background-color: #FCD1C5; /*Rosa*/
-}
-
-.bg-secondary {
-    background-color: #D7263D; /*Rojo*/
-}
-
-.bg-special {
-    background-color: #F46036; /*Naranja*/
-}
-
-.bg-dark {
-    background-color: #2E294E; /*Azul*/
-}
-
-.text-dark {
-    color: #2E294E; /*Azul*/
-}
-
-.text-secondary {
-    color: #D7263D; /*Rojo*/
-}
-
-.filter{
-    filter: drop-shadow(
-        0 0 10px rgba(0, 0, 0, .8)
-     )
-}
