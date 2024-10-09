@@ -1,9 +1,22 @@
+using Garagato.MVC.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Agrega servicios de SignalR
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Configura el middleware de SignalR
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chatHub");
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
