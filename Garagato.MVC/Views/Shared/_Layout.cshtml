@@ -6,12 +6,17 @@
     <title>@ViewData["Title"] - Garagato.MVC</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Garagato.MVC.styles.css" asp-append-version="true" />
+    @* fuentes *@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    @* tailwind *@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-primary flex flex-col h-screen">
 
     <header class="bg-secondary p-5 w-full">
-        <a href="/login/index"><h1 class="text-white text-2xl font-bold">Garagato</h1></a>
+        <a href="/login/bienvenida"><h1 class="text-white text-2xl balsamiq-sans-bold-italic ">Garagato</h1></a>
     </header>
 
     <main role="main" class="grow">
@@ -21,7 +26,7 @@
 
     <footer class="text-muted bg-dark p-5 w-full">
         <div class="text-base font-bold text-white text-center">
-            <p>&copy; 2024 - Garagato</p>
+            <p class="balsamiq-sans-regular">&copy; 2024 - Garagato</p>
         </div>
     </footer>
 

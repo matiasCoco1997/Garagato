@@ -46,8 +46,26 @@ body {
     color: #D7263D; /*Rojo*/
 }
 
-.filter{
-    filter: drop-shadow(
-        0 0 10px rgba(0, 0, 0, .8)
-     )
+.balsamiq-sans-regular {
+    font-family: "Balsamiq Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.balsamiq-sans-bold {
+    font-family: "Balsamiq Sans", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.balsamiq-sans-regular-italic {
+    font-family: "Balsamiq Sans", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.balsamiq-sans-bold-italic {
+    font-family: "Balsamiq Sans", sans-serif;
+    font-weight: 700;
+    font-style: italic;
 }
