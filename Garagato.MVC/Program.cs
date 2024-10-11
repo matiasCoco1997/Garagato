@@ -7,8 +7,6 @@ builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-// Install-Package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation (herramientas -> Herramientas -> Administrador de paquetes NuGet -> Consola del Administrador de paquetes )
-
 
 var app = builder.Build();
 

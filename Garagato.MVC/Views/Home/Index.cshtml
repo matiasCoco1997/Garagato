@@ -4,13 +4,13 @@
 
 
 
-<h2>Chat</h2>
+@* <h2>Chat</h2>
 
 <div>
     <input type="text" id="userInput" placeholder="Nombre de usuario" />
     <input type="text" id="messageInput" placeholder="Mensaje" />
     <button id="sendButton">Enviar</button>
-</div>
+</div> *@
 
 
 
@@ -39,11 +39,42 @@
         </div>
     </div>
 
-    <div class="bg-green-400 w-[40%]">
-        <ul id="messagesList" class="pl-5"></ul>
+    <div class="w-[40%] rounded-lg p-4 bg-white min-h-[150px]">
+        <h2 class="text-2xl font-bold text-dark mb-4">Salas creadas</h2>
+
+        <ul id="listaDeSalas">
+
+            <div class="rounded-lg shadow-md p-4 flex justify-between items-center mb-4 w-full max-w-lg mx-auto border border-gray-300">
+                <div class="flex">
+                    <div class="bg-dark w-[60px] h-[60px] flex justify-center items-center rounded-full mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                        </svg>
+
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-dark">Mesa matías</h2>
+                        <p class="text-sm text-gray-600">Creador: Juan Pérez</p>
+                        <p class="text-sm text-gray-600">Jugadores: 3 / 5</p>
+                    </div>
+
+                </div>
+
+                <div>
+                    <button class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm">
+                        Unirse
+                    </button>
+                </div>
+            </div>
+
+        </ul>
+
     </div>
 
+
 </section>
+
+
 
 
 
@@ -55,31 +86,32 @@
             .withUrl("/chatHub")
             .build();
 
-        //Recibe el mensaje y lo muestra en la vista
-        connection.on("ReceiveMessage", function (user, message) {
-            const msg = user + ": " + message;
-            const li = document.createElement("li");
-            li.textContent = msg;
-            document.getElementById("messagesList").appendChild(li);
-        });
-
-        //Catch para exceptions
         connection.start().catch(function (err) {
             return console.error(err.toString());
         });
 
-        //Recibe el mensaje y ejecuta la funcion para mostrarlo en la vista (ReceiveMessage)
-        document.getElementById("sendButton").addEventListener("click", function (event) {
-            const user = document.getElementById("userInput").value;
-            const message = document.getElementById("messageInput").value;
-            connection.invoke("SendMessage", user, message).catch(function (err) {
-                return console.error(err.toString());
-            });
-            event.preventDefault();
-        });
+        // //Recibe el mensaje y lo muestra en la vista
+        // connection.on("ReceiveMessage", function (user, message) {
+        //     const msg = user + ": " + message;
+        //     const li = document.createElement("li");
+        //     li.textContent = msg;
+        //     document.getElementById("listaDeSalas").appendChild(li);
+        // });
 
+        // //Catch para exceptions
+        // connection.start().catch(function (err) {
+        //     return console.error(err.toString());
+        // });
 
-
+        // //Recibe el mensaje y ejecuta la funcion para mostrarlo en la vista (ReceiveMessage)
+        // document.getElementById("sendButton").addEventListener("click", function (event) {
+        //     const user = document.getElementById("userInput").value;
+        //     const message = document.getElementById("messageInput").value;
+        //     connection.invoke("SendMessage", user, message).catch(function (err) {
+        //         return console.error(err.toString());
+        //     });
+        //     event.preventDefault();
+        // });
 
         //Crea sala de garagato
         document.getElementById("crearSalaButton").addEventListener("click", function (event) {
@@ -93,10 +125,70 @@
 
         //Muestra en la vista la sala garagato
         connection.on("MostrarSalaGaragato", function (nombreSala, contrasenia) {
-            const msg = "Nombre sala: " + nombreSala + ": // contraseña: " + contrasenia;
-            const li = document.createElement("li");
-            li.textContent = msg;
-            document.getElementById("messagesList").appendChild(li);
+            var nombreUsuarioLogueado = "Matías"; //Esto despues hay que cambiarlo por el nombre del usuario logueado
+
+            // 1. Creo el <div> principal
+            var divPrincipal = $('<div></div>');
+            divPrincipal.addClass('rounded-lg shadow-md p-4 flex justify-between items-center mb-4 w-full max-w-lg mx-auto border border-gray-300'); // Agrego estilos
+
+            // 2. Creo el <div> izquierdo que tiene al icono y los textos
+            var divIzquierda = $('<div></div>');
+            divIzquierda.addClass('flex'); // Agrego estilos
+
+            // 3. Creo el <div> del ícono
+            var divIcono = $('<div></div>');
+            divIcono.addClass('bg-dark w-[60px] h-[60px] flex justify-center items-center rounded-full mr-4'); // Agrego estilos
+
+            // 4. Creo el icono
+            var svgIcono = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                                        </svg>`;
+            divIcono.html(svgIcono); // Inserto el SVG adentro del div del icono (paso 3)
+
+            // 5. Creo el <div> de los textos
+            var divTexto = $('<div></div>');
+
+            // 6. Creo el <h2> de la sala
+            var titulo = $('<h2></h2>');
+            titulo.text('Mesa ' + nombreSala); // Guardo el texto
+            titulo.addClass('text-lg font-bold text-dark'); // Agrego estilos
+
+            // 7. Creo el <p> para el creador de la sala
+            var creador = $('<p></p>');
+            creador.text('Creador: ' + nombreUsuarioLogueado); // Añado el texto del creador de la sala
+            creador.addClass('text-sm text-gray-600'); // Agrego estilos
+
+            // 8. Creo el <p> de la cantidad de jugadores
+            var jugadores = $('<p></p>');
+            jugadores.text('Jugadores: 1 / 5'); // Añado el texto de la cantidad de jugadores
+            jugadores.addClass('text-sm text-gray-600'); // Agrego estilos
+
+            // 9. Agrego el titulo y los textos al <div> de texto (paso 5)
+            divTexto.append(titulo); // Añado el nombre de la sala
+            divTexto.append(creador); // Añado el nombre del creador de la sala
+            divTexto.append(jugadores); // Añado la cantidad de jugadores
+
+            // 10. Añado el icono y el la info de la sala al <div> del paso 2
+            divIzquierda.append(divIcono); // Añado el icono  
+            divIzquierda.append(divTexto); // Añado la info de la sala 
+
+            // 11. Creo el <div> derecho que tiene el boton para unirse a la sala
+            var divBoton = $('<div></div>');
+
+            // 12. Creo el boton
+            var boton = $('<button></button>');
+            boton.text('Unirse'); // Añado el texto del boton
+            boton.addClass('bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm'); // Agrego estilos
+
+            // 13. Añado el boton al <div> (paso 11)
+            divBoton.append(boton); // Añado el botón al div
+
+            // 14. Agrego los componentes al div principal
+            divPrincipal.append(divIzquierda); // Añado icono y texto
+            divPrincipal.append(divBoton); // Añado el boton
+
+            // 15. Añado el div principal al la lista <ul>
+            $('#listaDeSalas').append(divPrincipal);
         });
 
     </script>
