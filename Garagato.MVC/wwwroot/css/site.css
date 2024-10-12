@@ -64,3 +64,20 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #555; 
 }
+
+
+.trianguloIzquierdoChat {
+    border: 10px solid #FCD1C5;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    left: 0;
+    bottom: 0px;
+}
+
+.trianguloDerechoChat {
+    border: 10px solid #FCD1C5;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    right: 0;
+    bottom: 0px;
+}
