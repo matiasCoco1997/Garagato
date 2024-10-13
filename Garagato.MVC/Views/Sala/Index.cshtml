@@ -1,124 +1,148 @@
 ﻿@{
 }
 
-<section class="flex flex-row pt-4 items-center flex-wrap">
+<section class="flex flex-row items-center flex-wrap px-3 md:px-0 lg:h-[22%]">
 
-    <div class="w-full mx-6">
+    <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
 
-        <div class="w-full flex justify-center items-center bg-dark py-2 px-4 rounded-lg">
+        <div class="flex w-full">
+            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Posiciones</h2>
+            <button id="posicionesButton" class="p-3 lg:hidden">
+                <i id="arrow" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
+            </button>
+        </div>
 
-            <h2 class="text-end font-bold text-white mr-2 w-[8%]">Posiciones</h2>
+        <!-- Tabla de posiciones de jugadores -->
+        <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
 
-            <div class="flex">
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
 
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 1 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 1 | Puntaje: 50 pts</p>
-                    </div>
-
+                <div class="h-full content-center pr-2 *** lg:flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
                 </div>
 
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
+                <div class="lg:flex lg:flex-wrap text-dark w-full">
+                    <h3 class="h-[50%] font-bold lg:text-md">jugador 1</h3>
 
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
+                    <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
+                        <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
+                        <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: 50</p>
                     </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 2 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 2 | Puntaje: 40 pts</p>
-                    </div>
-
                 </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 3 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 3 | Puntaje: 30 pts</p>
-                    </div>
-
-                </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 4 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 4 | Puntaje: 20 pts</p>
-                    </div>
-
-                </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 5 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 5 | Puntaje: 10 pts</p>
-                    </div>
-
-                </div>
-
-
             </div>
 
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
+
+                <div class="h-full content-center pr-2 *** lg:flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+
+                <div class="lg:flex lg:flex-wrap text-dark w-full">
+                    <h3 class="h-[50%] font-bold lg:text-md">jugador 1</h3>
+
+                    <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
+                        <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
+                        <p class="text-gray-500 w-full text-center *** lg:w-full lg:text-sm lg:text-start">Puntaje: 50</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
+
+                <div class="h-full content-center pr-2 *** lg:flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+
+                <div class="lg:flex lg:flex-wrap text-dark w-full">
+                    <h3 class="h-[50%] font-bold lg:text-md">jugador 1</h3>
+
+                    <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
+                        <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
+                        <p class="text-gray-500 w-full text-center *** lg:w-full lg:text-sm lg:text-start">Puntaje: 50</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
+
+                <div class="h-full content-center pr-2 *** lg:flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+
+                <div class="lg:flex lg:flex-wrap text-dark w-full">
+                    <h3 class="h-[50%] font-bold lg:text-md">jugador 1</h3>
+
+                    <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:flex-nowrap 2xl:pt-2">
+                        <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
+                        <p class="text-gray-500 w-full text-center *** lg:w-full lg:text-sm lg:text-start">Puntaje: 50</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
+
+                <div class="h-full content-center pr-2 *** lg:flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+
+                <div class="lg:flex lg:flex-wrap text-dark w-full">
+                    <h3 class="h-[50%] font-bold lg:text-md">jugador 1</h3>
+
+                    <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
+                        <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
+                        <p class="text-gray-500 w-full text-center *** lg:w-full lg:text-sm lg:text-start">Puntaje: 50</p>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
 
 </section>
 
-<section class="flex flex-col lg:flex-row px-3 p-4 items-center">
 
-    <div class="flex flex-col items-center justify-center flex-wrap lg:basis-[70%] px-3 h-full min-h-[70vh] max-h-[70vh]">
+<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[78%] lg:py-2">
+
+    <!--Pizarra y Palabra-->
+    <div class="w-full h-full flex flex-col items-center justify-center flex-wrap mb-4 min-h-[60vh] max-h-[60vh] *** md:p-0 *** lg:w-[70%] lg:pr-3 lg:mb-0">
+
+        <!--Palabra-->
         <h2 class="w-full text-center p-3 tracking-[0.2em] bold text-lg bg-secondary text-white font-bold rounded-t-lg">
             _  _  _  _  _  _
         </h2>
 
-        <div class="bg-white w-full flex-grow content-center text-center rounded-b-lg  border border-4 border-[#D7263D]">
-            Pizarra
+        <!--Pizarra-->
+        <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
+            <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0"></canvas>
+            <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
+
     </div>
 
-    <div class="h-full flex items-end justify-center lg:basis-[30%] px-3 min-h-[70vh] max-h-[70vh] flex-wrap">
+    <!--Chat-->
+    <div class="w-full h-full flex items-center justify-center flex-wrap min-h-[50vh] *** lg:w-[30%] lg:min-h-[60vh] lg:max-h-[60vh]">
 
-        <!--Chat-->
-        <div class="bg-white w-full flex-grow h-full border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto space-y-4 h-full max-h-[65vh] p-4">
+        <!--Mensajes enviados-->
+        <div class="bg-white w-full flex-grow h-full border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto h-full p-4 lg:min-h-[55vh] lg:max-h-[55vh]">
 
             <div class="relative flex items-start">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -128,7 +152,7 @@
 
             <div class="relative flex items-center justify-end">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -138,7 +162,7 @@
 
             <div class="relative flex items-start">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -148,7 +172,7 @@
 
             <div class="relative flex items-center justify-end">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -158,7 +182,7 @@
 
             <div class="relative flex items-start">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -168,7 +192,7 @@
 
             <div class="relative flex items-center justify-end">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -178,7 +202,7 @@
 
             <div class="relative flex items-start">
                 <div class="p-3">
-                    <p class="rounded-lg p-4 text-dark bg-primary">
+                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
                         Mensaje recibido
                     </p>
                 </div>
@@ -189,12 +213,102 @@
 
         <!--input para enviar los mensajes-->
         <div class="min-h-[5vh] w-full flex">
-            <input type="type" name="name" value="" class="w-[80%] rounded-bl-lg border border-4 border-[#D7263D] focus:outline-none px-2 text-dark" />
-            <button class="bg-secondary w-[20%] rounded-br-lg">
-                <i class="fa-regular fa-paper-plane text-center text-white text-lg"></i>
+            <input type="type" name="name" value="" class="w-[80%] rounded-bl-lg border border-4 border-[#D7263D] focus:outline-none px-2 text-dark" placeholder="Ingrese su respuesta" />
+
+            <button class="bg-secondary w-[20%] rounded-br-lg border-none hover:bg-[#F46036]">
+                <i class="fa-regular fa-paper-plane text-center text-white text-md md:text-lg"></i>
             </button>
         </div>
     </div>
 
-
 </section>
+
+
+
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+    <script>
+
+        //Mostrar ocultar posiciones
+        const posicionesButton = document.getElementById('posicionesButton');
+        const posicionesContainer = document.getElementById('posicionesContainer');
+        const chevronIcon = document.getElementById('arrow');
+
+        posicionesButton.addEventListener('click', () => {
+            if (posicionesContainer.style.maxHeight) {
+                posicionesContainer.style.maxHeight = null;
+                chevronIcon.classList.remove('fa-chevron-down');
+                chevronIcon.classList.add('fa-chevron-up');
+            } else {
+                posicionesContainer.style.maxHeight = posicionesContainer.scrollHeight + 'px';
+                chevronIcon.classList.remove('fa-chevron-up');
+                chevronIcon.classList.add('fa-chevron-down');
+            }
+        });
+
+
+        /* LOGICA PARA PIZARRA */
+        const canvas = document.getElementById('pizarra');
+        const ctx = canvas.getContext('2d');
+
+        // Funcion para ajustar el tamaño del canvas
+        function ajustarCanvas() {
+            const ancho = canvas.clientWidth;
+            const alto = canvas.clientHeight;
+
+            canvas.width = ancho;
+            canvas.height = alto;
+        }
+
+        // Variables para el dibujo
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Funcion para dibujar
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY]; // Guardar posición inicial
+        });
+
+        // Funcion para dejar de dibujar
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.beginPath(); // Comienza un nuevo camino para la siguiente línea
+        });
+
+        // Dibujar en el canvas
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return; // Detener si no se está dibujando
+            ctx.lineWidth = 5; // Grosor de la línea
+            ctx.strokeStyle = 'black'; // Color de la línea
+            ctx.lineJoin = 'round'; // Redondear las esquinas
+            ctx.beginPath(); // Iniciar un nuevo camino
+            ctx.moveTo(lastX, lastY); // Mover a la última posición
+            ctx.lineTo(e.offsetX, e.offsetY); // Dibujar línea a la posición actual
+            ctx.stroke(); // Aplicar el trazo
+            [lastX, lastY] = [e.offsetX, e.offsetY]; // Actualizar la última posición
+        });
+
+        // Ajusta el tamaño de la pizarra cuando esta cargada la pagina
+        window.onload = ajustarCanvas;
+
+        // Redimenciona la pizarra para hacerla responsive
+        window.addEventListener('resize', ajustarCanvas);
+
+
+        // Función para borrar el dibujo de la pizarra
+        function borrarPizarra() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Al hacer click borra la pizarra
+        document.getElementById('borrarPizarra').addEventListener('click', borrarPizarra);
+
+    </script>
+}
