@@ -1,119 +1,111 @@
 ﻿@{
 }
 
-<section class="flex flex-row pt-4 items-center flex-wrap">
+<section class="flex flex-row items-center flex-wrap">
 
-    <div class="w-full mx-6">
+    <div class="w-[90%] flex flex-col justify-center items-center bg-dark p-4 rounded-lg mx-auto mt-3">
+        <div class="flex w-full">
+            <h2 class="text-center font-bold text-white p-3 w-full">Posiciones</h2>
+            <button id="posicionesButton" class="p-3">
+                <i id="chevronIcon" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
+            </button>
+        </div>
 
-        <div class="w-full flex justify-center items-center bg-dark py-2 px-4 rounded-lg">
-
-            <h2 class="text-end font-bold text-white mr-2 w-[8%]">Posiciones</h2>
-
-            <div class="flex">
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 1 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 1 | Puntaje: 50 pts</p>
-                    </div>
-
+        <!-- Tabla de posiciones de jugadores -->
+        <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0">
+           
+            <!-- Jugador 1 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md flex-wrap">
+                <div class="h-full content-center pr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
                 </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 2 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 2 | Puntaje: 40 pts</p>
-                    </div>
-
+                <div>
+                    <h3 class="pt-2 h-[50%] font-bold">jugador 1</h3>
+                    <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 1 | Puntaje: 50 pts</p>
                 </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 3 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 3 | Puntaje: 30 pts</p>
-                    </div>
-
-                </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 4 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 4 | Puntaje: 20 pts</p>
-                    </div>
-
-                </div>
-
-                <div class="bg-white mx-3 flex items-center px-4 rounded-md flex-wrap">
-
-                    <div class="h-full content-center pr-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div>
-                        <h3 class="pt-2 h-[50%] font-bold">jugador 5 </h3>
-
-                        <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 5 | Puntaje: 10 pts</p>
-                    </div>
-
-                </div>
-
-
             </div>
 
+            <!-- Jugador 2 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md flex-wrap">
+                <div class="h-full content-center pr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="pt-2 h-[50%] font-bold">jugador 2</h3>
+                    <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 2 | Puntaje: 40 pts</p>
+                </div>
+            </div>
+
+            <!-- Jugador 3 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md flex-wrap">
+                <div class="h-full content-center pr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="pt-2 h-[50%] font-bold">jugador 3</h3>
+                    <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 3 | Puntaje: 30 pts</p>
+                </div>
+            </div>
+
+            <!-- Jugador 4 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md flex-wrap">
+                <div class="h-full content-center pr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="pt-2 h-[50%] font-bold">jugador 4</h3>
+                    <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 4 | Puntaje: 20 pts</p>
+                </div>
+            </div>
+
+            <!-- Jugador 5 -->
+            <div class="bg-white my-2 flex items-center px-4 rounded-md flex-wrap">
+                <div class="h-full content-center pr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="pt-2 h-[50%] font-bold">jugador 5</h3>
+                    <p class="pb-2 w-full text-center h-[50%] text-gray-500">Posición: 5 | Puntaje: 10 pts</p>
+                </div>
+            </div>
 
         </div>
     </div>
 
 </section>
 
+
 <section class="flex flex-col lg:flex-row px-3 p-4 items-center">
 
-    <div class="flex flex-col items-center justify-center flex-wrap lg:basis-[70%] px-3 h-full min-h-[70vh] max-h-[70vh]">
+    <!--Pizarra y Palabra-->
+    <div class="flex flex-col items-center justify-center flex-wrap w-full mb-4 lg:basis-[70%] px-3 h-full min-h-[70vh] max-h-[70vh]">
+
+        <!--Palabra-->
         <h2 class="w-full text-center p-3 tracking-[0.2em] bold text-lg bg-secondary text-white font-bold rounded-t-lg">
             _  _  _  _  _  _
         </h2>
 
+        <!--Pizarra-->
         <div class="bg-white w-full flex-grow content-center text-center rounded-b-lg  border border-4 border-[#D7263D]">
             Pizarra
         </div>
+
     </div>
 
+    <!--Chat-->
     <div class="h-full flex items-end justify-center lg:basis-[30%] px-3 min-h-[70vh] max-h-[70vh] flex-wrap">
 
-        <!--Chat-->
+        <!--Mensajes enviados-->
         <div class="bg-white w-full flex-grow h-full border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto space-y-4 h-full max-h-[65vh] p-4">
 
             <div class="relative flex items-start">
@@ -198,3 +190,26 @@
 
 
 </section>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+
+    <script>
+        const posicionesButton = document.getElementById('posicionesButton');
+        const posicionesContainer = document.getElementById('posicionesContainer');
+        const chevronIcon = document.getElementById('chevronIcon');
+
+        posicionesButton.addEventListener('click', () => {
+            if (posicionesContainer.style.maxHeight) {
+                posicionesContainer.style.maxHeight = null;
+                chevronIcon.classList.remove('fa-chevron-down');
+                chevronIcon.classList.add('fa-chevron-up');
+            } else {
+                posicionesContainer.style.maxHeight = posicionesContainer.scrollHeight + 'px';
+                chevronIcon.classList.remove('fa-chevron-up');
+                chevronIcon.classList.add('fa-chevron-down');
+            }
+        });
+    </script>
+}

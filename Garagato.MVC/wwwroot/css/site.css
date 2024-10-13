@@ -38,6 +38,10 @@ body {
     background-color: #2E294E; /*Azul*/
 }
 
+.text-primary {
+    color: #FCD1C5; /*Rosa*/
+}
+
 .text-dark {
     color: #2E294E; /*Azul*/
 }
