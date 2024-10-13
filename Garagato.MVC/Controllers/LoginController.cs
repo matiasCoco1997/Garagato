@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using Garagato.Entidades;
+using Garagato.MVC.Models.Authentication.Dtos;
+using Garagato.MVC.Models.Authentication.Provider;
+using Garagato.MVC.Models.Authentication;
+using Garagato.MVC.Models.DataBase;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Garagato.MVC.Controllers
 {
     public class LoginController : Controller
     {
+
+        private readonly DataBaseConfig _context;
+        private readonly IAuthenticationService _authenticationService;
+
+        public LoginController(DataBaseConfig context, IAuthenticationService authService)
+        {
+            _context = context;
+            _authenticationService = authService;
+        }
+
         public IActionResult Bienvenida()
         {
             return View("Bienvenida");
@@ -21,29 +32,43 @@ namespace Garagato.MVC.Controllers
         [HttpPost("Login")]
         public IActionResult Login(string username, string password) {
 
-            //simulacion de autenticacion, se deberia usar un servicio de bd y otro aparte para la logic de auth
-            if (username == "admin" && password == "123") {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("m1#7h1sIsA-Sup3rSgaragato3cr3tK3yF0rJWT@1234");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
-                        new Claim(ClaimTypes.Name,username),
-                        new Claim(ClaimTypes.Role, "Admin")
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(1),
-                    Issuer = "localhost:7258",
-                    Audience = "localhost:7258",
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
+            var usuario = _context.Usuarios.SingleOrDefault(u => u.Name == u.Name);
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
-
-                return Redirect("/Home");
+            if (usuario == null || usuario.Password != password) {
+                ModelState.AddModelError("", "Usuario o contraseña incorrectos");
+                return View("Index");
             }
 
-            return View("/Login/Index");
+            var token = _authenticationService.GenerateToken(usuario);
+
+            Response.Cookies.Append("JwtToken", token, new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
+
+            return RedirectToAction("Sala");
+        }
+
+       
+
+        [HttpPost("Register")]
+        public IActionResult Register(UsuarioDto usuarioDto) {
+            if (ModelState.IsValid) {
+                if (_context.Usuarios.Any(us => us.Name == usuarioDto.Name || us.Email == usuarioDto.Email)) {
+                    ModelState.AddModelError("", "El nombre de usuario o el correo electronico ya están en uso");
+                    return View(usuarioDto);
+                }
+
+                var usuario = UsuarioMapper.ToEntity(usuarioDto);
+
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges();
+
+                return RedirectToAction("Bienvenida");
+            }
+
+            return View(usuarioDto);
         }
     }
 }

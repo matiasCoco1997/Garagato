@@ -1,0 +1,12 @@
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\bin\Debug\net8.0\Garagato.Entidades.deps.json
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\bin\Debug\net8.0\Garagato.Entidades.dll
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\bin\Debug\net8.0\Garagato.Entidades.pdb
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.AssemblyInfoInputs.cache
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.AssemblyInfo.cs
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.csproj.CoreCompileInputs.cache
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.sourcelink.json
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.dll
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\refint\Garagato.Entidades.dll
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.pdb
+C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\ref\Garagato.Entidades.dll

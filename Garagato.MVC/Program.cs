@@ -1,5 +1,7 @@
 using Garagato.MVC.Hubs;
+using Garagato.MVC.Models.DataBase;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -11,6 +13,11 @@ builder.Services.AddSignalR();
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+builder.Services.AddDbContext<DataBaseConfig>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+var JwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddAuthentication(options =>
 {
@@ -24,9 +31,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "localhost:7258",
-        ValidAudience = "localhost:7258",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("m1#7h1sIsA-Sup3rSgaragato3cr3tK3yF0rJWT@1234"))
+        ValidIssuer = JwtSettings["Issuer"],
+        ValidAudience = JwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings["SecretKey"]))
     };
 });
 
