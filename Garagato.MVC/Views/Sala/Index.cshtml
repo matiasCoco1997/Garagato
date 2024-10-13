@@ -6,7 +6,7 @@
     <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
 
         <div class="flex w-full">
-            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Posiciones</h2>
+            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Tabla de posiciones</h2>
             <button id="posicionesButton" class="p-3 lg:hidden">
                 <i id="arrow" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
             </button>
@@ -133,8 +133,8 @@
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
 
+        <!-- Paleta de Colores -->
         <div class="w-full flex justify-between items-center bg-gray-100 p-4 rounded-b-lg">
-            <!-- Paleta de Colores -->
             <div class="flex items-center space-x-2">
                 <span class="font-bold mr-2">Color:</span>
                 <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#FF0000" style="background-color: #FF0000;"></button> <!-- Rojo -->
@@ -159,87 +159,18 @@
     </div>
 
     <!--Chat-->
-    <div class="w-full h-full flex items-center justify-center flex-wrap min-h-[50vh] *** lg:w-[30%] lg:min-h-[60vh] lg:max-h-[60vh]">
+    <div class="w-full h-full flex flex-col justify-center min-h-[50vh] *** lg:w-[30%] lg:min-h-[60vh] lg:max-h-[60vh]">
 
         <!--Mensajes enviados-->
-        <div class="bg-white w-full flex-grow h-full border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto h-full p-4 lg:min-h-[55vh] lg:max-h-[55vh]">
+        <div class="bg-white w-full h-full flex flex-grow border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto p-4 lg:min-h-[55vh] lg:max-h-[55vh]" id="chatContainer">
 
-            <div class="relative flex items-start">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloIzquierdoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-center justify-end">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloDerechoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-start">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloIzquierdoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-center justify-end">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloDerechoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-start">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloIzquierdoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-center justify-end">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloDerechoChat mb-3"></div>
-            </div>
-
-            <div class="relative flex items-start">
-                <div class="p-3">
-                    <p class="rounded-lg p-3 text-dark bg-primary text-sm">
-                        Mensaje recibido
-                    </p>
-                </div>
-
-                <div class="absolute trianguloIzquierdoChat mb-3"></div>
-            </div>
         </div>
 
         <!--input para enviar los mensajes-->
-        <div class="min-h-[5vh] w-full flex">
-            <input type="type" name="name" value="" class="w-[80%] rounded-bl-lg border border-4 border-[#D7263D] focus:outline-none px-2 text-dark" placeholder="Ingrese su respuesta" />
+        <div class="w-full flex">
+            <input type="type" name="name" id="respuestaInput" class="w-[80%] rounded-bl-lg border border-4 border-[#D7263D] focus:outline-none p-2 text-dark" placeholder="Ingrese su respuesta" />
 
-            <button class="bg-secondary w-[20%] rounded-br-lg border-none hover:bg-[#F46036]">
+            <button class="bg-secondary w-[20%] rounded-br-lg border-none hover:bg-[#F46036]" id="enviarRespuestaButton">
                 <i class="fa-regular fa-paper-plane text-center text-white text-md md:text-lg"></i>
             </button>
         </div>
@@ -256,7 +187,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 
     <script>
-        // Mostrar/ocultar posiciones
+        //conexion SignalR Hub
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        // Mostrar | ocultar posiciones
         const posicionesButton = document.getElementById('posicionesButton');
         const posicionesContainer = document.getElementById('posicionesContainer');
         const chevronIcon = document.getElementById('arrow');
@@ -338,5 +278,77 @@
             grosorSeleccionado = parseInt(e.target.value);
         });
 
+
+
+
+        //funcion para crear mensaje de otros jugadores
+        function crearMensajeOtroJugador(respuesta) {
+            // Creao el div div y p
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('relative', 'flex', 'items-start');
+
+            const contenedorMensaje = document.createElement('div');
+            contenedorMensaje.classList.add('p-3');
+
+            const mensajeTexto = document.createElement('p');
+            mensajeTexto.classList.add('rounded-lg', 'p-3', 'text-dark', 'bg-primary', 'text-sm');
+            mensajeTexto.textContent = respuesta;
+
+            // Crear el triángulo
+            const triangulo = document.createElement('div');
+            triangulo.classList.add('absolute', 'trianguloIzquierdoChat', 'mb-3');
+
+            // Anidar los elementos
+            contenedorMensaje.appendChild(mensajeTexto);
+            chatDiv.appendChild(contenedorMensaje);
+            chatDiv.appendChild(triangulo);
+
+            // Añadir al contenedor
+            document.getElementById('chatContainer').appendChild(chatDiv);
+        }
+
+
+        //funcion para crear mensajes propios
+        function crearMensajePropio(respuesta) {
+
+            // Creao el div div y p
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('relative', 'flex', 'items-center', 'justify-end');
+
+            const contenedorMensaje = document.createElement('div');
+            contenedorMensaje.classList.add('p-3');
+
+            const texto = document.createElement('p');
+            texto.classList.add('rounded-lg', 'p-3', 'text-dark', 'bg-primary', 'text-sm');
+            texto.textContent = respuesta;
+
+            // Crear el triángulo
+            const triangulo = document.createElement('div');
+            triangulo.classList.add('absolute', 'trianguloDerechoChat', 'mb-3');
+
+            // Anidar los elementos
+            contenedorMensaje.appendChild(texto);
+            chatDiv.appendChild(contenedorMensaje);
+            chatDiv.appendChild(triangulo);
+
+            // Añadir al contenedor
+            document.getElementById('chatContainer').appendChild(chatDiv);
+        }
+
+
+        document.getElementById("enviarRespuestaButton").addEventListener("click", function (event) {
+            const respuesta = document.getElementById("respuestaInput").value;
+            connection.invoke("EnviarRespuestaAsync", respuesta).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+
+        connection.on("MostrarRespuesta" , function (respuesta) {
+            crearMensajePropio(respuesta);
+        });
+
+
+        
     </script>
 }
