@@ -13,4 +13,9 @@ public class ChatHub : Hub
     {
         await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, contrasenia);
     }
+
+    public async Task EnviarRespuestaAsync(string respuesta)
+    {
+        await Clients.All.SendAsync("MostrarRespuesta", respuesta);
+    }
 }
