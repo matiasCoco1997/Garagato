@@ -18,4 +18,14 @@ public class ChatHub : Hub
     {
         await Clients.All.SendAsync("MostrarRespuesta", respuesta);
     }
+
+    public async Task DibujarAsync(string dibujo)
+    {
+        await Clients.All.SendAsync("CrearDibujo", dibujo);
+    }
+
+    public async Task BorrarDibujoAsync(string pizarra)
+    {
+        await Clients.All.SendAsync("BorrarDibujo", pizarra);
+    }
 }

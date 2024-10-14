@@ -197,7 +197,7 @@
             return console.error(err.toString());
         });
 
-        // Mostrar | ocultar posiciones
+        /* --------------------------------------------------- POSICIONES --------------------------------------------------- */
         const posicionesButton = document.getElementById('posicionesButton');
         const posicionesContainer = document.getElementById('posicionesContainer');
         const chevronIcon = document.getElementById('arrow');
@@ -214,7 +214,7 @@
             }
         });
 
-        /* LOGICA PARA PIZARRA */
+        /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
         const canvas = document.getElementById('pizarra');
         const ctx = canvas.getContext('2d');
 
@@ -245,25 +245,58 @@
             ctx.beginPath();  // Reinicia el camino para el siguiente trazo
         });
 
+
         // Dibujar en el canvas
         canvas.addEventListener('mousemove', (e) => {
-            if (!isDrawing) return;
-            ctx.lineWidth = grosorSeleccionado;
-            ctx.strokeStyle = colorSeleccionado;
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
+            if (!isDrawing) return; //Si el usuario no hizo click para dibujar no hago nada
+            
+            const dibujo = { 
+                x: e.offsetX, 
+                y: e.offsetY ,
+                grosor: grosorSeleccionado,
+                color: colorSeleccionado,
+                lastY: lastY,
+                lastX: lastX
+            };
+
+            connection.invoke("DibujarAsync", JSON.stringify(dibujo));
+
             [lastX, lastY] = [e.offsetX, e.offsetY];
         });
 
+        // Función para recibir dibujos de otros usuarios SIGNALR *******************
+        connection.on("CrearDibujo", (data) => {
+            const dataDibujo = JSON.parse(data);
+
+            ctx.lineWidth = dataDibujo.grosor;
+            ctx.strokeStyle = dataDibujo.color;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(dataDibujo.lastX, dataDibujo.lastY);
+            ctx.lineTo(dataDibujo.x, dataDibujo.y);
+            ctx.stroke();      
+        });
+
+        
+        // Función para recibir dibujos de otros usuarios *******************
         // Borrar la pizarra
         function borrarPizarra() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const pizarra = {
+                anchoPizarra: canvas.width,
+                AltoPizarra: canvas.height,
+            };
+            connection.invoke("BorrarDibujoAsync", JSON.stringify(pizarra));
         }
 
-        document.getElementById('borrarPizarra').addEventListener('click', borrarPizarra);
+        document.getElementById('borrarPizarra').addEventListener('click', () => {
+            borrarPizarra();
+        });
+        
+        connection.on("BorrarDibujo", (data) => {
+            const dataPizarra = JSON.parse(data);
+            console.log(dataPizarra);
+            ctx.clearRect(0, 0, dataPizarra.anchoPizarra, dataPizarra.AltoPizarra);
+        });
 
         // Cambiar color del lápiz
         const colorButtons = document.querySelectorAll('.color-button');
@@ -280,7 +313,7 @@
         });
 
 
-
+        /* --------------------------------------------------- MENSAJES --------------------------------------------------- */
 
         //funcion para crear mensaje de otros jugadores
         function crearMensajeOtroJugador(respuesta) {
