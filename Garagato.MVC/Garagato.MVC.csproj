@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Garagato.Entidades\Garagato.Entidades.csproj" />
+    <ProjectReference Include="..\Garagato.Servicios\Garagato.Servicios.csproj" />
   </ItemGroup>
 
 </Project>

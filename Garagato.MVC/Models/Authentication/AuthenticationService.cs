@@ -1,5 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Garagato.Entidades;
@@ -29,8 +33,8 @@ namespace Garagato.MVC.Models
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] {
-                   new Claim(ClaimTypes.Name, user.Name)
-                }),
+                 new Claim(ClaimTypes.Name, user.Name)
+                }),          
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = _configuration["Issuer"],
                 Audience = _configuration["Audience"],

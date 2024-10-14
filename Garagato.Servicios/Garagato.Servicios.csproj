@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Garagato.Entidades\Garagato.Entidades.csproj" />
-    <ProjectReference Include="..\Garagato.MVC\Garagato.MVC.csproj" />
   </ItemGroup>
 
 </Project>

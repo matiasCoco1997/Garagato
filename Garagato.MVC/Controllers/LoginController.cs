@@ -1,7 +1,5 @@
 ﻿using Garagato.Entidades;
-using Garagato.MVC.Models.Authentication.Dtos;
-using Garagato.MVC.Models.Authentication.Provider;
-using Garagato.MVC.Models.Authentication;
+using Garagato.MVC.Models;
 using Garagato.MVC.Models.DataBase;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,25 +48,5 @@ namespace Garagato.MVC.Controllers
             return RedirectToAction("Sala");
         }
 
-       
-
-        [HttpPost("Register")]
-        public IActionResult Register(UsuarioDto usuarioDto) {
-            if (ModelState.IsValid) {
-                if (_context.Usuarios.Any(us => us.Name == usuarioDto.Name || us.Email == usuarioDto.Email)) {
-                    ModelState.AddModelError("", "El nombre de usuario o el correo electronico ya están en uso");
-                    return View(usuarioDto);
-                }
-
-                var usuario = UsuarioMapper.ToEntity(usuarioDto);
-
-                _context.Usuarios.Add(usuario);
-                _context.SaveChanges();
-
-                return RedirectToAction("Bienvenida");
-            }
-
-            return View(usuarioDto);
-        }
     }
 }

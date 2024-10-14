@@ -1,0 +1,16 @@
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\bin\Debug\net8.0\Garagato.Servicios.deps.json
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\bin\Debug\net8.0\Garagato.Servicios.dll
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\bin\Debug\net8.0\Garagato.Servicios.pdb
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\bin\Debug\net8.0\Garagato.Entidades.dll
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\bin\Debug\net8.0\Garagato.Entidades.pdb
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.csproj.AssemblyReference.cache
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.AssemblyInfoInputs.cache
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.AssemblyInfo.cs
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.csproj.CoreCompileInputs.cache
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.sourcelink.json
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.A45DA540.Up2Date
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.dll
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\refint\Garagato.Servicios.dll
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\Garagato.Servicios.pdb
+C:\Users\valde\source\repos\Garagato\Garagato.Servicios\obj\Debug\net8.0\ref\Garagato.Servicios.dll

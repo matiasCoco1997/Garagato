@@ -10,3 +10,4 @@ C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagat
 C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\refint\Garagato.Entidades.dll
 C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.pdb
 C:\Users\valde\Source\Repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\ref\Garagato.Entidades.dll
+C:\Users\valde\source\repos\Garagato\Garagato.Entidades\obj\Debug\net8.0\Garagato.Entidades.csproj.AssemblyReference.cache
