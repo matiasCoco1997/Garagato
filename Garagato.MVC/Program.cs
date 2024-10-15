@@ -1,4 +1,7 @@
+using Garagato.Data.EF;
+using Garagato.Logica;
 using Garagato.MVC.Hubs;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,13 @@ builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+// Registrar GaragatoDatabaseContext
+builder.Services.AddDbContext<GaragatoDatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registrar UsuarioServicio
+builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 
 var app = builder.Build();
 
