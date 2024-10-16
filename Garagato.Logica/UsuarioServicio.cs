@@ -12,6 +12,7 @@ namespace Garagato.Logica
         void ActualizarUsuario(Usuario usuario);
         Task RegistrarUsuarioAsync(string nombre, string email, string contraseña);
         Task<bool> ExisteUsuarioAsync(string nombre, string mail);
+        Task<Usuario> ValidarUsuarioAsync(string nombre, string contrasena);
     }
     public class UsuarioServicio : IUsuarioServicio
     {
@@ -59,6 +60,11 @@ namespace Garagato.Logica
 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Usuario> ValidarUsuarioAsync(string nombre, string contrasena)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre == nombre && u.Contrasena == contrasena);
         }
     }
 }
