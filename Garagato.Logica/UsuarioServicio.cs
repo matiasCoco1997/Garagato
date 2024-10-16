@@ -1,5 +1,9 @@
 ﻿using Garagato.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Garagato.Logica
 {
@@ -13,6 +17,7 @@ namespace Garagato.Logica
         Task RegistrarUsuarioAsync(string nombre, string email, string contraseña);
         Task<bool> ExisteUsuarioAsync(string nombre, string mail);
         Task<Usuario> ValidarUsuarioAsync(string nombre, string contrasena);
+        Task<string> GenerarTokenAsync(Usuario usuario);
     }
     public class UsuarioServicio : IUsuarioServicio
     {
@@ -65,6 +70,27 @@ namespace Garagato.Logica
         public async Task<Usuario> ValidarUsuarioAsync(string nombre, string contrasena)
         {
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre == nombre && u.Contrasena == contrasena);
+        }
+
+        public async Task<string> GenerarTokenAsync(Usuario usuario) {
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, usuario.Nombre),
+                new Claim(JwtRegisteredClaimNames.Email, usuario.Mail),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345superSecretKey@345"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "http://localhost:7258",
+                audience: "http://localhost:7258",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

@@ -31,6 +31,14 @@ namespace Garagato.MVC.Controllers
                 var usuario = await _usuarioService.ValidarUsuarioAsync(model.Nombre, model.Contrasena);
                 if (usuario != null)
                 {
+                    var token = await _usuarioService.GenerarTokenAsync(usuario);
+
+                    Response.Cookies.Append("AuthToken", token, new CookieOptions { 
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    });
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
