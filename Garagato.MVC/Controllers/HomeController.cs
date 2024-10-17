@@ -2,6 +2,8 @@ using Garagato.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Garagato.MVC.Controllers
 {
@@ -23,6 +25,15 @@ namespace Garagato.MVC.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            // Cerrar la sesión del usuario
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

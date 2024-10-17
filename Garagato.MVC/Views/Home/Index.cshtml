@@ -2,10 +2,10 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="h-full flex items-center justify-center ***">
-
+<div class="h-full flex items-center justify-center">
+    
     <section class="flex flex-col w-full flex-wrap px-6 py-3 *** md:h-full md:justify-center *** lg:justify-between lg:max-h-[684px]">
-
+       
         <div class="flex flex-col w-full *** md:w-[80%] md:mx-auto *** lg:w-[70%] lg:h-full lg:justify-between lg:items-center *** 2xl:w-[50%] 2xl:items-end 2xl:pr-4">
 
             @* crear sala *@
@@ -66,7 +66,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
     <script type="text/javascript">
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
+            .withUrl("/SignalR")
             .build();
 
         connection.start().catch(function (err) {

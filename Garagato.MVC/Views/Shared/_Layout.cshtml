@@ -13,13 +13,28 @@
 </head>
 <body class="bg-primary flex flex-col h-screen">
 
-    <header class="bg-secondary p-5 w-full">
-        <a href="/login/bienvenida"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+    <header class="bg-secondary p-5 w-full flex justify-between items-center">
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a href="/home/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+
+            <form action="/home/logout" method="post" class="inline">
+                <button type="submit" class="bg-white text-secondary p-2 rounded-md">
+                    Cerrar Sesión
+                </button>
+            </form>
+        }
+
+        else
+        {
+            <a href="/login/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+        }
     </header>
 
     <main role="main" class="grow">
         @RenderBody()
-     </main>
+    </main>
 
 
     <footer class="bg-dark p-5 w-full">

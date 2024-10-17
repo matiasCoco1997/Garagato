@@ -190,7 +190,7 @@
     <script>
         //conexion SignalR Hub
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chatHub")
+            .withUrl("/SignalR")
             .build();
 
         connection.start().catch(function (err) {

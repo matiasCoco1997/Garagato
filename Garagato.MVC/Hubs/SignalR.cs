@@ -2,7 +2,7 @@
 
 namespace Garagato.MVC.Hubs;
 
-public class ChatHub : Hub
+public class signalR : Hub
 {
     public async Task SendMessage(string user, string message)
     {

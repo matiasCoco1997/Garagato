@@ -40,7 +40,7 @@ builder.Services.AddAuthentication(options =>
 // Agrega servicios de SignalR
 builder.Services.AddSignalR();
 
-// Add services to the container.
+//Midelware para modificar en tiempo real los cambios esteticos
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 // Registrar GaragatoDatabaseContext
@@ -52,9 +52,7 @@ builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 
 var app = builder.Build();
 
-// Configura el middleware de SignalR
 app.UseRouting();
-
 
 
 // Configure the HTTP request pipeline.
@@ -68,14 +66,13 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<ChatHub>("/chatHub");
+    endpoints.MapHub<signalR>("/signalR");
 });
 
 app.MapControllerRoute(
