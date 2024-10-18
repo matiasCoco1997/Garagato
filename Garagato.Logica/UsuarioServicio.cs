@@ -13,6 +13,9 @@ namespace Garagato.Logica
     {
         List<Usuario> ObtenerUsuarios();
         void AgregarUsuario(Usuario usuario);
+
+        Usuario ObtenerUsuarioLogueado(string token);
+
         Usuario ObtenerUsuarioPorId(int id);
         void ActualizarUsuario(Usuario usuario);
         Task RegistrarUsuarioAsync(string nombre, string email, string contraseña);
@@ -55,13 +58,13 @@ namespace Garagato.Logica
             return await _context.Usuarios.AnyAsync(u => u.Nombre == nombre || u.Mail == mail);
         }
 
-        public async Task RegistrarUsuarioAsync(string nombre, string email, string contraseña)
+        public async Task RegistrarUsuarioAsync(string nombre, string email, string contrasena)
         {
             var usuario = new Usuario
             {
                 Nombre = nombre,
                 Mail = email,
-                Contrasena = contraseña 
+                Contrasena = contrasena 
             };
 
             _context.Usuarios.Add(usuario);
@@ -74,7 +77,9 @@ namespace Garagato.Logica
         }
 
         public async Task<string> GenerarTokenAsync(Usuario usuario) {
+
             var claims = new[] {
+                new Claim("UserId", usuario.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, usuario.Nombre),
                 new Claim(JwtRegisteredClaimNames.Email, usuario.Mail),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
@@ -92,6 +97,22 @@ namespace Garagato.Logica
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public Usuario ObtenerUsuarioLogueado(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+            
+            if (userIdClaim != null)
+            {
+                var userId = int.Parse(userIdClaim.Value);
+                var usuarioLogueado = this.ObtenerUsuarioPorId(userId);
+                return usuarioLogueado;
+            }
+            return null;
         }
     }
 }

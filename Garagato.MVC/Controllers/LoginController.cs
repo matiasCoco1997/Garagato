@@ -1,6 +1,9 @@
 ﻿using Garagato.Logica;
 using Garagato.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace Garagato.MVC.Controllers
 {
@@ -15,11 +18,21 @@ namespace Garagato.MVC.Controllers
 
         public IActionResult Bienvenida()
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View("Bienvenida");
         }
 
         public IActionResult Index()
         {
+            if (Request.Cookies["AuthToken"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -29,11 +42,13 @@ namespace Garagato.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var usuario = await _usuarioService.ValidarUsuarioAsync(model.Nombre, model.Contrasena);
+
                 if (usuario != null)
                 {
                     var token = await _usuarioService.GenerarTokenAsync(usuario);
 
-                    Response.Cookies.Append("AuthToken", token, new CookieOptions { 
+                    Response.Cookies.Append("AuthToken", token, new CookieOptions
+                    {
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict

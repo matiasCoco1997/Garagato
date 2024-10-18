@@ -12,4 +12,8 @@ public partial class Usuario
     public string Mail { get; set; } = null!;
 
     public string Contrasena { get; set; } = null!;
+
+    public virtual ICollection<Puntuacion> Puntuacions { get; set; } = new List<Puntuacion>();
+
+    public virtual ICollection<UsuarioSala> UsuarioSalas { get; set; } = new List<UsuarioSala>();
 }

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Garagato.MVC.EF;
+namespace Garagato.Data.EF;
 
-public partial class Usuario
+public partial class Sala
 {
-    public int Id { get; set; }
+    public int SalaId { get; set; }
 
-    public string Nombre { get; set; } = null!;
-
-    public string Mail { get; set; } = null!;
-
-    public string Contrasena { get; set; } = null!;
+    public string NombreSala { get; set; } = null!;
 
     public virtual ICollection<Puntuacion> Puntuacions { get; set; } = new List<Puntuacion>();
 

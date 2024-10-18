@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Garagato.MVC.EF;
+namespace Garagato.Data.EF;
 
 public partial class Puntuacion
 {

@@ -50,6 +50,9 @@ builder.Services.AddDbContext<GaragatoDatabaseContext>(options =>
 // Registrar UsuarioServicio
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 
+// Registrar SalaServicio
+builder.Services.AddScoped<ISalaServicio, SalaServicio>();
+
 var app = builder.Build();
 
 app.UseRouting();
