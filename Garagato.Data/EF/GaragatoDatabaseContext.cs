@@ -33,20 +33,19 @@ public partial class GaragatoDatabaseContext : DbContext
     {
         modelBuilder.Entity<Palabra>(entity =>
         {
-            entity.HasKey(e => e.PalabraId).HasName("PK__Palabra__8B6EAEF122D07D5D");
+            entity.HasKey(e => e.PalabraId).HasName("PK__Palabra__8B6EAEF159EF5D82");
 
             entity.ToTable("Palabra");
 
             entity.Property(e => e.PalabraId).HasColumnName("PalabraID");
             entity.Property(e => e.Palabra1)
                 .HasMaxLength(100)
-                .IsUnicode(false)
                 .HasColumnName("Palabra");
         });
 
         modelBuilder.Entity<Puntuacion>(entity =>
         {
-            entity.HasKey(e => e.PuntuacionId).HasName("PK__Puntuaci__4DEA4BE5CDF68766");
+            entity.HasKey(e => e.PuntuacionId).HasName("PK__Puntuaci__4DEA4BE5E1DA8F6B");
 
             entity.ToTable("Puntuacion");
 
@@ -58,24 +57,23 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.HasOne(d => d.Sala).WithMany(p => p.Puntuacions)
                 .HasForeignKey(d => d.SalaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Puntuacio__SalaI__656C112C");
+                .HasConstraintName("FK__Puntuacio__SalaI__4316F928");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.Puntuacions)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Puntuacio__Usuar__6477ECF3");
+                .HasConstraintName("FK__Puntuacio__Usuar__4222D4EF");
         });
 
         modelBuilder.Entity<Sala>(entity =>
         {
-            entity.HasKey(e => e.SalaId).HasName("PK__Sala__0428485A03B7D14B");
+            entity.HasKey(e => e.SalaId).HasName("PK__Sala__0428485A4F6ED19A");
 
             entity.ToTable("Sala");
 
             entity.Property(e => e.SalaId).HasColumnName("SalaID");
-            entity.Property(e => e.NombreSala)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.Property(e => e.CreadorSala).HasMaxLength(50);
+            entity.Property(e => e.NombreSala).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -89,7 +87,7 @@ public partial class GaragatoDatabaseContext : DbContext
 
         modelBuilder.Entity<UsuarioSala>(entity =>
         {
-            entity.HasKey(e => e.UsuarioSalaId).HasName("PK__UsuarioS__9B45A0FD990082A3");
+            entity.HasKey(e => e.UsuarioSalaId).HasName("PK__UsuarioS__9B45A0FDDAA68317");
 
             entity.ToTable("UsuarioSala");
 
@@ -100,12 +98,12 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.HasOne(d => d.Sala).WithMany(p => p.UsuarioSalas)
                 .HasForeignKey(d => d.SalaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSa__SalaI__619B8048");
+                .HasConstraintName("FK__UsuarioSa__SalaI__3E52440B");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.UsuarioSalas)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSa__Usuar__60A75C0F");
+                .HasConstraintName("FK__UsuarioSa__Usuar__3D5E1FD2");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,4 +1,5 @@
 ﻿using Garagato.Data.EF;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Garagato.Logica
@@ -21,7 +22,10 @@ namespace Garagato.Logica
 
         public List<Sala> ObtenerSalas()
         {
-            return _context.Salas.ToList();
+            return  _context.Salas
+                    .Include(s => s.UsuarioSalas)
+                    .Include(s => s.Puntuacions)
+                    .ToList();
         }
 
         public void CrearSala(int idUsuarioLogueado)

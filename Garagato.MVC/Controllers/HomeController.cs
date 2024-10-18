@@ -31,12 +31,12 @@ namespace Garagato.MVC.Controllers
                 ViewBag.usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
 
                 //Aca hay que traer la lista de salas
-                //var salasActivas = _salaService.ObtenerSalas();
+                var salasActivas = _salaService.ObtenerSalas();
 
-                //if (salasActivas != null)
-                //{
-                //    ViewBag.salasActiva = salasActivas;
-                //}
+                if (salasActivas != null)
+                {
+                    ViewBag.salasActivas = salasActivas;
+                }
             }
 
             return View();

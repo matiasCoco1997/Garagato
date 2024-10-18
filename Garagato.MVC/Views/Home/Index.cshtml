@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home";
-
+    var salasActivas = ViewBag.salasActivas as List<Garagato.Data.EF.Sala>;
 }
 
 <div class="h-full flex items-center justify-center">
@@ -10,7 +10,7 @@
         <div class="flex flex-col w-full *** md:w-[80%] md:mx-auto *** lg:w-[70%] lg:h-full lg:justify-between lg:items-center *** 2xl:w-[50%] 2xl:items-end 2xl:pr-4">
 
             @* crear sala *@
-            <div class="w-full p-4 rounded-lg shadow-md bg-white *** lg:w-[90%] *** 2xl:w-[80%] 2xl:ml-auto">
+            <form class="w-full p-4 rounded-lg shadow-md bg-white *** lg:w-[90%] *** 2xl:w-[80%] 2xl:ml-auto">
                 <h2 class="text-xl font-bold text-dark text-center">Crear sala</h2>
 
                 <div class="mt-2 w-full">
@@ -27,7 +27,7 @@
                     <button type="submit" id="crearSalaButton" class="w-full bg-secondary text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer hover:bg-[#F46036] md:w-[50%]">Crear sala</button>
                 </div>
 
-            </div>
+            </form>
 
             @* Reglas del juego *@
             <div class="bg-white p-2 px-4 w-full rounded-lg shadow mt-4 lg:w-[90%] lg:p-4 *** 2xl:w-[80%] 2xl:ml-auto">
@@ -55,7 +55,10 @@
 
                     @if (ViewBag.salasActivas != null)
                     {
-                        @* <div class="rounded-lg shadow-md p-4 flex justify-between items-center w-full max-w-lg mx-auto border border-gray-300 my-4">
+
+                        @foreach (var sala in salasActivas)
+                        {
+                           <div class="rounded-lg shadow-md p-4 flex justify-between items-center w-full max-w-lg mx-auto border border-gray-300 my-4">
                             <!-- Icono y textos -->
                             <div class="flex">
                                 <!-- Icono -->
@@ -67,17 +70,19 @@
 
                                 <!-- Textos -->
                                 <div>
-                                    <h2 class="text-lg font-bold text-dark">Mesa <!-- Aquí va el nombre de la sala --></h2>
-                                    <p class="text-sm text-gray-600">Creador: Matías</p>
-                                    <p class="text-sm text-gray-600">Jugadores: 1 / 5</p>
+                                    <h2 class="text-lg font-bold text-dark">Mesa @sala.NombreSala</h2>
+                                    <p class="text-sm text-gray-600">Creador:  @sala.CreadorSala</p>
+                                    <p class="text-sm text-gray-600">Jugadores: @sala.UsuarioSalas.Count / 5</p>
                                 </div>
                             </div>
 
                             <!-- Botón Unirse -->
                             <div>
-                                <a href="/sala/juego" class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm cursor-pointer">Unirse</a>
+                                <a href="/sala/juego/@sala.SalaId" class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm cursor-pointer">Unirse</a>
                             </div>
-                        </div> *@
+                        </div> 
+                        }
+                        
                     }
                     else
                     {
