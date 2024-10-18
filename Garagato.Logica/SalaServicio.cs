@@ -1,5 +1,6 @@
 ﻿using Garagato.Data.EF;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Garagato.Logica
@@ -8,7 +9,8 @@ namespace Garagato.Logica
     public interface ISalaServicio
     {
         List<Sala> ObtenerSalas();
-        void CrearSala(int idUsuarioLogueado);
+        Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala);
+        Sala ObtenerUltimaSalaCreada();
 
     }
     public class SalaServicio : ISalaServicio
@@ -28,17 +30,33 @@ namespace Garagato.Logica
                     .ToList();
         }
 
-        public void CrearSala(int idUsuarioLogueado)
+        public Sala ObtenerUltimaSalaCreada()
         {
-            // 1- Obtener el usuario logueado
+            return _context.Salas.ToList().LastOrDefault();
+        }
 
-            // 2- crear una sala
+        public async Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala)
+        {
+            var nuevaSala = new Sala
+            {
+                NombreSala = nombreSala,
+                CreadorSala = creadorSala.Nombre
+            };
 
-            // 3- insertar el usuario adentro de la tabla
+            _context.Salas.Add(nuevaSala);
+            await _context.SaveChangesAsync();
 
+            var SalaCreada = this.ObtenerUltimaSalaCreada();
 
-            //_context.Usuarios.Add(usuario);
-            //_context.SaveChanges();
+            var usuarioSala = new UsuarioSala
+            {
+                UsuarioId = creadorSala.Id,
+                SalaId = SalaCreada.SalaId
+            };
+
+            _context.UsuarioSalas.Add(usuarioSala);
+            await _context.SaveChangesAsync();
+
         }
 
     }
