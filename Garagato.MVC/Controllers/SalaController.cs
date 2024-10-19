@@ -29,17 +29,30 @@ public class SalaController : Controller
         {
             var sala = _salaService.BuscarSalaPorId(idSala);
 
-            if (sala != null && sala.UsuarioSalas != null)
+            if (sala.UsuarioSalas != null)
             {
                 var usuarios = new List<Usuario>();
+                var puntuaciones = new List<Puntuacion>();
 
                 foreach (var usuarioSala in sala.UsuarioSalas)
                 {
                     if (usuarioSala.Usuario != null)
                     {
                         usuarios.Add(usuarioSala.Usuario);
+
+                        foreach (var puntuacion in sala.Puntuacions)
+                        {
+                            if (puntuacion != null)
+                            {
+                                puntuaciones.Add(puntuacion);
+                            }
+                        }
+
                     }
                 }
+
+                
+                ViewBag.puntuaciones = puntuaciones;
                 ViewBag.usuarios = usuarios;
             }
         }

@@ -33,7 +33,15 @@
 
                         <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
                             <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
-                            <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: @usuario.Puntuacions[0].Puntos</p>
+
+                            @foreach (var puntuacion in ViewBag.puntuacion)
+                            {
+                                if (usuario.Id == puntuacion.Id)
+                                {
+                                    <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: @puntuacion.Puntos</p>
+                                } 
+                            }
+                            
                         </div>
                     </div>
                 </div>
