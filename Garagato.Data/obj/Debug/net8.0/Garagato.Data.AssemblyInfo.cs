@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Garagato.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1996b60328b3c97a6b298cacf5218a3793634e42")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17d84bb174521c61bb83249cccdc1901b2664b8b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Garagato.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Garagato.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

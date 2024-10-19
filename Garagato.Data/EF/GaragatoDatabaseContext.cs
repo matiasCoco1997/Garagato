@@ -50,7 +50,6 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.ToTable("Puntuacion");
 
             entity.Property(e => e.PuntuacionId).HasColumnName("PuntuacionID");
-            entity.Property(e => e.Puntuacion1).HasColumnName("Puntuacion");
             entity.Property(e => e.SalaId).HasColumnName("SalaID");
             entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
 

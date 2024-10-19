@@ -11,7 +11,7 @@ public partial class Puntuacion
 
     public int SalaId { get; set; }
 
-    public int Puntuacion1 { get; set; }
+    public int Puntos { get; set; }
 
     public virtual Sala Sala { get; set; } = null!;
 

@@ -11,6 +11,7 @@ namespace Garagato.Logica
         List<Sala> ObtenerSalas();
         Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala);
         Sala ObtenerUltimaSalaCreada();
+        Sala BuscarSalaPorId(int salaId);
 
     }
     public class SalaServicio : ISalaServicio
@@ -35,6 +36,14 @@ namespace Garagato.Logica
             return _context.Salas.ToList().LastOrDefault();
         }
 
+        public Sala BuscarSalaPorId(int salaId)
+        {
+            return _context.Salas
+                    .Include(s => s.UsuarioSalas).ThenInclude(us => us.Usuario)
+                    .Include(s => s.Puntuacions)
+                    .FirstOrDefault(s => s.SalaId == salaId);
+        }
+
         public async Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala)
         {
             var nuevaSala = new Sala
@@ -54,9 +63,16 @@ namespace Garagato.Logica
                 SalaId = SalaCreada.SalaId
             };
 
-            _context.UsuarioSalas.Add(usuarioSala);
-            await _context.SaveChangesAsync();
+            var puntuacion = new Puntuacion
+            {
+                UsuarioId = creadorSala.Id,
+                SalaId = SalaCreada.SalaId,
+                Puntos = 0
+            };
 
+            _context.UsuarioSalas.Add(usuarioSala);
+            _context.Puntuacions.Add(puntuacion);
+            await _context.SaveChangesAsync();
         }
 
     }
