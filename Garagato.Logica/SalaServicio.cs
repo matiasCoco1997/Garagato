@@ -13,7 +13,6 @@ namespace Garagato.Logica
         Sala BuscarSalaPorId(int salaId);
         Task GuardarUsuarioSalaAsync(int salaId, int usuarioId);
         Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId);
-
         List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada);
 
     }
@@ -31,17 +30,6 @@ namespace Garagato.Logica
             return await _context.UsuarioSalas.AnyAsync(us => us.SalaId == salaId && us.UsuarioId == usuarioId);
         }
 
-        public async Task GuardarUsuarioSalaAsync(int salaId, int usuarioId)
-        {
-            var usuarioSala = new UsuarioSala
-            {
-                SalaId = salaId,
-                UsuarioId = usuarioId
-            };
-
-            _context.UsuarioSalas.Add(usuarioSala);
-            await _context.SaveChangesAsync();
-        }
 
         public List<Sala> ObtenerSalas()
         {
@@ -106,14 +94,35 @@ namespace Garagato.Logica
                 SalaId = SalaCreada.SalaId
             };
 
-            var puntuacion = new Puntuacion
+            _context.UsuarioSalas.Add(usuarioSala);
+            await _context.SaveChangesAsync();
+
+            await AgregarPuntuacionAsync(SalaCreada.SalaId, creadorSala.Id);
+        }
+
+        public async Task GuardarUsuarioSalaAsync(int salaId, int usuarioId)
+        {
+            var usuarioSala = new UsuarioSala
             {
-                UsuarioId = creadorSala.Id,
-                SalaId = SalaCreada.SalaId,
-                Puntos = 0
+                SalaId = salaId,
+                UsuarioId = usuarioId
             };
 
             _context.UsuarioSalas.Add(usuarioSala);
+            await _context.SaveChangesAsync();
+
+            await AgregarPuntuacionAsync(salaId, usuarioId);
+        }
+
+        private async Task AgregarPuntuacionAsync(int salaId, int usuarioId)
+        {
+            var puntuacion = new Puntuacion
+            {
+                UsuarioId = usuarioId,
+                SalaId = salaId,
+                Puntos = 0
+            };
+
             _context.Puntuacions.Add(puntuacion);
             await _context.SaveChangesAsync();
         }
