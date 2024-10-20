@@ -32,35 +32,21 @@ public class SalaController : Controller
 
         if (int.TryParse(id, out idSala))
         {
-            var sala = _salaService.BuscarSalaPorId(idSala);
+            Sala salaEncontrada = _salaService.BuscarSalaPorId(idSala);
 
-            if (sala.UsuarioSalas != null)
+            var informacionSalaObtenida = _salaService.SetInformacionSala(salaEncontrada);
+
+            foreach (var item in informacionSalaObtenida)
             {
-                foreach (var usuarioSala in sala.UsuarioSalas)
+                DataJugador jugador = new DataJugador()
                 {
-                    var usuario = usuarioSala.Usuario;
-
-                    if (usuario != null)
-                    {
-                        foreach (var puntuacion in sala.Puntuacions)
-                        {
-                            if (usuario.Id == puntuacion.UsuarioId)
-                            {
-
-                                DataJugador jugador = new DataJugador() 
-                                {
-                                    NombreSala = sala.NombreSala,
-                                    NombreJugador = usuario.Nombre,
-                                    Puntos = puntuacion.Puntos,
-                                    Posicion = 1
-                                };
-                                salaViewModel.InformacionSala.Add(jugador);
-                            }
-                        }
-                    }
-                }
-                
+                    NombreJugador = item.Item1,
+                    Puntos = item.Item2,
+                    Posicion = item.Item3
+                };
+                salaViewModel.InformacionSala.Add(jugador);
             }
+            salaViewModel.nombreSala = salaEncontrada.NombreSala;
         }
         return View("Index", salaViewModel);
     }

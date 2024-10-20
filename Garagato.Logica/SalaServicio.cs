@@ -1,6 +1,5 @@
 ﻿using Garagato.Data.EF;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Garagato.Logica
@@ -12,6 +11,8 @@ namespace Garagato.Logica
         Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala);
         Sala ObtenerUltimaSalaCreada();
         Sala BuscarSalaPorId(int salaId);
+
+        List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada);
 
     }
     public class SalaServicio : ISalaServicio
@@ -42,6 +43,29 @@ namespace Garagato.Logica
                     .Include(s => s.UsuarioSalas).ThenInclude(us => us.Usuario)
                     .Include(s => s.Puntuacions)
                     .FirstOrDefault(s => s.SalaId == salaId);
+        }
+
+        public List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada)
+        {
+            var resultado = new List<Tuple<string, int, int>>();
+
+            if (salaEncontrada.UsuarioSalas != null)
+            {
+                foreach (var usuarioSala in salaEncontrada.UsuarioSalas)
+                {
+                    var usuario = usuarioSala.Usuario;
+
+                    foreach (var puntuacion in salaEncontrada.Puntuacions)
+                    {
+                        if (usuario.Id == puntuacion.UsuarioId)
+                        {
+                            //falta la logica para agarrar la posicion del jugador segun los puntos
+                            resultado.Add(Tuple.Create(usuario.Nombre, puntuacion.Puntos, 1));
+                        }
+                    }
+                }
+            }
+            return resultado;
         }
 
         public async Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala)
