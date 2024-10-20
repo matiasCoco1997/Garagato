@@ -13,7 +13,8 @@ namespace Garagato.Logica
         Sala BuscarSalaPorId(int salaId);
         Task GuardarUsuarioSalaAsync(int salaId, int usuarioId);
         Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId);
-        List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada);
+        List<Tuple<string, int, int, int>> SetInformacionSala(Sala salaEncontrada);
+        Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala);
 
     }
     public class SalaServicio : ISalaServicio
@@ -52,9 +53,9 @@ namespace Garagato.Logica
                     .FirstOrDefault(s => s.SalaId == salaId);
         }
 
-        public List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada)
+        public List<Tuple<string, int, int, int>> SetInformacionSala(Sala salaEncontrada)
         {
-            var resultado = new List<Tuple<string, int, int>>();
+            var resultado = new List<Tuple<string, int, int, int>>();
 
             if (salaEncontrada.UsuarioSalas != null)
             {
@@ -67,7 +68,7 @@ namespace Garagato.Logica
                         if (usuario.Id == puntuacion.UsuarioId)
                         {
                             //falta la logica para agarrar la posicion del jugador segun los puntos
-                            resultado.Add(Tuple.Create(usuario.Nombre, puntuacion.Puntos, 1));
+                            resultado.Add(Tuple.Create(usuario.Nombre, puntuacion.Puntos, 1, usuario.Id));
                         }
                     }
                 }
@@ -112,6 +113,23 @@ namespace Garagato.Logica
             await _context.SaveChangesAsync();
 
             await AgregarPuntuacionAsync(salaId, usuarioId);
+        }
+
+        public async Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala)
+        {
+            bool resultadoBorrado = false;
+
+            var usuarioSala = _context.UsuarioSalas.FirstOrDefault(us => us.UsuarioId == usuarioABorrar.Id && us.SalaId == sala.SalaId);
+            var puntuacion = _context.Puntuacions.FirstOrDefault(p => p.UsuarioId == usuarioABorrar.Id && p.SalaId == sala.SalaId);
+
+            if (usuarioSala != null && puntuacion != null)
+            {
+                _context.Puntuacions.Remove(puntuacion);
+                _context.UsuarioSalas.Remove(usuarioSala);
+                _context.SaveChanges();
+                resultadoBorrado = true;
+            }
+            return resultadoBorrado;
         }
 
         private async Task AgregarPuntuacionAsync(int salaId, int usuarioId)

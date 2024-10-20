@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {}
+    "C:\\Users\\Mati\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {
+    "C:\\Users\\Mati\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
+        "projectUniqueName": "C:\\Users\\Mati\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
         "projectName": "Garagato.Data",
-        "projectPath": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
-        "packagesPath": "C:\\Users\\Ivone\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\obj\\",
+        "projectPath": "C:\\Users\\Mati\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
+        "packagesPath": "C:\\Users\\Mati\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Mati\\source\\repos\\Garagato\\Garagato.Data\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Ivone\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mati\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

@@ -62,11 +62,13 @@ public class SalaController : Controller
                 {
                     NombreJugador = item.Item1,
                     Puntos = item.Item2,
-                    Posicion = item.Item3
+                    Posicion = item.Item3,
+                    idJugador = item.Item4
                 };
                 salaViewModel.InformacionSala.Add(jugador);
             }
             salaViewModel.nombreSala = salaEncontrada.NombreSala;
+            salaViewModel.idSala = salaEncontrada.SalaId;
 
             var token = Request.Cookies["AuthToken"];
 

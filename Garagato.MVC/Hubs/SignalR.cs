@@ -32,6 +32,25 @@ public class signalR : Hub
             
     }
 
+    public async Task salirDeSalaAsync( int idSala) 
+    {
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+        if (token != null)
+        {
+            Usuario UsuarioSalirSala = _usuarioService.ObtenerUsuarioLogueado(token);
+            Sala salaBuscada = _salaService.BuscarSalaPorId(idSala);
+
+            if (salaBuscada != null)
+            {
+                bool resultadoOperacion = await _salaService.borrarUsuarioDeSala(UsuarioSalirSala, salaBuscada);
+                if (resultadoOperacion)
+                {
+                    await Clients.All.SendAsync("borrarUsuarioDeSala", UsuarioSalirSala.Id);
+                }  
+            } 
+        }
+    }
+
     public async Task EnviarRespuestaAsync(string respuesta)
     {
         await Clients.All.SendAsync("MostrarRespuesta", respuesta);
