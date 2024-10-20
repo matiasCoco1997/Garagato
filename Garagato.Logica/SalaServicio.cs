@@ -12,6 +12,7 @@ namespace Garagato.Logica
         Sala ObtenerUltimaSalaCreada();
         Sala BuscarSalaPorId(int salaId);
         Task GuardarUsuarioSalaAsync(int salaId, int usuarioId);
+        Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId);
 
         List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada);
 
@@ -23,6 +24,11 @@ namespace Garagato.Logica
         public SalaServicio(GaragatoDatabaseContext context)
         {
             _context = context;
+        }
+
+        public async Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId)
+        {
+            return await _context.UsuarioSalas.AnyAsync(us => us.SalaId == salaId && us.UsuarioId == usuarioId);
         }
 
         public async Task GuardarUsuarioSalaAsync(int salaId, int usuarioId)

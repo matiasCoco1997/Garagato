@@ -75,16 +75,15 @@ public class SalaController : Controller
                // Obtener el usuario logueado
               var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
 
-                // Verificar si el usuario logueado es el creador de la sala
-                if (usuarioLogueado.Nombre != salaEncontrada.CreadorSala)
+                // Verificar si el usuario ya está en la sala
+                bool usuarioEstaEnSala = await _salaService.UsuarioEstaEnSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
+
+                if (!usuarioEstaEnSala)
                 {
-                    // Si no es el creador, guardar en la tabla intermedia UsuarioSala
+                    // Si no está en la sala, guardar en la tabla intermedia UsuarioSala
                     await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
                 }
             }
-
-            
-
         }
         return View("Index", salaViewModel);
     }
