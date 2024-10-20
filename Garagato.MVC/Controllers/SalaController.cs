@@ -21,6 +21,26 @@ public class SalaController : Controller
         _usuarioService = usuarioServicio;
     }
 
+    [HttpPost]
+    public async Task<IActionResult> Crear(string nombreSalaInput, string contraseniaInput)
+    {
+
+        var token = Request.Cookies["AuthToken"];
+        var usuarioCreador = _usuarioService.ObtenerUsuarioLogueado(token); 
+        if (usuarioCreador == null)
+        {
+            return Unauthorized();
+        }
+
+        await _salaService.CrearSalaGaragatoAsync(nombreSalaInput, usuarioCreador);
+
+        // Obtener la última sala creada
+        var salaCreada = _salaService.ObtenerUltimaSalaCreada();
+
+        // Redirigir al método Juego con el id de la sala
+        return RedirectToAction("Juego", new { id = salaCreada.SalaId });
+    }
+
 
     public async Task <IActionResult> Juego(string id)
     {
@@ -53,10 +73,14 @@ public class SalaController : Controller
             if (token != null)
             {
                // Obtener el usuario logueado
-            var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
+              var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
 
-            // Guardar en la tabla intermedia UsuarioSala
-            await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id); 
+                // Verificar si el usuario logueado es el creador de la sala
+                if (usuarioLogueado.Nombre != salaEncontrada.CreadorSala)
+                {
+                    // Si no es el creador, guardar en la tabla intermedia UsuarioSala
+                    await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
+                }
             }
 
             
