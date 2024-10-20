@@ -2,6 +2,7 @@
 using Garagato.Data.EF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Garagato.MVC.Models;
 
 namespace Garagato.MVC.Controllers;
 
@@ -25,37 +26,42 @@ public class SalaController : Controller
     {
         var idSala = -1;
 
+        SalaViewModel salaViewModel = new SalaViewModel();
+
+        salaViewModel.InformacionSala = new List<DataJugador>();
+
         if (int.TryParse(id, out idSala))
         {
             var sala = _salaService.BuscarSalaPorId(idSala);
 
             if (sala.UsuarioSalas != null)
             {
-                var usuarios = new List<Usuario>();
-                var puntuaciones = new List<Puntuacion>();
-
                 foreach (var usuarioSala in sala.UsuarioSalas)
                 {
-                    if (usuarioSala.Usuario != null)
-                    {
-                        usuarios.Add(usuarioSala.Usuario);
+                    var usuario = usuarioSala.Usuario;
 
+                    if (usuario != null)
+                    {
                         foreach (var puntuacion in sala.Puntuacions)
                         {
-                            if (puntuacion != null)
+                            if (usuario.Id == puntuacion.UsuarioId)
                             {
-                                puntuaciones.Add(puntuacion);
+
+                                DataJugador jugador = new DataJugador() 
+                                {
+                                    NombreSala = sala.NombreSala,
+                                    NombreJugador = usuario.Nombre,
+                                    Puntos = puntuacion.Puntos,
+                                    Posicion = 1
+                                };
+                                salaViewModel.InformacionSala.Add(jugador);
                             }
                         }
-
                     }
                 }
-
                 
-                ViewBag.puntuaciones = puntuaciones;
-                ViewBag.usuarios = usuarios;
             }
         }
-        return View("Index");
+        return View("Index", salaViewModel);
     }
 }

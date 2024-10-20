@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SalaViewModel
+@{
     ViewData["Title"] = "Sala";
 
 }
@@ -17,7 +18,7 @@
         <!-- Tabla de posiciones de jugadores -->
         <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
 
-            @foreach (var usuario in ViewBag.usuarios)
+            @foreach (var jugador in Model.InformacionSala)
             {
                 <!-- Jugador 1 -->
                 <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16">
@@ -29,19 +30,11 @@
                     </div>
 
                     <div class="lg:flex lg:flex-wrap text-dark w-full">
-                        <h3 class="h-[50%] font-bold lg:text-md">@usuario.Nombre</h3>
+                        <h3 class="h-[50%] font-bold lg:text-md">@jugador.NombreJugador</h3>
 
                         <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
-                            <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: 1</p>
-
-                            @foreach (var puntuacion in ViewBag.puntuacion)
-                            {
-                                if (usuario.Id == puntuacion.Id)
-                                {
-                                    <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: @puntuacion.Puntos</p>
-                                } 
-                            }
-                            
+                            <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: @jugador.Posicion</p>
+                            <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: @jugador.Puntos</p>
                         </div>
                     </div>
                 </div>
