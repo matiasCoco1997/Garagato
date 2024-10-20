@@ -46,6 +46,7 @@ public class signalR : Hub
                 if (resultadoOperacion)
                 {
                     await Clients.All.SendAsync("borrarUsuarioDeSala", UsuarioSalirSala.Id);
+                    await Clients.Caller.SendAsync("redirect", "/Home/Index");
                 }  
             } 
         }

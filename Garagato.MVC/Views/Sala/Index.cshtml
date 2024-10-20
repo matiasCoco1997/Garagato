@@ -325,18 +325,19 @@
             event.preventDefault();
         });
 
-            connection.on("borrarUsuarioDeSala" , function (idUsuarioABorrar) {
-                borrarJugador(idUsuarioABorrar);
-                window.location.href = "/home/index";
+        connection.on("borrarUsuarioDeSala" , function (idUsuarioABorrar) {
+            borrarJugador(idUsuarioABorrar);          
+        });
 
+        connection.on("redirect", function(url) {
+            window.location.href = url;
         });
 
         function borrarJugador(idUsuarioABorrar) {
-
-            var usuarioAEliminar = document.getElementById('${idUsuarioABorrar}');
-
+            var usuarioAEliminar = document.getElementById(idUsuarioABorrar);
+            
             if (usuarioAEliminar) {
-                usuarioElemento.remove();
+                usuarioAEliminar.remove();
             } 
         }
 
