@@ -11,6 +11,7 @@ namespace Garagato.Logica
         Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala);
         Sala ObtenerUltimaSalaCreada();
         Sala BuscarSalaPorId(int salaId);
+        Task GuardarUsuarioSalaAsync(int salaId, int usuarioId);
 
         List<Tuple<string, int, int>> SetInformacionSala(Sala salaEncontrada);
 
@@ -22,6 +23,18 @@ namespace Garagato.Logica
         public SalaServicio(GaragatoDatabaseContext context)
         {
             _context = context;
+        }
+
+        public async Task GuardarUsuarioSalaAsync(int salaId, int usuarioId)
+        {
+            var usuarioSala = new UsuarioSala
+            {
+                SalaId = salaId,
+                UsuarioId = usuarioId
+            };
+
+            _context.UsuarioSalas.Add(usuarioSala);
+            await _context.SaveChangesAsync();
         }
 
         public List<Sala> ObtenerSalas()

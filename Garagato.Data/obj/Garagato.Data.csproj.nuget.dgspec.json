@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LENOVO\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {}
+    "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LENOVO\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {
+    "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LENOVO\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
+        "projectUniqueName": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
         "projectName": "Garagato.Data",
-        "projectPath": "C:\\Users\\LENOVO\\source\\repos\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
-        "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LENOVO\\source\\repos\\Garagato\\Garagato.Data\\obj\\",
+        "projectPath": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\Garagato.Data.csproj",
+        "packagesPath": "C:\\Users\\Ivone\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Ivone\\Desktop\\Facultad\\PW3\\Garagato\\Garagato.Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Ivone\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

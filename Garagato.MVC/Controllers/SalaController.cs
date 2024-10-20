@@ -22,7 +22,7 @@ public class SalaController : Controller
     }
 
 
-    public IActionResult Juego(string id)
+    public async Task <IActionResult> Juego(string id)
     {
         var idSala = -1;
 
@@ -47,7 +47,22 @@ public class SalaController : Controller
                 salaViewModel.InformacionSala.Add(jugador);
             }
             salaViewModel.nombreSala = salaEncontrada.NombreSala;
+
+            var token = Request.Cookies["AuthToken"];
+
+            if (token != null)
+            {
+               // Obtener el usuario logueado
+            var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
+
+            // Guardar en la tabla intermedia UsuarioSala
+            await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id); 
+            }
+
+            
+
         }
         return View("Index", salaViewModel);
     }
-}
+
+} 
