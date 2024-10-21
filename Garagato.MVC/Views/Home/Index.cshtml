@@ -76,7 +76,7 @@
                             </div>
 
                             <div>
-                                <a href="/sala/juego/@sala.SalaId" class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm cursor-pointer">Unirse</a>
+                                <a href="/sala/juego/@sala.SalaId" class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-green-600 text-sm cursor-pointer unirseBtn">Unirse</a>
                             </div>
                         </div> 
                         }
@@ -108,8 +108,6 @@
         connection.start().catch(function (err) {
             return console.error(err.toString());
         });
-
-       
 
         //Muestra en la vista la sala garagato
         connection.on("MostrarSalaGaragato", function (nombreSala, contrasenia, nombreUsuarioCreador) {
@@ -182,6 +180,28 @@
             $('#listaDeSalas').append(divPrincipal);
 
         });
+
+        /* --------------------------------------------------- BTN UNIRSE A SALA --------------------------------------------------- */
+        // Almaceno todos los botones con la clase unirseBtn
+        const unirseBtns = document.querySelectorAll('.unirseBtn');
+
+        unirseBtns.forEach(btn => {
+            btn.addEventListener('click', function (event) {
+                event.preventDefault(); // Evita que el enlace navegue inmediatamente
+
+                // Obtiene el ID de la sala del atributo href
+                const salaId = this.getAttribute('href').split('/').pop(); // Obtiene el ID al final de la URL
+
+                // Aquí puedes enviar una solicitud al servidor usando SignalR
+                connection.invoke('unirseASalaAsync', salaId)
+                    .then(response => {
+                        console.log('Actualización realizada con éxito:', response);
+                        // Actualiza la interfaz de usuario según sea necesario
+                    })
+                    .catch(err => console.error('Error al invocar el método:', err));
+            });
+        });
+
 
     </script>
 }

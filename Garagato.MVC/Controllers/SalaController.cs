@@ -54,6 +54,23 @@ public class SalaController : Controller
         {
             Sala salaEncontrada = _salaService.BuscarSalaPorId(idSala);
 
+            var token = Request.Cookies["AuthToken"];
+
+            if (token != null)
+            {
+                // Obtener el usuario logueado
+                var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
+
+                // Verificar si el usuario ya está en la sala
+                bool usuarioEstaEnSala = await _salaService.UsuarioEstaEnSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
+
+                if (!usuarioEstaEnSala)
+                {
+                    // Si no está en la sala, guardar en la tabla intermedia UsuarioSala
+                    await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
+                }
+            }
+
             var informacionSalaObtenida = _salaService.SetInformacionSala(salaEncontrada);
 
             foreach (var item in informacionSalaObtenida)
@@ -69,23 +86,6 @@ public class SalaController : Controller
             }
             salaViewModel.nombreSala = salaEncontrada.NombreSala;
             salaViewModel.idSala = salaEncontrada.SalaId;
-
-            var token = Request.Cookies["AuthToken"];
-
-            if (token != null)
-            {
-               // Obtener el usuario logueado
-              var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
-
-                // Verificar si el usuario ya está en la sala
-                bool usuarioEstaEnSala = await _salaService.UsuarioEstaEnSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
-
-                if (!usuarioEstaEnSala)
-                {
-                    // Si no está en la sala, guardar en la tabla intermedia UsuarioSala
-                    await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
-                }
-            }
         }
         return View("Index", salaViewModel);
     }
