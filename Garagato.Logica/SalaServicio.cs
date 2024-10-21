@@ -15,6 +15,7 @@ namespace Garagato.Logica
         Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId);
         List<Tuple<string, int, int, int>> SetInformacionSala(Sala salaEncontrada);
         Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala);
+        Tuple<string, int, int, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala);
 
     }
     public class SalaServicio : ISalaServicio
@@ -74,6 +75,35 @@ namespace Garagato.Logica
                 }
             }
             return resultado;
+        }
+
+
+        public Tuple<string, int, int, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala)
+        {
+            string nombreJugador = "";
+            int puntosJugador = 0;
+            int posicionJugador = 1; //CAMBIAR CON LO DE LA BASE DE DATOS DESPUES
+            int idJugador = 0;
+
+            if (salaBuscada.UsuarioSalas != null)
+            {
+                foreach (var usuarioSala in salaBuscada.UsuarioSalas)
+                {
+                    var usuario = usuarioSala.Usuario;
+
+                    foreach (var puntuacion in salaBuscada.Puntuacions)
+                    {
+                        if (usuario.Id == puntuacion.UsuarioId)
+                        {
+                            nombreJugador = usuario.Nombre;
+                            puntosJugador = puntuacion.Puntos;
+                            posicionJugador = 1; //falta la logica para agarrar la posicion del jugador segun los puntos
+                            idJugador = usuario.Id;
+                        }
+                    }
+                }
+            }
+            return new Tuple<string, int, int, int>(nombreJugador, puntosJugador, posicionJugador, idJugador);
         }
 
         public async Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala)

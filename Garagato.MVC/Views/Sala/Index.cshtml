@@ -21,7 +21,7 @@
 
             @foreach (var jugador in Model.InformacionSala)
             {
-                <!-- Jugador 1 -->
+                <!-- Jugador -->
                 <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16" id="@jugador.idJugador">
 
                     <div class="h-full content-center pr-2 *** lg:flex-col">
@@ -147,6 +147,79 @@
                 chevronIcon.classList.add('fa-chevron-down');
             }
         });
+
+
+       connection.on("agregarUsuarioASala", (nuevoJugador) => {
+            document.getElementById('posicionesContainer')
+            .appendChild( crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador, nuevoJugador.posicion, nuevoJugador.puntos) );
+       });
+
+
+        // Función para crear el elemento del jugador
+        function crearJugador(idJugador, nombreJugador, posicion, puntos) {
+
+            // Crear el div principal
+            const jugadorDiv = document.createElement('div');
+            jugadorDiv.classList.add('bg-white', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
+            jugadorDiv.id = idJugador;
+
+            // Ajustes para diferentes pantallas
+            jugadorDiv.classList.add('md:w-[70%]', 'lg:w-[19%]', 'lg:h-16');
+
+            // Crear el div del ícono
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('h-full', 'content-center', 'pr-2', 'lg:flex-col');
+
+            const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            iconSvg.setAttribute('class', 'h-8 w-8 text-dark');
+            iconSvg.setAttribute('fill', 'none');
+            iconSvg.setAttribute('viewBox', '0 0 24 24');
+            iconSvg.setAttribute('stroke', 'currentColor');
+            iconSvg.setAttribute('stroke-width', '2');
+
+            const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            iconPath.setAttribute('stroke-linecap', 'round');
+            iconPath.setAttribute('stroke-linejoin', 'round');
+            iconPath.setAttribute('d', 'M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z');
+
+            iconSvg.appendChild(iconPath);
+            iconDiv.appendChild(iconSvg);
+
+            // Crear el div de la información del jugador
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('lg:flex', 'lg:flex-wrap', 'text-dark', 'w-full');
+
+            // Nombre del jugador
+            const nombre = document.createElement('h3');
+            nombre.classList.add('h-[50%]', 'font-bold', 'lg:text-md');
+            nombre.textContent = nombreJugador;
+            infoDiv.appendChild(nombre);
+
+            // Crear el div que contiene la posición y el puntaje
+            const statsDiv = document.createElement('div');
+            statsDiv.classList.add('w-full', 'h-[50%]', 'flex', 'lg:flex-wrap', '2xl:flex-nowrap', '2xl:pt-2');
+
+            const posicionParrafo = document.createElement('p');
+            posicionParrafo.classList.add('text-gray-500', 'w-[60%]', 'lg:w-full', 'lg:text-sm');
+            posicionParrafo.textContent = `Posición: ${posicion}`;
+            statsDiv.appendChild(posicionParrafo);
+
+            const puntosParrafo = document.createElement('p');
+            puntosParrafo.classList.add('text-gray-500', 'w-full', 'text-center', 'lg:w-full', 'lg:text-sm', 'lg:text-start');
+            puntosParrafo.textContent = `Puntaje: ${puntos}`;
+            statsDiv.appendChild(puntosParrafo);
+
+            infoDiv.appendChild(statsDiv);
+
+            // Añadir los divs hijos al div principal
+            jugadorDiv.appendChild(iconDiv);
+            jugadorDiv.appendChild(infoDiv);
+
+            // Añadir el div principal al contenedor
+            document.getElementById('posicionesContainer').appendChild(jugadorDiv);
+        }
+
 
         /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
         const canvas = document.getElementById('pizarra');

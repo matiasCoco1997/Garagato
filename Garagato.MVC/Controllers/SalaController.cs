@@ -26,7 +26,7 @@ public class SalaController : Controller
     {
 
         var token = Request.Cookies["AuthToken"];
-        var usuarioCreador = _usuarioService.ObtenerUsuarioLogueado(token); 
+        var usuarioCreador = _usuarioService.ObtenerUsuarioLogueado(token);
         if (usuarioCreador == null)
         {
             return Unauthorized();
@@ -42,7 +42,7 @@ public class SalaController : Controller
     }
 
 
-    public async Task <IActionResult> Juego(string id)
+    public async Task<IActionResult> Juego(string id)
     {
         var idSala = -1;
 
@@ -53,23 +53,6 @@ public class SalaController : Controller
         if (int.TryParse(id, out idSala))
         {
             Sala salaEncontrada = _salaService.BuscarSalaPorId(idSala);
-
-            var token = Request.Cookies["AuthToken"];
-
-            if (token != null)
-            {
-                // Obtener el usuario logueado
-                var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
-
-                // Verificar si el usuario ya está en la sala
-                bool usuarioEstaEnSala = await _salaService.UsuarioEstaEnSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
-
-                if (!usuarioEstaEnSala)
-                {
-                    // Si no está en la sala, guardar en la tabla intermedia UsuarioSala
-                    await _salaService.GuardarUsuarioSalaAsync(salaEncontrada.SalaId, usuarioLogueado.Id);
-                }
-            }
 
             var informacionSalaObtenida = _salaService.SetInformacionSala(salaEncontrada);
 
@@ -90,4 +73,4 @@ public class SalaController : Controller
         return View("Index", salaViewModel);
     }
 
-} 
+}

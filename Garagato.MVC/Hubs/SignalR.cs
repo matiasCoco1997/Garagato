@@ -1,6 +1,7 @@
 ﻿using Garagato.Logica;
 using Garagato.Data.EF;
 using Microsoft.AspNetCore.SignalR;
+using Garagato.MVC.Models;
 
 namespace Garagato.MVC.Hubs;
 
@@ -49,6 +50,37 @@ public class signalR : Hub
                     await Clients.Caller.SendAsync("redirect", "/Home/Index");
                 }  
             } 
+        }
+    }
+
+    public async Task UnirseASalaAsync(int idSala)
+    {
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+        if (token != null)
+        {
+            Sala salaBuscada = _salaService.BuscarSalaPorId(idSala);
+
+            if (salaBuscada != null)
+            {
+                Usuario UsuarioNuevoEnSala = _usuarioService.ObtenerUsuarioLogueado(token);
+
+                await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
+
+                salaBuscada = _salaService.BuscarSalaPorId(idSala);
+
+                var resultado = _salaService.SetInformacionNuevoJugador(salaBuscada, UsuarioNuevoEnSala);
+
+                DataJugador nuevoJugador = new DataJugador()
+                {
+                    NombreJugador = resultado.Item1,
+                    Puntos = resultado.Item2,
+                    Posicion = resultado.Item3, //cambiar segun la posicion de la base de datos en el servicio que setea esto "SetInformacionNuevoJugador"
+                    idJugador = resultado.Item4
+                };
+                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
+                await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
+
+            }
         }
     }
 

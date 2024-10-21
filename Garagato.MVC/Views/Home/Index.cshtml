@@ -187,21 +187,20 @@
 
         unirseBtns.forEach(btn => {
             btn.addEventListener('click', function (event) {
-                event.preventDefault(); // Evita que el enlace navegue inmediatamente
+                event.preventDefault();
 
-                // Obtiene el ID de la sala del atributo href
-                const salaId = this.getAttribute('href').split('/').pop(); // Obtiene el ID al final de la URL
+                // Agarro el ID de la sala del atributo href
+               const salaId = parseInt(this.getAttribute('href').split('/').pop(), 10);
 
-                // Aquí puedes enviar una solicitud al servidor usando SignalR
-                connection.invoke('unirseASalaAsync', salaId)
-                    .then(response => {
-                        console.log('Actualización realizada con éxito:', response);
-                        // Actualiza la interfaz de usuario según sea necesario
-                    })
-                    .catch(err => console.error('Error al invocar el método:', err));
+                connection.invoke("UnirseASalaAsync", salaId).catch(function (err) {
+                    return console.error(err.toString());
+                });
             });
         });
 
+        connection.on("redirect", function (url) {
+            window.location.href = url;
+        });
 
     </script>
 }
