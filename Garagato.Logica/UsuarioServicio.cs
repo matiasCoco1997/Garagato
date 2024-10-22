@@ -1,4 +1,5 @@
 ﻿using Garagato.Data.EF;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,7 +17,7 @@ namespace Garagato.Logica
 
         Usuario ObtenerUsuarioLogueado(string token);
 
-        Usuario ObtenerUsuarioPorId(int id);
+        Usuario ObtenerUsuarioPorId(string id); // Cambiar int a string
         void ActualizarUsuario(Usuario usuario);
         Task RegistrarUsuarioAsync(string nombre, string email, string contraseña);
         Task<bool> ExisteUsuarioAsync(string nombre, string mail);
@@ -25,10 +26,12 @@ namespace Garagato.Logica
     }
     public class UsuarioServicio : IUsuarioServicio
     {
-        private GaragatoDatabaseContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly GaragatoDatabaseContext _context;
 
-        public UsuarioServicio(GaragatoDatabaseContext context)
+        public UsuarioServicio(GaragatoDatabaseContext context, UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -43,9 +46,9 @@ namespace Garagato.Logica
             _context.SaveChanges();
         }
 
-        public Usuario ObtenerUsuarioPorId(int id)
+        public Usuario ObtenerUsuarioPorId(string id) // Cambiar int a string
         {
-            return _context.Usuarios.Find(id);
+            return _context.Usuarios.Find(id); // Cambiar el método Find para usar string
         }
 
         public void ActualizarUsuario(Usuario usuario)
@@ -53,6 +56,7 @@ namespace Garagato.Logica
             _context.Usuarios.Update(usuario);
             _context.SaveChanges();
         }
+
         public async Task<bool> ExisteUsuarioAsync(string nombre, string mail)
         {
             return await _context.Usuarios.AnyAsync(u => u.Nombre == nombre || u.Mail == mail);
@@ -60,15 +64,33 @@ namespace Garagato.Logica
 
         public async Task RegistrarUsuarioAsync(string nombre, string email, string contrasena)
         {
+            // Validar que la contraseña no sea nula o vacía
+            if (string.IsNullOrWhiteSpace(contrasena))
+            {
+                throw new ArgumentException("La contraseña no puede ser nula o vacía.", nameof(contrasena));
+            }
+
+            // Crear el objeto Usuario
             var usuario = new Usuario
             {
-                Nombre = nombre,
-                Mail = email,
-                Contrasena = contrasena 
+                UserName = nombre,
+                Email = email
+                // Asegúrate de no incluir la propiedad Contrasena aquí
             };
 
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
+            // Crear el usuario usando UserManager
+            var result = await _userManager.CreateAsync(usuario, contrasena);
+
+            // Verificar si la creación fue exitosa
+            if (result.Succeeded)
+            {
+                // Puedes realizar acciones adicionales si es necesario
+            }
+            else
+            {
+                // Lanzar una excepción con los errores
+                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+            }
         }
 
         public async Task<Usuario> ValidarUsuarioAsync(string nombre, string contrasena)
@@ -76,14 +98,15 @@ namespace Garagato.Logica
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Nombre == nombre && u.Contrasena == contrasena);
         }
 
-        public async Task<string> GenerarTokenAsync(Usuario usuario) {
-
-            var claims = new[] {
-                new Claim("UserId", usuario.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, usuario.Nombre),
-                new Claim(JwtRegisteredClaimNames.Email, usuario.Mail),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        public async Task<string> GenerarTokenAsync(Usuario usuario)
+        {
+            var claims = new[]
+            {
+            new Claim("UserId", usuario.Id), // Cambiar a usuario.Id
+            new Claim(JwtRegisteredClaimNames.Sub, usuario.Nombre),
+            new Claim(JwtRegisteredClaimNames.Email, usuario.Mail),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345superSecretKey@345"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -105,11 +128,11 @@ namespace Garagato.Logica
             var jwtToken = handler.ReadJwtToken(token);
 
             var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
-            
+
             if (userIdClaim != null)
             {
-                var userId = int.Parse(userIdClaim.Value);
-                var usuarioLogueado = this.ObtenerUsuarioPorId(userId);
+                var userId = userIdClaim.Value; // Cambiar a string directamente
+                var usuarioLogueado = this.ObtenerUsuarioPorId(userId); // Usar el nuevo método
                 return usuarioLogueado;
             }
             return null;

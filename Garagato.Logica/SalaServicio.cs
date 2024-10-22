@@ -11,11 +11,11 @@ namespace Garagato.Logica
         Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala);
         Sala ObtenerUltimaSalaCreada();
         Sala BuscarSalaPorId(int salaId);
-        Task GuardarUsuarioSalaAsync(int salaId, int usuarioId);
-        Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId);
-        List<Tuple<string, int, int, int>> SetInformacionSala(Sala salaEncontrada);
+        Task GuardarUsuarioSalaAsync(int salaId, string usuarioId);
+        Task<bool> UsuarioEstaEnSalaAsync(int salaId, string usuarioId);
+        public List<Tuple<string, int, int, string>> SetInformacionSala(Sala salaEncontrada);
         Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala);
-        Tuple<string, int, int, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala);
+        Tuple<string, int, int, string> SetInformacionNuevoJugador(Sala salaBuscada, Usuario usuarioNuevoEnSala);
 
     }
     public class SalaServicio : ISalaServicio
@@ -27,15 +27,14 @@ namespace Garagato.Logica
             _context = context;
         }
 
-        public async Task<bool> UsuarioEstaEnSalaAsync(int salaId, int usuarioId)
+        public async Task<bool> UsuarioEstaEnSalaAsync(int salaId, string usuarioId)
         {
             return await _context.UsuarioSalas.AnyAsync(us => us.SalaId == salaId && us.UsuarioId == usuarioId);
         }
 
-
         public List<Sala> ObtenerSalas()
         {
-            return  _context.Salas
+            return _context.Salas
                     .Include(s => s.UsuarioSalas)
                     .Include(s => s.Puntuacions)
                     .ToList();
@@ -54,9 +53,9 @@ namespace Garagato.Logica
                     .FirstOrDefault(s => s.SalaId == salaId);
         }
 
-        public List<Tuple<string, int, int, int>> SetInformacionSala(Sala salaEncontrada)
+        public List<Tuple<string, int, int, string>> SetInformacionSala(Sala salaEncontrada)
         {
-            var resultado = new List<Tuple<string, int, int, int>>();
+            var resultado = new List<Tuple<string, int, int, string>>();
 
             if (salaEncontrada.UsuarioSalas != null)
             {
@@ -68,7 +67,7 @@ namespace Garagato.Logica
                     {
                         if (usuario.Id == puntuacion.UsuarioId)
                         {
-                            //falta la logica para agarrar la posicion del jugador segun los puntos
+                            // lógica para determinar la posición del jugador según los puntos
                             resultado.Add(Tuple.Create(usuario.Nombre, puntuacion.Puntos, 1, usuario.Id));
                         }
                     }
@@ -77,13 +76,12 @@ namespace Garagato.Logica
             return resultado;
         }
 
-
-        public Tuple<string, int, int, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala)
+        public Tuple<string, int, int, string> SetInformacionNuevoJugador(Sala salaBuscada, Usuario usuarioNuevoEnSala)
         {
             string nombreJugador = "";
             int puntosJugador = 0;
-            int posicionJugador = 1; //CAMBIAR CON LO DE LA BASE DE DATOS DESPUES
-            int idJugador = 0;
+            int posicionJugador = 1; // CAMBIAR CON LO DE LA BASE DE DATOS DESPUES
+            string idJugador = ""; // Cambiar a string
 
             if (salaBuscada.UsuarioSalas != null)
             {
@@ -97,13 +95,13 @@ namespace Garagato.Logica
                         {
                             nombreJugador = usuario.Nombre;
                             puntosJugador = puntuacion.Puntos;
-                            posicionJugador = 1; //falta la logica para agarrar la posicion del jugador segun los puntos
-                            idJugador = usuario.Id;
+                            posicionJugador = 1; // lógica para determinar la posición del jugador según los puntos
+                            idJugador = usuario.Id; // Cambiar a string
                         }
                     }
                 }
             }
-            return new Tuple<string, int, int, int>(nombreJugador, puntosJugador, posicionJugador, idJugador);
+            return new Tuple<string, int, int, string>(nombreJugador, puntosJugador, posicionJugador, idJugador);
         }
 
         public async Task CrearSalaGaragatoAsync(string nombreSala, Usuario creadorSala)
@@ -117,32 +115,32 @@ namespace Garagato.Logica
             _context.Salas.Add(nuevaSala);
             await _context.SaveChangesAsync();
 
-            var SalaCreada = this.ObtenerUltimaSalaCreada();
+            var salaCreada = this.ObtenerUltimaSalaCreada();
 
             var usuarioSala = new UsuarioSala
             {
-                UsuarioId = creadorSala.Id,
-                SalaId = SalaCreada.SalaId
+                UsuarioId = creadorSala.Id, // usar Id de IdentityUser
+                SalaId = salaCreada.SalaId
             };
 
             _context.UsuarioSalas.Add(usuarioSala);
             await _context.SaveChangesAsync();
 
-            await AgregarPuntuacionAsync(SalaCreada.SalaId, creadorSala.Id);
+            await AgregarPuntuacionAsync(salaCreada.SalaId, creadorSala.Id); // usar Id de IdentityUser
         }
 
-        public async Task GuardarUsuarioSalaAsync(int salaId, int usuarioId)
+        public async Task GuardarUsuarioSalaAsync(int salaId, string usuarioId)
         {
             var usuarioSala = new UsuarioSala
             {
                 SalaId = salaId,
-                UsuarioId = usuarioId
+                UsuarioId = usuarioId // usar Id de IdentityUser
             };
 
             _context.UsuarioSalas.Add(usuarioSala);
             await _context.SaveChangesAsync();
 
-            await AgregarPuntuacionAsync(salaId, usuarioId);
+            await AgregarPuntuacionAsync(salaId, usuarioId); // usar Id de IdentityUser
         }
 
         public async Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala)
@@ -156,17 +154,17 @@ namespace Garagato.Logica
             {
                 _context.Puntuacions.Remove(puntuacion);
                 _context.UsuarioSalas.Remove(usuarioSala);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync(); // Cambiar a async
                 resultadoBorrado = true;
             }
             return resultadoBorrado;
         }
 
-        private async Task AgregarPuntuacionAsync(int salaId, int usuarioId)
+        private async Task AgregarPuntuacionAsync(int salaId, string usuarioId)
         {
             var puntuacion = new Puntuacion
             {
-                UsuarioId = usuarioId,
+                UsuarioId = usuarioId, // usar Id de IdentityUser
                 SalaId = salaId,
                 Puntos = 0
             };
@@ -175,5 +173,6 @@ namespace Garagato.Logica
             await _context.SaveChangesAsync();
         }
 
+       
     }
 }

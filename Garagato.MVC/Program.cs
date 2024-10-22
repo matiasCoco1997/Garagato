@@ -5,8 +5,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Registrar GaragatoDatabaseContext
+builder.Services.AddDbContext<GaragatoDatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<GaragatoDatabaseContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -43,9 +54,6 @@ builder.Services.AddSignalR();
 //Midelware para modificar en tiempo real los cambios esteticos
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-// Registrar GaragatoDatabaseContext
-builder.Services.AddDbContext<GaragatoDatabaseContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Registrar UsuarioServicio
 builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();

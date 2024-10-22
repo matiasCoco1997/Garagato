@@ -7,7 +7,7 @@ public partial class Puntuacion
 {
     public int PuntuacionId { get; set; }
 
-    public int UsuarioId { get; set; }
+    public string UsuarioId { get; set; }
 
     public int SalaId { get; set; }
 

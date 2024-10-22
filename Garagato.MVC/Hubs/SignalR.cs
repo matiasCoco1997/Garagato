@@ -75,7 +75,7 @@ public class signalR : Hub
                     NombreJugador = resultado.Item1,
                     Puntos = resultado.Item2,
                     Posicion = resultado.Item3, //cambiar segun la posicion de la base de datos en el servicio que setea esto "SetInformacionNuevoJugador"
-                    idJugador = resultado.Item4
+                    
                 };
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);

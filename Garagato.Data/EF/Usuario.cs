@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace Garagato.Data.EF;
 
-public partial class Usuario
+public partial class Usuario : IdentityUser
 {
-    public int Id { get; set; }
 
     public string Nombre { get; set; } = null!;
 

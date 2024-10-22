@@ -1,4 +1,5 @@
-﻿namespace Garagato.MVC.Models;
+﻿
+namespace Garagato.MVC.Models;
 
 public class DataJugador
 {
@@ -6,4 +7,5 @@ public class DataJugador
     public int Puntos { get; set; }
     public int Posicion { get; set; }
     public int idJugador { get; set; }
+
 }

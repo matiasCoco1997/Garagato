@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Garagato.Data.EF;
 
 namespace Garagato.MVC.Controllers
 {
@@ -65,4 +70,4 @@ namespace Garagato.MVC.Controllers
             return View("Index", model);
         }
     }
-}
+    }
