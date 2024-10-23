@@ -22,6 +22,7 @@ namespace Garagato.MVC.Controllers
             _usuarioService = usuarioServicio;
         }
 
+
         public IActionResult Index()
         {
             var token = Request.Cookies["AuthToken"];

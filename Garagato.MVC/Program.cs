@@ -13,10 +13,13 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(options =>
 {
+    // Define JWT como el esquema por defecto para la autenticación
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = "Application";
+
+    // Define Google como el esquema por defecto para los desafíos (cuando se requiera login por Google)
     options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+
+    options.DefaultSignInScheme = "Application";
 })
 .AddJwtBearer(options =>
 {
@@ -49,14 +52,15 @@ builder.Services.AddAuthentication(options =>
 {
     options.ClientId = "1095927180006-n0c3t5rh57ui6ivbg72inf30ro1me78h.apps.googleusercontent.com";
     options.ClientSecret = "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";
+    options.CallbackPath = "/login/LoQueReciboDeGoogle";
 });
 
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // o .None para desarrollo
-    
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+  
 });
 
 // Agrega servicios de SignalR
@@ -75,6 +79,15 @@ builder.Services.AddScoped<IUsuarioServicio, UsuarioServicio>();
 // Registrar SalaServicio
 builder.Services.AddScoped<ISalaServicio, SalaServicio>();
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);  
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;  
+});
+
+
+
 var app = builder.Build();
 
 app.UseRouting();
@@ -91,6 +104,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
