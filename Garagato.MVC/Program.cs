@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,13 +14,10 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(options =>
 {
-    // Define JWT como el esquema por defecto para la autenticación
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-    // Define Google como el esquema por defecto para los desafíos (cuando se requiera login por Google)
-    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
-    options.DefaultSignInScheme = "Application";
 })
 .AddJwtBearer(options =>
 {
@@ -47,12 +45,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345superSecretKey@345"))
     };
 })
-.AddCookie("Application")
-.AddGoogle("Google", options =>
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
 {
-    options.ClientId = "1095927180006-n0c3t5rh57ui6ivbg72inf30ro1me78h.apps.googleusercontent.com";
-    options.ClientSecret = "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";
-    options.CallbackPath = "/login/LoQueReciboDeGoogle";
+    options.LoginPath = "/Login/Index";  
+    options.AccessDeniedPath = "/Login/Bienvenida";
+})
+.AddGoogle(googleOptions =>
+{
+
+    googleOptions.ClientId = "1095927180006-n0c3t5rh57ui6ivbg72inf30ro1me78h.apps.googleusercontent.com";
+    googleOptions.ClientSecret = "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";
+    googleOptions.CallbackPath = "/Login/LoQueReciboDeGoogle";
 });
 
 

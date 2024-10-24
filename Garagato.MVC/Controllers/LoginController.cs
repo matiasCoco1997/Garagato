@@ -13,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace Garagato.MVC.Controllers
 {
@@ -78,48 +79,44 @@ namespace Garagato.MVC.Controllers
         }
 
 
+        [HttpGet]
         public IActionResult Inicio()
         {
-            var redirectUrl = Url.Action("RedirectGoogle", "login");
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
-        }
-
-        public async Task<IActionResult> LoQueReciboDeGoogle(GoogleUserData model)
-        {
-            var token = await _usuarioService.GenerarTokenGoogleAsync(model.Name);
-            Response.Cookies.Append("AuthToken", token, new CookieOptions
+            var redirectUrl = Url.Action("LoQueReciboDeGoogle", "Login");
+            var properties = new AuthenticationProperties
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict
-            });
-           return RedirectToAction("Index", "Home");
-
+                RedirectUri = redirectUrl 
+            };
+            return new ChallengeResult("Google", properties);
         }
 
         [HttpGet]
-        public async Task<IActionResult> RedirectGoogle()
+        public async Task<IActionResult> LoQueReciboDeGoogle()
         {
-            // Autenticar con Google
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-            if (result.Succeeded)
+            var result = await HttpContext.AuthenticateAsync("Google");
+            if (result?.Principal != null)
             {
-                // Crear una identidad y firmar con cookies (no JWT)
-                var claims = result.Principal?.Claims;
-                var claimsIdentity = new ClaimsIdentity(claims, "Application");
-                var principal = new ClaimsPrincipal(claimsIdentity);
+                var claims = result.Principal.Identities
+                    .FirstOrDefault()?
+                    .Claims.Select(claim => new
+                    {
+                        claim.Type,
+                        claim.Value
+                    });
 
-                await HttpContext.SignInAsync("Application", principal); // Iniciar sesión con cookies
+                var email = result.Principal.FindFirst(ClaimTypes.Email)?.Value;
+
+                Response.Cookies.Append("AuthToken", "token-generado", new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict
+                });
 
                 return RedirectToAction("Index", "Home");
             }
 
-            var errorMessage = result.Failure?.Message ?? "No se recibió ningún resultado";
-            Console.WriteLine($"Error en la autenticación de Google: {errorMessage}");
-
-            return RedirectToAction("Bienvenida", "Login");
+            return RedirectToAction("Login");
         }
     }
 }
