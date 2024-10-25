@@ -91,9 +91,9 @@ public class signalR : Hub
         await Clients.All.SendAsync("MostrarRespuesta", respuesta);
     }
 
-    public async Task DibujarAsync(string dibujo)
+    public async Task DibujarAsync(string dibujo, int idSala)
     {
-        await Clients.All.SendAsync("CrearDibujo", dibujo);
+        await Clients.All.SendAsync("CrearDibujo", dibujo, idSala);
     }
 
     public async Task BorrarDibujoAsync(string pizarra)

@@ -5,8 +5,6 @@
 }
 <section class="flex flex-row items-center flex-wrap px-3 md:px-0 lg:h-[22%]">
 
-    
-
     <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
 
         <div class="flex w-full">
@@ -60,7 +58,8 @@
 
         <!--Pizarra-->
         <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
-            <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0"></canvas>
+            @* <input type="hidden" id="sala-@Model.idSala"> *@
+            <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0 sala-@Model.idSala"></canvas>
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
 
@@ -266,14 +265,16 @@
                 lastX: lastX
             };
 
-            connection.invoke("DibujarAsync", JSON.stringify(dibujo));
+            connection.invoke("DibujarAsync", JSON.stringify(dibujo), @Model.idSala);
 
             [lastX, lastY] = [e.offsetX, e.offsetY];
         });
 
         // Función para recibir dibujos de otros usuarios SIGNALR *******************
-        connection.on("CrearDibujo", (data) => {
-            const dataDibujo = JSON.parse(data);
+        connection.on("CrearDibujo", (data, idSala) => {
+
+            if(@Model.idSala == idSala){
+                const dataDibujo = JSON.parse(data);
 
             ctx.lineWidth = dataDibujo.grosor;
             ctx.strokeStyle = dataDibujo.color;
@@ -281,7 +282,8 @@
             ctx.beginPath();
             ctx.moveTo(dataDibujo.lastX, dataDibujo.lastY);
             ctx.lineTo(dataDibujo.x, dataDibujo.y);
-            ctx.stroke();      
+            ctx.stroke(); 
+            }    
         });
 
         
