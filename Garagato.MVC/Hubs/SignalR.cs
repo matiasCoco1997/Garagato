@@ -28,12 +28,13 @@ public class signalR : Hub
         {
             var creadorSala = _usuarioService.ObtenerUsuarioLogueado(token);
             await _salaService.CrearSalaGaragatoAsync(nombreSala, creadorSala);
-            await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, contrasenia, creadorSala.Nombre);
+            var salaCreada = _salaService.ObtenerUltimaSalaCreada();
+            await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, contrasenia, creadorSala.Nombre, salaCreada.SalaId);
+            await Clients.Caller.SendAsync("redirect", "/Sala/Juego/"+ salaCreada.SalaId);
         }
-            
     }
 
-    public async Task salirDeSalaAsync( int idSala) 
+    public async Task salirDeSalaAsync(int idSala) 
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
         if (token != null)
