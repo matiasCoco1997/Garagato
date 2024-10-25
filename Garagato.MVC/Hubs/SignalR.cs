@@ -21,7 +21,7 @@ public class signalR : Hub
         await Clients.All.SendAsync("ReceiveMessage", user, message);
     }
 
-    public async Task CrearSalaGaragatoAsync(string nombreSala, string contrasenia)
+    public async Task CrearSalaGaragatoAsync(string nombreSala)
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
         if (token != null)
@@ -29,12 +29,12 @@ public class signalR : Hub
             var creadorSala = _usuarioService.ObtenerUsuarioLogueado(token);
             await _salaService.CrearSalaGaragatoAsync(nombreSala, creadorSala);
             var salaCreada = _salaService.ObtenerUltimaSalaCreada();
-            await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, contrasenia, creadorSala.Nombre, salaCreada.SalaId);
-            await Clients.Caller.SendAsync("redirect", "/Sala/Juego/"+ salaCreada.SalaId);
+            await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, creadorSala.Nombre, salaCreada.SalaId);
+            await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + salaCreada.SalaId);
         }
     }
 
-    public async Task salirDeSalaAsync(int idSala) 
+    public async Task salirDeSalaAsync(int idSala)
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
         if (token != null)
@@ -49,8 +49,8 @@ public class signalR : Hub
                 {
                     await Clients.All.SendAsync("borrarUsuarioDeSala", UsuarioSalirSala.Id);
                     await Clients.Caller.SendAsync("redirect", "/Home/Index");
-                }  
-            } 
+                }
+            }
         }
     }
 
@@ -65,8 +65,10 @@ public class signalR : Hub
             {
                 Usuario UsuarioNuevoEnSala = _usuarioService.ObtenerUsuarioLogueado(token);
 
-                await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
-
+                if (!await _salaService.UsuarioEstaEnSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id))
+                {
+                    await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
+                }
                 salaBuscada = _salaService.BuscarSalaPorId(idSala);
 
                 var resultado = _salaService.SetInformacionNuevoJugador(salaBuscada, UsuarioNuevoEnSala);
@@ -80,7 +82,6 @@ public class signalR : Hub
                 };
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
-
             }
         }
     }

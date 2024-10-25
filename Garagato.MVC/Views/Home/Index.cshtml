@@ -18,11 +18,6 @@
                     <input type="text" name="nombreSalaInput" id="nombreSalaInput" class="w-full border border-gray-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="Ingrese el nombre de la sala" required="">
                 </div>
 
-                <div class="mt-2 w-full">
-                    <label for="contraseniaInput" class="block text-sm font-medium text-dark">Contraseña</label>
-                    <input type="password" name="contraseniaInput" id="contraseniaInput" placeholder="••••••••" class="w-full border border-gray-500 p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500" required="">
-                </div>
-
                 <div class="flex items-center justify-center w-full mt-3">
                     <button type="submit" id="crearSalaButton" class="w-full bg-secondary text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer hover:bg-[#F46036] md:w-[50%]">Crear sala</button>
                 </div>
@@ -110,7 +105,7 @@
         });
 
         //Muestra en la vista la sala garagato
-        connection.on("MostrarSalaGaragato", function (nombreSala, contrasenia, nombreUsuarioCreador, idSala) {
+        connection.on("MostrarSalaGaragato", function (nombreSala, nombreUsuarioCreador, idSala) {
 
             // 1. Creo el <div> principal
             var divPrincipal = $('<div></div>');
@@ -211,9 +206,8 @@
         document.getElementById("crearSalaButton").addEventListener("click", function (event) {
             
             var nombreSala = document.getElementById("nombreSalaInput").value;
-            var contrasenia = document.getElementById("nombreSalaInput").value;
 
-            connection.invoke("CrearSalaGaragatoAsync", nombreSala, contrasenia).catch(function (err) {
+            connection.invoke("CrearSalaGaragatoAsync", nombreSala).catch(function (err) {
                 return console.error(err.toString());
             });
             event.preventDefault();
