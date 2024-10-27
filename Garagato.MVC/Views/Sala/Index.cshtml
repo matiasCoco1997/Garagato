@@ -16,7 +16,7 @@
         </div>
 
         <!-- Tabla de posiciones de jugadores -->
-        <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
+        <div id="posicionesContainer-@Model.idSala" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
 
             @foreach (var jugador in Model.InformacionSala)
             {
@@ -125,7 +125,7 @@
 
         /* --------------------------------------------------- DIBUJANTES --------------------------------------------------- */
         const posicionesButton = document.getElementById('posicionesButton');
-        const posicionesContainer = document.getElementById('posicionesContainer');
+        const posicionesContainer = document.getElementById('posicionesContainer-@Model.idSala');
         const chevronIcon = document.getElementById('arrow');
 
         posicionesButton.addEventListener('click', () => {
@@ -142,13 +142,13 @@
 
 
         connection.on("agregarUsuarioASala", (nuevoJugador) => {
-            document.getElementById('posicionesContainer')
-                .appendChild(crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador, nuevoJugador.posicion, nuevoJugador.puntos));
+            document.getElementById('posicionesContainer-@Model.idSala')
+                .appendChild( crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador) );
         });
 
 
         // Función para crear el elemento del jugador
-        function crearJugador(idJugador, nombreJugador, posicion, puntos) {
+        function crearJugador(idJugador, nombreJugador) {
 
             // Crear el div principal
             const jugadorDiv = document.createElement('div');
@@ -199,7 +199,7 @@
             jugadorDiv.appendChild(infoDiv);
 
             // Añadir el div principal al contenedor
-            document.getElementById('posicionesContainer').appendChild(jugadorDiv);
+            return jugadorDiv;
         }
 
         /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
