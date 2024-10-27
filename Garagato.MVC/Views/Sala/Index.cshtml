@@ -4,13 +4,57 @@
 
 }
 
-<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[100%] lg:py-2">
+<section class="flex flex-row items-center flex-wrap px-3 md:px-0 lg:h-[22%]">
+
+    <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
+
+        <div class="flex w-full">
+            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Dibujantes</h2>
+            <button id="posicionesButton" class="p-3 lg:hidden">
+                <i id="arrow" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
+            </button>
+        </div>
+
+        <!-- Tabla de posiciones de jugadores -->
+        <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
+
+            @foreach (var jugador in Model.InformacionSala)
+            {
+                <!-- Jugador -->
+                <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+
+                    <div class="h-full content-center pr-2 *** lg:flex-col">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                        </svg>
+                    </div>
+
+                    <div class="lg:flex lg:flex-wrap text-dark w-full">
+                        <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+</section>
+
+
+<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[78%] lg:py-2">
 
     <!--Pizarra y Palabra-->
     <div class="w-full h-full flex flex-col items-center justify-center flex-wrap mb-4 min-h-[60vh] max-h-[60vh] *** md:p-0 *** lg:w-[70%] lg:pr-3 lg:mb-0">
 
+        <!--Palabra-->
+        <h2 class="w-full text-center p-3 tracking-[0.2em] bold text-lg bg-secondary text-white font-bold rounded-t-lg">
+            _  _  _  _  _  _
+        </h2>
+
+
         <!--Pizarra-->
         <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
+            @* <input type="hidden" id="sala-@Model.idSala"> *@
             <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0 sala-@Model.idSala"></canvas>
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
@@ -42,14 +86,14 @@
 
     <!--Chat-->
     <div class="w-full h-full flex flex-col justify-center min-h-[50vh] *** lg:w-[30%] lg:min-h-[60vh] lg:max-h-[60vh]">
-        
+
         <!--Mensajes enviados-->
         <div class="bg-white w-full h-full flex-col flex-grow border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto lg:min-h-[55vh] lg:max-h-[55vh]">
             <div class="w-full text-center font-white rounded-sm border border-b-4 border-b-[#D7263D] border-x-0 flex items-center p-2">
                 <h2 class="text-dark text-lg font-semibold w-full">Sala @Model.nombreSala</h2>
                 <button class="px-2 py-1 text-white text-md font-semibold bg-dark rounded-md hover:bg-red-600" id="salirSalaBtn">Salir</button>
             </div>
-            
+
             <div id="chatContainer"></div>
         </div>
 
@@ -63,8 +107,6 @@
         </div>
     </div>
 </section>
-
-
 
 
 
