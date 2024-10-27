@@ -24,13 +24,49 @@ public class signalR : Hub
     public async Task CrearSalaGaragatoAsync(string nombreSala)
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+
         if (token != null)
         {
-            var creadorSala = _usuarioService.ObtenerUsuarioLogueado(token);
-            await _salaService.CrearSalaGaragatoAsync(nombreSala, creadorSala);
-            var salaCreada = _salaService.ObtenerUltimaSalaCreada();
-            await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, creadorSala.Nombre, salaCreada.SalaId);
-            await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + salaCreada.SalaId);
+            var creadorSala = await _usuarioService.ObtenerUsuarioLogueado(token);
+            if (creadorSala != null)
+            {
+                var salaCreada = await _salaService.CrearSalaGaragatoAsync(nombreSala, creadorSala);
+                if (salaCreada != null)
+                {
+                    await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, creadorSala.Nombre, salaCreada.SalaId);
+                    await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + salaCreada.SalaId);
+                }
+            }
+        }
+    }
+
+    public async Task UnirseASalaAsync(int idSala)
+    {
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+        if (token != null)
+        {
+            Sala salaBuscada = await _salaService.BuscarSalaPorId(idSala);
+
+            if (salaBuscada != null)
+            {
+                Usuario UsuarioNuevoEnSala = await _usuarioService.ObtenerUsuarioLogueado(token);
+
+                if (!await _salaService.UsuarioEstaEnSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id))
+                {
+                    await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
+                }
+                salaBuscada = await _salaService.BuscarSalaPorId(idSala);
+
+                var resultado = _salaService.SetInformacionNuevoJugador(salaBuscada, UsuarioNuevoEnSala);
+
+                DataJugador nuevoJugador = new DataJugador()
+                {
+                    NombreJugador = resultado.Item1,
+                    idJugador = resultado.Item2
+                };
+                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
+                await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
+            }
         }
     }
 
@@ -39,8 +75,8 @@ public class signalR : Hub
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
         if (token != null)
         {
-            Usuario UsuarioSalirSala = _usuarioService.ObtenerUsuarioLogueado(token);
-            Sala salaBuscada = _salaService.BuscarSalaPorId(idSala);
+            Usuario UsuarioSalirSala = await _usuarioService.ObtenerUsuarioLogueado(token);
+            Sala salaBuscada = await _salaService.BuscarSalaPorId(idSala);
 
             if (salaBuscada != null)
             {
@@ -54,38 +90,6 @@ public class signalR : Hub
         }
     }
 
-    public async Task UnirseASalaAsync(int idSala)
-    {
-        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
-        if (token != null)
-        {
-            Sala salaBuscada = _salaService.BuscarSalaPorId(idSala);
-
-            if (salaBuscada != null)
-            {
-                Usuario UsuarioNuevoEnSala = _usuarioService.ObtenerUsuarioLogueado(token);
-
-                if (!await _salaService.UsuarioEstaEnSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id))
-                {
-                    await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
-                }
-                salaBuscada = _salaService.BuscarSalaPorId(idSala);
-
-                var resultado = _salaService.SetInformacionNuevoJugador(salaBuscada, UsuarioNuevoEnSala);
-
-                DataJugador nuevoJugador = new DataJugador()
-                {
-                    NombreJugador = resultado.Item1,
-                    Puntos = resultado.Item2,
-                    Posicion = resultado.Item3, //cambiar segun la posicion de la base de datos en el servicio que setea esto "SetInformacionNuevoJugador"
-                    idJugador = resultado.Item4
-                };
-                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
-                await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
-            }
-        }
-    }
-
     public async Task EnviarRespuestaAsync(string respuesta)
     {
         await Clients.All.SendAsync("MostrarRespuesta", respuesta);
@@ -93,7 +97,14 @@ public class signalR : Hub
 
     public async Task DibujarAsync(string dibujo, int idSala)
     {
-        await Clients.All.SendAsync("CrearDibujo", dibujo, idSala);
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+        
+        if (token != null)
+        {
+            Usuario UsuarioDibujante = await _usuarioService.ObtenerUsuarioLogueado(token);
+            await _salaService.GuardarDibujoAsync(idSala, UsuarioDibujante.Id, dibujo);
+            await Clients.All.SendAsync("CrearDibujo", dibujo, idSala);
+        }
     }
 
     public async Task BorrarDibujoAsync(string pizarra)

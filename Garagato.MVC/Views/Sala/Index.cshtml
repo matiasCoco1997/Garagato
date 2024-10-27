@@ -3,62 +3,14 @@
     ViewData["Title"] = "Sala";
 
 }
-<section class="flex flex-row items-center flex-wrap px-3 md:px-0 lg:h-[22%]">
 
-    <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
-
-        <div class="flex w-full">
-            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Tabla de posiciones</h2>
-            <button id="posicionesButton" class="p-3 lg:hidden">
-                <i id="arrow" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
-            </button>
-        </div>
-
-        <!-- Tabla de posiciones de jugadores -->
-        <div id="posicionesContainer" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
-
-            @foreach (var jugador in Model.InformacionSala)
-            {
-                <!-- Jugador -->
-                <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[19%] lg:h-16" id="@jugador.idJugador">
-
-                    <div class="h-full content-center pr-2 *** lg:flex-col">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
-                    </div>
-
-                    <div class="lg:flex lg:flex-wrap text-dark w-full">
-                        <h3 class="h-[50%] font-bold lg:text-md">@jugador.NombreJugador</h3>
-
-                        <div class="w-full h-[50%] flex lg:flex-wrap 2xl:flex-nowrap 2xl:pt-2">
-                            <p class="text-gray-500 w-[60%] *** lg:w-full lg:text-sm">Posición: @jugador.Posicion</p>
-                            <p class="text-gray-500 w-full text-center lg:w-full lg:text-sm lg:text-start">Puntaje: @jugador.Puntos</p>
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </div>
-    </div>
-
-</section>
-
-
-<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[78%] lg:py-2">
+<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[100%] lg:py-2">
 
     <!--Pizarra y Palabra-->
     <div class="w-full h-full flex flex-col items-center justify-center flex-wrap mb-4 min-h-[60vh] max-h-[60vh] *** md:p-0 *** lg:w-[70%] lg:pr-3 lg:mb-0">
 
-        <!--Palabra-->
-        <h2 class="w-full text-center p-3 tracking-[0.2em] bold text-lg bg-secondary text-white font-bold rounded-t-lg">
-            _  _  _  _  _  _
-        </h2>
-
-
         <!--Pizarra-->
         <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
-            @* <input type="hidden" id="sala-@Model.idSala"> *@
             <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0 sala-@Model.idSala"></canvas>
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
@@ -130,98 +82,8 @@
             return console.error(err.toString());
         });
 
-        /* --------------------------------------------------- POSICIONES --------------------------------------------------- */
-        const posicionesButton = document.getElementById('posicionesButton');
-        const posicionesContainer = document.getElementById('posicionesContainer');
-        const chevronIcon = document.getElementById('arrow');
-
-        posicionesButton.addEventListener('click', () => {
-            if (posicionesContainer.style.maxHeight) {
-                posicionesContainer.style.maxHeight = null;
-                chevronIcon.classList.remove('fa-chevron-down');
-                chevronIcon.classList.add('fa-chevron-up');
-            } else {
-                posicionesContainer.style.maxHeight = posicionesContainer.scrollHeight + 'px';
-                chevronIcon.classList.remove('fa-chevron-up');
-                chevronIcon.classList.add('fa-chevron-down');
-            }
-        });
-
-
-       connection.on("agregarUsuarioASala", (nuevoJugador) => {
-            document.getElementById('posicionesContainer')
-            .appendChild( crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador, nuevoJugador.posicion, nuevoJugador.puntos) );
-       });
-
-
-        // Función para crear el elemento del jugador
-        function crearJugador(idJugador, nombreJugador, posicion, puntos) {
-
-            // Crear el div principal
-            const jugadorDiv = document.createElement('div');
-            jugadorDiv.classList.add('bg-white', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
-            jugadorDiv.id = idJugador;
-
-            // Ajustes para diferentes pantallas
-            jugadorDiv.classList.add('md:w-[70%]', 'lg:w-[19%]', 'lg:h-16');
-
-            // Crear el div del ícono
-            const iconDiv = document.createElement('div');
-            iconDiv.classList.add('h-full', 'content-center', 'pr-2', 'lg:flex-col');
-
-            const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            iconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-            iconSvg.setAttribute('class', 'h-8 w-8 text-dark');
-            iconSvg.setAttribute('fill', 'none');
-            iconSvg.setAttribute('viewBox', '0 0 24 24');
-            iconSvg.setAttribute('stroke', 'currentColor');
-            iconSvg.setAttribute('stroke-width', '2');
-
-            const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-            iconPath.setAttribute('stroke-linecap', 'round');
-            iconPath.setAttribute('stroke-linejoin', 'round');
-            iconPath.setAttribute('d', 'M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z');
-
-            iconSvg.appendChild(iconPath);
-            iconDiv.appendChild(iconSvg);
-
-            // Crear el div de la información del jugador
-            const infoDiv = document.createElement('div');
-            infoDiv.classList.add('lg:flex', 'lg:flex-wrap', 'text-dark', 'w-full');
-
-            // Nombre del jugador
-            const nombre = document.createElement('h3');
-            nombre.classList.add('h-[50%]', 'font-bold', 'lg:text-md');
-            nombre.textContent = nombreJugador;
-            infoDiv.appendChild(nombre);
-
-            // Crear el div que contiene la posición y el puntaje
-            const statsDiv = document.createElement('div');
-            statsDiv.classList.add('w-full', 'h-[50%]', 'flex', 'lg:flex-wrap', '2xl:flex-nowrap', '2xl:pt-2');
-
-            const posicionParrafo = document.createElement('p');
-            posicionParrafo.classList.add('text-gray-500', 'w-[60%]', 'lg:w-full', 'lg:text-sm');
-            posicionParrafo.textContent = `Posición: ${posicion}`;
-            statsDiv.appendChild(posicionParrafo);
-
-            const puntosParrafo = document.createElement('p');
-            puntosParrafo.classList.add('text-gray-500', 'w-full', 'text-center', 'lg:w-full', 'lg:text-sm', 'lg:text-start');
-            puntosParrafo.textContent = `Puntaje: ${puntos}`;
-            statsDiv.appendChild(puntosParrafo);
-
-            infoDiv.appendChild(statsDiv);
-
-            // Añadir los divs hijos al div principal
-            jugadorDiv.appendChild(iconDiv);
-            jugadorDiv.appendChild(infoDiv);
-
-            // Añadir el div principal al contenedor
-            document.getElementById('posicionesContainer').appendChild(jugadorDiv);
-        }
-
-
         /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
-        const canvas = document.getElementById('pizarra');
+        const canvas = document.getElementsByClassName('sala-' + '@Model.idSala')[0];
         const ctx = canvas.getContext('2d');
 
         // Ajustar tamaño del canvas para ser responsive
@@ -236,8 +98,8 @@
         // Variables de dibujo
         let isDrawing = false;
         let lastX = 0, lastY = 0;
-        let colorSeleccionado = '#000000';  // Negro por defecto
-        let grosorSeleccionado = 5;         // Grosor inicial
+        let colorSeleccionado = '#000000';
+        let grosorSeleccionado = 5;        
 
         // Iniciar dibujo
         canvas.addEventListener('mousedown', (e) => {
@@ -248,7 +110,7 @@
         // Terminar dibujo
         canvas.addEventListener('mouseup', () => {
             isDrawing = false;
-            ctx.beginPath();  // Reinicia el camino para el siguiente trazo
+            ctx.beginPath();
         });
 
 
@@ -276,13 +138,13 @@
             if(@Model.idSala == idSala){
                 const dataDibujo = JSON.parse(data);
 
-            ctx.lineWidth = dataDibujo.grosor;
-            ctx.strokeStyle = dataDibujo.color;
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            ctx.moveTo(dataDibujo.lastX, dataDibujo.lastY);
-            ctx.lineTo(dataDibujo.x, dataDibujo.y);
-            ctx.stroke(); 
+                ctx.lineWidth = dataDibujo.grosor;
+                ctx.strokeStyle = dataDibujo.color;
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(dataDibujo.lastX, dataDibujo.lastY);
+                ctx.lineTo(dataDibujo.x, dataDibujo.y);
+                ctx.stroke(); 
             }    
         });
 
@@ -390,6 +252,10 @@
         connection.on("MostrarRespuesta" , function (respuesta) {
             crearMensajePropio(respuesta);
         });
+
+
+
+
 
         /* --------------------------------------------------- BTN SALIR --------------------------------------------------- */
 

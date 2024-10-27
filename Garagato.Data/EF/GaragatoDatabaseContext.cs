@@ -15,9 +15,7 @@ public partial class GaragatoDatabaseContext : DbContext
     {
     }
 
-    public virtual DbSet<Palabra> Palabras { get; set; }
-
-    public virtual DbSet<Puntuacion> Puntuacions { get; set; }
+    public virtual DbSet<Dibujo> Dibujos { get; set; }
 
     public virtual DbSet<Sala> Salas { get; set; }
 
@@ -31,37 +29,25 @@ public partial class GaragatoDatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Palabra>(entity =>
+        modelBuilder.Entity<Dibujo>(entity =>
         {
-            entity.HasKey(e => e.PalabraId).HasName("PK__Palabra__8B6EAEF159EF5D82");
+            entity.HasKey(e => e.Id).HasName("PK__Dibujo__3214EC07271E7825");
 
-            entity.ToTable("Palabra");
+            entity.ToTable("Dibujo");
 
-            entity.Property(e => e.PalabraId).HasColumnName("PalabraID");
-            entity.Property(e => e.Palabra1)
-                .HasMaxLength(100)
-                .HasColumnName("Palabra");
-        });
+            entity.Property(e => e.Dibujo1)
+                .IsUnicode(false)
+                .HasColumnName("Dibujo");
 
-        modelBuilder.Entity<Puntuacion>(entity =>
-        {
-            entity.HasKey(e => e.PuntuacionId).HasName("PK__Puntuaci__4DEA4BE5E1DA8F6B");
-
-            entity.ToTable("Puntuacion");
-
-            entity.Property(e => e.PuntuacionId).HasColumnName("PuntuacionID");
-            entity.Property(e => e.SalaId).HasColumnName("SalaID");
-            entity.Property(e => e.UsuarioId).HasColumnName("UsuarioID");
-
-            entity.HasOne(d => d.Sala).WithMany(p => p.Puntuacions)
-                .HasForeignKey(d => d.SalaId)
+            entity.HasOne(d => d.IdSalaNavigation).WithMany(p => p.Dibujos)
+                .HasForeignKey(d => d.IdSala)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Puntuacio__SalaI__4316F928");
+                .HasConstraintName("FK__Dibujo__IdSala__02FC7413");
 
-            entity.HasOne(d => d.Usuario).WithMany(p => p.Puntuacions)
-                .HasForeignKey(d => d.UsuarioId)
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Dibujos)
+                .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Puntuacio__Usuar__4222D4EF");
+                .HasConstraintName("FK__Dibujo__IdUsuari__03F0984C");
         });
 
         modelBuilder.Entity<Sala>(entity =>

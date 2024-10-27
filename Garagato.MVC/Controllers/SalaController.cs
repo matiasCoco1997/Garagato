@@ -31,18 +31,16 @@ public class SalaController : Controller
 
         if (int.TryParse(id, out idSala))
         {
-            Sala salaEncontrada = _salaService.BuscarSalaPorId(idSala);
+            Sala salaEncontrada = await _salaService.BuscarSalaPorId(idSala);
 
-            var informacionSalaObtenida = _salaService.SetInformacionSala(salaEncontrada);
+            var informacionSalaObtenida = await _salaService.SetInformacionSala(salaEncontrada);
 
             foreach (var item in informacionSalaObtenida)
             {
                 DataJugador jugador = new DataJugador()
                 {
                     NombreJugador = item.Item1,
-                    Puntos = item.Item2,
-                    Posicion = item.Item3,
-                    idJugador = item.Item4
+                    idJugador = item.Item2
                 };
                 salaViewModel.InformacionSala.Add(jugador);
             }
