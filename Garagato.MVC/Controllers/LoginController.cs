@@ -49,6 +49,7 @@ namespace Garagato.MVC.Controllers
 
                     Response.Cookies.Append("AuthToken", token, new CookieOptions
                     {
+                        Expires = DateTimeOffset.UtcNow.AddYears(100),
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict
