@@ -54,7 +54,6 @@
 
         <!--Pizarra-->
         <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
-            @* <input type="hidden" id="sala-@Model.idSala"> *@
             <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0 sala-@Model.idSala"></canvas>
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
@@ -124,7 +123,7 @@
             return console.error(err.toString());
         });
 
-        /* --------------------------------------------------- POSICIONES --------------------------------------------------- */
+        /* --------------------------------------------------- DIBUJANTES --------------------------------------------------- */
         const posicionesButton = document.getElementById('posicionesButton');
         const posicionesContainer = document.getElementById('posicionesContainer');
         const chevronIcon = document.getElementById('arrow');
@@ -204,8 +203,8 @@
         }
 
         /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
-        const canvas = document.getElementsByClassName('sala-' + '@Model.idSala')[0];
-        const ctx = canvas.getContext('2d');
+        let canvas = document.getElementsByClassName('sala-' + @Model.idSala)[0];
+        let ctx = canvas.getContext('2d');
 
         // Ajustar tamaño del canvas para ser responsive
         function ajustarCanvas() {
@@ -267,6 +266,15 @@
                 ctx.lineTo(dataDibujo.x, dataDibujo.y);
                 ctx.stroke(); 
             }    
+        });
+
+        connection.on("cargarDibujosPrevios", (dibujosString, salaId) => {
+
+            localStorage.setItem('dibujosJson', dibujosJsonString);
+
+            const dibujosJson = JSON.parse(dibujosString);
+
+            console.log(dibujosJson);
         });
 
         

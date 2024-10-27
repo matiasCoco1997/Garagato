@@ -16,6 +16,8 @@ namespace Garagato.Logica
         Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala);
         Tuple<string, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala);
         Task GuardarDibujoAsync(int idSala, int idUsuarioDibujante, string dibujo);
+        Task<List<Dibujo>> TraerDibujosDeUnaSala(int salaId);
+        Task<List<string>> SetearDibujos(List<Dibujo> dibujos);
 
     }
     public class SalaServicio : ISalaServicio
@@ -151,7 +153,25 @@ namespace Garagato.Logica
             return resultadoBorrado;
         }
 
+        public async Task<List<Dibujo>> TraerDibujosDeUnaSala(int idSala)
+        {
+            return await _context.Dibujos
+                         .Where(d => d.IdSala == idSala)
+                         .ToListAsync();
+        }
 
+
+        public async Task<List<string>> SetearDibujos(List<Dibujo> dibujos)
+        {
+            var listadoDibujosString = new List<string>();
+
+            foreach (var dibujo in dibujos)
+            {
+                listadoDibujosString.Add(dibujo.Dibujo1);
+            }
+
+            return listadoDibujosString;
+        }
         //-------------------------------------------------------- Private Functions -------------------------------------------------------------------------------------
         private async Task AgregarPuntuacionAsync(int salaId, int usuarioId)
         {

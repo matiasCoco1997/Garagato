@@ -2,6 +2,7 @@
 using Garagato.Data.EF;
 using Microsoft.AspNetCore.SignalR;
 using Garagato.MVC.Models;
+using System.Text.Json;
 
 namespace Garagato.MVC.Hubs;
 
@@ -64,6 +65,15 @@ public class signalR : Hub
                     NombreJugador = resultado.Item1,
                     idJugador = resultado.Item2
                 };
+
+                List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
+                
+                if (dibujos.Count != 0)
+                {
+                    List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
+                    await Clients.Caller.SendAsync("cargarDibujosPrevios", dibujosPrevios, salaBuscada.SalaId);
+                }
+                
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
             }
