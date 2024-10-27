@@ -31,7 +31,7 @@ public partial class GaragatoDatabaseContext : DbContext
     {
         modelBuilder.Entity<Dibujo>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Dibujo__3214EC07271E7825");
+            entity.HasKey(e => e.Id).HasName("PK__Dibujo__3214EC07F378108A");
 
             entity.ToTable("Dibujo");
 
@@ -42,17 +42,17 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.HasOne(d => d.IdSalaNavigation).WithMany(p => p.Dibujos)
                 .HasForeignKey(d => d.IdSala)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Dibujo__IdSala__02FC7413");
+                .HasConstraintName("FK__Dibujo__IdSala__403A8C7D");
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Dibujos)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Dibujo__IdUsuari__03F0984C");
+                .HasConstraintName("FK__Dibujo__IdUsuari__412EB0B6");
         });
 
         modelBuilder.Entity<Sala>(entity =>
         {
-            entity.HasKey(e => e.SalaId).HasName("PK__Sala__0428485A4F6ED19A");
+            entity.HasKey(e => e.SalaId).HasName("PK__Sala__0428485A5AB38FA3");
 
             entity.ToTable("Sala");
 
@@ -68,11 +68,12 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.Property(e => e.Contrasena).HasMaxLength(50);
             entity.Property(e => e.Mail).HasMaxLength(50);
             entity.Property(e => e.Nombre).HasMaxLength(50);
+            entity.Property(e => e.Puntuacion).HasDefaultValue(0);
         });
 
         modelBuilder.Entity<UsuarioSala>(entity =>
         {
-            entity.HasKey(e => e.UsuarioSalaId).HasName("PK__UsuarioS__9B45A0FDDAA68317");
+            entity.HasKey(e => e.UsuarioSalaId).HasName("PK__UsuarioS__9B45A0FD6B50349F");
 
             entity.ToTable("UsuarioSala");
 
@@ -83,12 +84,12 @@ public partial class GaragatoDatabaseContext : DbContext
             entity.HasOne(d => d.Sala).WithMany(p => p.UsuarioSalas)
                 .HasForeignKey(d => d.SalaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSa__SalaI__3E52440B");
+                .HasConstraintName("FK__UsuarioSa__SalaI__4222D4EF");
 
             entity.HasOne(d => d.Usuario).WithMany(p => p.UsuarioSalas)
                 .HasForeignKey(d => d.UsuarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__UsuarioSa__Usuar__3D5E1FD2");
+                .HasConstraintName("FK__UsuarioSa__Usuar__4316F928");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -119,8 +119,6 @@ namespace Garagato.Logica
 
             _context.UsuarioSalas.Add(usuarioSala);
             await _context.SaveChangesAsync();
-
-            await AgregarPuntuacionAsync(salaId, usuarioId);
         }
 
         public async Task GuardarDibujoAsync(int idSala, int idUsuarioDibujante, string dibujo)
@@ -173,17 +171,7 @@ namespace Garagato.Logica
             return listadoDibujosString;
         }
         //-------------------------------------------------------- Private Functions -------------------------------------------------------------------------------------
-        private async Task AgregarPuntuacionAsync(int salaId, int usuarioId)
-        {
-            var puntuacion = new Puntuacion
-            {
-                UsuarioId = usuarioId,
-                SalaId = salaId,
-                Puntos = 0
-            };
 
-            await _context.SaveChangesAsync();
-        }
 
         private async Task<Sala> ObtenerUltimaSalaCreada()
         {

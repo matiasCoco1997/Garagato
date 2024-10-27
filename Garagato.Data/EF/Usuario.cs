@@ -13,6 +13,8 @@ public partial class Usuario
 
     public string Contrasena { get; set; } = null!;
 
+    public int? Puntuacion { get; set; }
+
     public virtual ICollection<Dibujo> Dibujos { get; set; } = new List<Dibujo>();
 
     public virtual ICollection<UsuarioSala> UsuarioSalas { get; set; } = new List<UsuarioSala>();
