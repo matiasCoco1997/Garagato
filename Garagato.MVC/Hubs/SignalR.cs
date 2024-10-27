@@ -32,6 +32,7 @@ public class signalR : Hub
             if (creadorSala != null)
             {
                 var salaCreada = await _salaService.CrearSalaGaragatoAsync(nombreSala, creadorSala);
+                
                 if (salaCreada != null)
                 {
                     await Clients.All.SendAsync("MostrarSalaGaragato", nombreSala, creadorSala.Nombre, salaCreada.SalaId);
@@ -66,13 +67,13 @@ public class signalR : Hub
                     idJugador = resultado.Item2
                 };
 
-                List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
+                //List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
                 
-                if (dibujos.Count != 0)
-                {
-                    List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
-                    await Clients.Caller.SendAsync("cargarDibujosPrevios", dibujosPrevios, salaBuscada.SalaId);
-                }
+                //if (dibujos.Count != 0)
+                //{
+                //    List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
+                //    await Clients.Caller.SendAsync("cargarDibujosPrevios", dibujosPrevios, salaBuscada.SalaId);
+                //}
                 
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
