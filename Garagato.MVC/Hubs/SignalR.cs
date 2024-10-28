@@ -67,14 +67,14 @@ public class signalR : Hub
                     idJugador = resultado.Item2
                 };
 
-                //List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
-                
-                //if (dibujos.Count != 0)
-                //{
-                //    List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
-                //    await Clients.Caller.SendAsync("cargarDibujosPrevios", dibujosPrevios, salaBuscada.SalaId);
-                //}
-                
+                List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
+
+                if (dibujos.Count != 0)
+                {
+                    List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
+                    await Clients.Caller.SendAsync("cargarDibujosPrevios", salaBuscada.SalaId, dibujosPrevios);
+                }
+
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
             }

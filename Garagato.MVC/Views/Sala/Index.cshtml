@@ -107,6 +107,8 @@
     </div>
 </section>
 
+<div id="prueba"></div>
+
 
 
 @section Scripts {
@@ -268,13 +270,11 @@
             }    
         });
 
-        connection.on("cargarDibujosPrevios", (dibujosString, salaId) => {
-
-            localStorage.setItem('dibujosJson', dibujosJsonString);
-
-            const dibujosJson = JSON.parse(dibujosString);
-
-            console.log(dibujosJson);
+        connection.on("cargarDibujosPrevios", function(idSala, dibujosPrevios) {
+            dibujosPrevios.forEach(function(dibujo) {
+                const dataDibujo = JSON.parse(dibujo);
+                console.log(dataDibujo);
+            });
         });
 
         
