@@ -67,6 +67,7 @@ public class signalR : Hub
                     idJugador = resultado.Item2
                 };
 
+                //ACA ESTA EL PROBLEMA ------------------------------------
                 List<Dibujo> dibujos = await _salaService.TraerDibujosDeUnaSala(salaBuscada.SalaId);
 
                 if (dibujos.Count != 0)
@@ -74,6 +75,7 @@ public class signalR : Hub
                     List<string> dibujosPrevios = await _salaService.SetearDibujos(dibujos);
                     await Clients.Caller.SendAsync("cargarDibujosPrevios", salaBuscada.SalaId, dibujosPrevios);
                 }
+                //ACA ESTA EL PROBLEMA ------------------------------------
 
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
