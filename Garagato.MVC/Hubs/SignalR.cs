@@ -1,8 +1,7 @@
-﻿using Garagato.Logica;
-using Garagato.Data.EF;
-using Microsoft.AspNetCore.SignalR;
+﻿using Garagato.Data.EF;
+using Garagato.Logica;
 using Garagato.MVC.Models;
-using System.Text.Json;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Garagato.MVC.Hubs;
 
@@ -17,11 +16,14 @@ public class signalR : Hub
         _usuarioService = usuarioServicio;
     }
 
-    public async Task SendMessage(string user, string message)
+    public async Task EnviarRespuestaAsync(string respuesta)
     {
-        await Clients.All.SendAsync("ReceiveMessage", user, message);
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+        var Usuario = await _usuarioService.ObtenerUsuarioLogueado(token);
+        // Envía el mensaje al propio usuario y a los demás con el nombre real
+        await Clients.Caller.SendAsync("MostrarRespuesta", "Tú", respuesta);
+        await Clients.Others.SendAsync("MostrarRespuesta", Usuario.Nombre, respuesta);
     }
-
     public async Task CrearSalaGaragatoAsync(string nombreSala)
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
@@ -101,10 +103,9 @@ public class signalR : Hub
         }
     }
 
-    public async Task EnviarRespuestaAsync(string respuesta)
-    {
-        await Clients.All.SendAsync("MostrarRespuesta", respuesta);
-    }
+
+
+  
 
     public async Task DibujarAsync(string dibujo, int idSala)
     {

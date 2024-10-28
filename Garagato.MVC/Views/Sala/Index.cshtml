@@ -312,80 +312,79 @@
             grosorSeleccionado = parseInt(e.target.value);
         });
 
-
         /* --------------------------------------------------- MENSAJES --------------------------------------------------- */
-
-        //funcion para crear mensaje de otros jugadores
-        function crearMensajeOtroJugador(respuesta) {
-            // Creao el div div y p
-            const chatDiv = document.createElement('div');
-            chatDiv.classList.add('relative', 'flex', 'items-start');
-
-            const contenedorMensaje = document.createElement('div');
-            contenedorMensaje.classList.add('p-3');
-
-            const mensajeTexto = document.createElement('p');
-            mensajeTexto.classList.add('rounded-lg', 'p-3', 'text-dark', 'bg-primary', 'text-sm');
-            mensajeTexto.textContent = respuesta;
-
-            // Crear el triángulo
-            const triangulo = document.createElement('div');
-            triangulo.classList.add('absolute', 'trianguloIzquierdoChat', 'mb-3');
-
-            // Anidar los elementos
-            contenedorMensaje.appendChild(mensajeTexto);
-            chatDiv.appendChild(contenedorMensaje);
-            chatDiv.appendChild(triangulo);
-
-            // Añadir al contenedor
-            document.getElementById('chatContainer').appendChild(chatDiv);
-        }
-
-
-        //funcion para crear mensajes propios
+        // Función para crear mensaje propio
         function crearMensajePropio(respuesta) {
-
-            // Creao el div div y p
             const chatDiv = document.createElement('div');
             chatDiv.classList.add('relative', 'flex', 'items-center', 'justify-end');
 
             const contenedorMensaje = document.createElement('div');
-            contenedorMensaje.classList.add('p-3');
+            contenedorMensaje.classList.add('bg-secondary', 'text-white', 'rounded-lg', 'p-3', 'max-w-xs', 'text-sm');
 
             const texto = document.createElement('p');
-            texto.classList.add('rounded-lg', 'p-3', 'text-dark', 'bg-primary', 'text-sm');
             texto.textContent = respuesta;
 
-            // Crear el triángulo
+            // Crear el triángulo de la derecha
             const triangulo = document.createElement('div');
-            triangulo.classList.add('absolute', 'trianguloDerechoChat', 'mb-3');
+            triangulo.classList.add('absolute', '-right-2', 'bottom-2', 'bg-secondary', 'rotate-45', 'w-3', 'h-3');
 
             // Anidar los elementos
             contenedorMensaje.appendChild(texto);
             chatDiv.appendChild(contenedorMensaje);
             chatDiv.appendChild(triangulo);
 
-            // Añadir al contenedor
+            // Agregar al contenedor del chat
             document.getElementById('chatContainer').appendChild(chatDiv);
         }
 
+        // Función para crear mensaje de otro usuario
+        function crearMensaje(nombreUsuario, respuesta) {
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('relative', 'flex', 'items-center', 'justify-start');
 
-        document.getElementById("enviarRespuestaButton").addEventListener("click", function (event) {
-            const respuesta = document.getElementById("respuestaInput").value;
-            connection.invoke("EnviarRespuestaAsync", respuesta).catch(function (err) {
-                return console.error(err.toString());
-            });
+            const contenedorMensaje = document.createElement('div');
+            contenedorMensaje.classList.add('bg-gray-200', 'text-black', 'rounded-lg', 'p-3', 'max-w-xs', 'text-sm');
+
+            const texto = document.createElement('p');
+            texto.textContent = `${nombreUsuario}: ${respuesta}`;
+
+            // Crear el triángulo de la izquierda
+            const triangulo = document.createElement('div');
+            triangulo.classList.add('absolute', '-left-2', 'bottom-2', 'bg-gray-200', 'rotate-45', 'w-3', 'h-3');
+
+            // Anidar los elementos
+            contenedorMensaje.appendChild(texto);
+            chatDiv.appendChild(triangulo);
+            chatDiv.appendChild(contenedorMensaje);
+
+            // Agregar al contenedor del chat
+            document.getElementById('chatContainer').appendChild(chatDiv);
+        }
+
+        // Evento de envío de respuesta
+        document.getElementById('enviarRespuestaButton').addEventListener('click', async (event) => {
             event.preventDefault();
+
+            const respuesta = document.getElementById('respuestaInput').value;
+            if (respuesta) {
+                try {
+                    await connection.invoke("EnviarRespuestaAsync", respuesta);
+                    document.getElementById('respuestaInput').value = ''; // Limpia el input
+                } catch (err) {
+                    console.error(err.toString());
+                }
+            }
         });
 
-        connection.on("MostrarRespuesta" , function (respuesta) {
-            crearMensajePropio(respuesta);
+        // Muestra la respuesta en el chat, diferenciando si es propia o de otro usuario
+        connection.on("MostrarRespuesta", (nombreUsuario, respuesta) => {
+            // Verificar si el mensaje es del usuario actual
+            if (nombreUsuario === "Tú") {
+                crearMensajePropio(respuesta);
+            } else {
+                crearMensaje(nombreUsuario, respuesta);
+            }
         });
-
-
-
-
-
         /* --------------------------------------------------- BTN SALIR --------------------------------------------------- */
 
         document.getElementById("salirSalaBtn").addEventListener("click", function (event) {
