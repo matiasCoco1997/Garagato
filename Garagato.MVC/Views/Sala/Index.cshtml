@@ -141,8 +141,8 @@
         });
 
 
-        connection.on("agregarUsuarioASala", (nuevoJugador) => {
-            document.getElementById('posicionesContainer-@Model.idSala')
+        connection.on("agregarUsuarioASala", (nuevoJugador, idSala) => {
+            document.getElementById('posicionesContainer-' + idSala)
                 .appendChild( crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador) );
         });
 

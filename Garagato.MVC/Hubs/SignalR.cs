@@ -75,7 +75,7 @@ public class signalR : Hub
                 //    await Clients.Caller.SendAsync("cargarDibujosPrevios", dibujosPrevios, salaBuscada.SalaId);
                 //}
                 
-                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador);
+                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
             }
         }
