@@ -55,7 +55,9 @@ public class signalR : Hub
             {
                 Usuario UsuarioNuevoEnSala = await _usuarioService.ObtenerUsuarioLogueado(token);
 
-                if (!await _salaService.UsuarioEstaEnSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id))
+                var jugadorYaExisteEnLaSala = await _salaService.UsuarioEstaEnSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
+
+                if (!jugadorYaExisteEnLaSala)
                 {
                     await _salaService.GuardarUsuarioSalaAsync(salaBuscada.SalaId, UsuarioNuevoEnSala.Id);
                 }
@@ -79,7 +81,7 @@ public class signalR : Hub
                 }
                 //ACA ESTA EL PROBLEMA ------------------------------------
 
-                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId);
+                await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId, jugadorYaExisteEnLaSala);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
             }
         }

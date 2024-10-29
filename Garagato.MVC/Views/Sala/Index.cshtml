@@ -142,9 +142,11 @@
         });
 
 
-        connection.on("agregarUsuarioASala", (nuevoJugador, idSala) => {
-            document.getElementById('posicionesContainer-' + idSala)
-                .appendChild( crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador) );
+        connection.on("agregarUsuarioASala", (nuevoJugador, idSala, jugadorYaExisteEnLaSala) => {
+            if (!jugadorYaExisteEnLaSala) {
+                document.getElementById('posicionesContainer-' + idSala)
+                    .appendChild(crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador));
+            }
         });
 
 
