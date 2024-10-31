@@ -46,6 +46,12 @@ public class SalaController : Controller
             }
             salaViewModel.nombreSala = salaEncontrada.NombreSala;
             salaViewModel.idSala = salaEncontrada.SalaId;
+            var dibujosPrevios = await _salaService.TraerDibujosDeUnaSala(salaEncontrada.SalaId);
+            if (dibujosPrevios.Count > 0)
+            {
+                salaViewModel.dibujosPrevios = dibujosPrevios;
+            }
+            
         }
         return View("Index", salaViewModel);
     }

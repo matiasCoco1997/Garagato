@@ -53,7 +53,7 @@
 
         <!--Pizarra-->
         <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
-            <canvas id="pizarra" class="block bg-white m-0 w-full h-full absolute top-0 left-0 sala-@Model.idSala"></canvas>
+            <canvas id="pizarra" class="block bg-white m-0 absolute top-0 left-0 sala-@Model.idSala" width="1190px" height="430px"></canvas>
             <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
         </div>
 
@@ -111,7 +111,6 @@
 
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
 
     <script>
@@ -209,14 +208,21 @@
         let canvas = document.getElementsByClassName('sala-' + @Model.idSala)[0];
         let ctx = canvas.getContext('2d');
 
-        // Ajustar tamaño del canvas para ser responsive
-        function ajustarCanvas() {
-            canvas.width = canvas.clientWidth;
-            canvas.height = canvas.clientHeight;
-        }
+        // // Ajustar tamaño del canvas para ser responsive
+        // function ajustarCanvas() {
+        //     // Guarda el contenido actual
+        //     var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        window.onload = ajustarCanvas;
-        window.addEventListener('resize', ajustarCanvas);
+        //     // Redimensiona el canvas
+        //     canvas.width = window.innerWidth; // o cualquier tamaño que desees
+        //     canvas.height = window.innerHeight; // o cualquier tamaño que desees
+
+        //     // Redibuja el contenido
+        //     ctx.putImageData(imgData, 0, 0);
+        // }
+
+        // window.onload = ajustarCanvas;
+        // window.addEventListener('resize', ajustarCanvas);
 
         // Variables de dibujo
         let isDrawing = false;
@@ -270,16 +276,46 @@
                 ctx.stroke(); 
             }    
         });
-
-        connection.on("cargarDibujosPrevios", function(idSala, dibujosPrevios) {
-            dibujosPrevios.forEach(function(dibujo) {
-                const dataDibujo = JSON.parse(dibujo);
-                console.log(dataDibujo);
-            });
-        });
-
         
         // Función para recibir dibujos de otros usuarios *******************
+        
+        function cargarDibujosPrevios(){
+
+            var dibujosPrevios = @Html.Raw(Json.Serialize(Model.dibujosPrevios));
+
+            if(ctx){
+                dibujosPrevios.forEach(function(dibujoJSON) {
+                    var lineaDibujoJSON = JSON.parse(dibujoJSON);
+                    var x = lineaDibujoJSON.x;
+                    var y = lineaDibujoJSON.y;
+                    var grosor = lineaDibujoJSON.grosor;
+                    var color = lineaDibujoJSON.color;
+                    var lastX = lineaDibujoJSON.lastX;
+                    var lastY = lineaDibujoJSON.lastY;
+
+                        if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
+                            ctx.lineWidth = grosor;
+                            ctx.strokeStyle = color;
+                            ctx.lineJoin = 'round';
+
+                            ctx.beginPath();
+                            ctx.moveTo(lastX, lastY);
+                            ctx.lineTo(x, y);
+                            ctx.stroke();
+                        } else {
+                            console.log("Valores inválidos, no se dibuja.");
+                        }
+                });
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(200, 200);
+                ctx.stroke();
+            }
+        }
+       
+        cargarDibujosPrevios();
+
         // Borrar la pizarra
         function borrarPizarra() {
             const pizarra = {

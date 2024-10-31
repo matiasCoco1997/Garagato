@@ -16,7 +16,7 @@ namespace Garagato.Logica
         Task<bool> borrarUsuarioDeSala(Usuario usuarioABorrar, Sala sala);
         Tuple<string, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala);
         Task GuardarDibujoAsync(int idSala, int idUsuarioDibujante, string dibujo);
-        Task<List<Dibujo>> TraerDibujosDeUnaSala(int salaId);
+        Task<List<string>> TraerDibujosDeUnaSala(int salaId);
         Task<List<string>> SetearDibujos(List<Dibujo> dibujos);
 
     }
@@ -151,10 +151,11 @@ namespace Garagato.Logica
             return resultadoBorrado;
         }
 
-        public async Task<List<Dibujo>> TraerDibujosDeUnaSala(int idSala)
+        public async Task<List<string>> TraerDibujosDeUnaSala(int idSala)
         {
             return await _context.Dibujos
                          .Where(d => d.IdSala == idSala)
+                         .Select( d => d.Dibujo1!)
                          .ToListAsync();
         }
 
