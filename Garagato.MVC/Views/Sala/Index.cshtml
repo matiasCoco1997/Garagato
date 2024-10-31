@@ -208,22 +208,6 @@
         let canvas = document.getElementsByClassName('sala-' + @Model.idSala)[0];
         let ctx = canvas.getContext('2d');
 
-        // // Ajustar tamaño del canvas para ser responsive
-        // function ajustarCanvas() {
-        //     // Guarda el contenido actual
-        //     var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-        //     // Redimensiona el canvas
-        //     canvas.width = window.innerWidth; // o cualquier tamaño que desees
-        //     canvas.height = window.innerHeight; // o cualquier tamaño que desees
-
-        //     // Redibuja el contenido
-        //     ctx.putImageData(imgData, 0, 0);
-        // }
-
-        // window.onload = ajustarCanvas;
-        // window.addEventListener('resize', ajustarCanvas);
-
         // Variables de dibujo
         let isDrawing = false;
         let lastX = 0, lastY = 0;
@@ -263,17 +247,9 @@
 
         // Función para recibir dibujos de otros usuarios SIGNALR *******************
         connection.on("CrearDibujo", (data, idSala) => {
-
             if(@Model.idSala == idSala){
                 const dataDibujo = JSON.parse(data);
-
-                ctx.lineWidth = dataDibujo.grosor;
-                ctx.strokeStyle = dataDibujo.color;
-                ctx.lineJoin = 'round';
-                ctx.beginPath();
-                ctx.moveTo(dataDibujo.lastX, dataDibujo.lastY);
-                ctx.lineTo(dataDibujo.x, dataDibujo.y);
-                ctx.stroke(); 
+                dibujar(dataDibujo.x, dataDibujo.y, dataDibujo.lastX, dataDibujo.lastY, dataDibujo.grosor, dataDibujo.color);
             }    
         });
         
@@ -283,7 +259,7 @@
 
             var dibujosPrevios = @Html.Raw(Json.Serialize(Model.dibujosPrevios));
 
-            if(ctx){
+            if(ctx && dibujosPrevios != null){
                 dibujosPrevios.forEach(function(dibujoJSON) {
                     var lineaDibujoJSON = JSON.parse(dibujoJSON);
                     var x = lineaDibujoJSON.x;
@@ -293,25 +269,22 @@
                     var lastX = lineaDibujoJSON.lastX;
                     var lastY = lineaDibujoJSON.lastY;
 
-                        if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
-                            ctx.lineWidth = grosor;
-                            ctx.strokeStyle = color;
-                            ctx.lineJoin = 'round';
-
-                            ctx.beginPath();
-                            ctx.moveTo(lastX, lastY);
-                            ctx.lineTo(x, y);
-                            ctx.stroke();
-                        } else {
-                            console.log("Valores inválidos, no se dibuja.");
-                        }
+                    if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
+                        dibujar(x, y, lastX, lastY, grosor, color);
+                    }
                 });
-
-                ctx.beginPath();
-                ctx.moveTo(0, 0);
-                ctx.lineTo(200, 200);
-                ctx.stroke();
             }
+        }
+
+        //funcion para dibujar en la pizarra
+        function dibujar(x, y, lastX, lastY, grosor, color){
+            ctx.lineWidth = grosor;
+            ctx.strokeStyle = color;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
         }
        
         cargarDibujosPrevios();
