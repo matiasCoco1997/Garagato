@@ -361,22 +361,35 @@
         }
        
         // Borrar la pizarra
-        function borrarPizarra() {
+        document.getElementById('borrarPizarra').addEventListener('click', () => {
             const pizarra = {
                 anchoPizarra: canvas.width,
                 AltoPizarra: canvas.height,
             };
-            connection.invoke("BorrarDibujoAsync", JSON.stringify(pizarra));
-        }
-
-        document.getElementById('borrarPizarra').addEventListener('click', () => {
-            borrarPizarra();
+            connection.invoke("BorrarDibujoAsync", JSON.stringify(pizarra), @Model.idSala);
         });
         
-        connection.on("BorrarDibujo", (data) => {
+        connection.on("BorrarDibujo", (data, dibujosABorrar, idUsuarioQueBorro) => {
+            
             const dataPizarra = JSON.parse(data);
-            console.log(dataPizarra);
-            ctx.clearRect(0, 0, dataPizarra.anchoPizarra, dataPizarra.AltoPizarra);
+
+            dibujosABorrar.forEach(function(dibujo) {
+
+                    for(let i = 0; i < 2 ; i++){
+                        var lineaDibujoJSON = JSON.parse(dibujo);
+                        var x = lineaDibujoJSON.x;
+                        var y = lineaDibujoJSON.y;
+                        var grosor = lineaDibujoJSON.grosor+1;
+                        var color = '#ffffff';
+                        var lastX = lineaDibujoJSON.lastX;
+                        var lastY = lineaDibujoJSON.lastY;
+
+                        if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
+                            dibujar(x, y, lastX, lastY, grosor, color);
+                    }
+             }
+                    
+            });
         });
 
         // Cambiar color del lápiz
@@ -491,11 +504,6 @@
             } 
         }
 
-        
-
-
-
-
-            cargarDibujosPrevios();
+        cargarDibujosPrevios();
     </script>
 }

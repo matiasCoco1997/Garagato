@@ -17,7 +17,8 @@ namespace Garagato.Logica
         Tuple<string, int> SetInformacionNuevoJugador(Sala salaBuscada, Usuario UsuarioNuevoEnSala);
         Task GuardarDibujoAsync(int idSala, int idUsuarioDibujante, string dibujo);
         Task<List<string>> TraerDibujosDeUnaSala(int salaId);
-        Task<List<string>> SetearDibujos(List<Dibujo> dibujos);
+        Task<List<string>> ObtenerDibujosABorrarAsync(int idSala , int idUsuario);
+        Task BorrarDibujosAsync(int idSala, int idUsuario);
 
     }
     public class SalaServicio : ISalaServicio
@@ -159,25 +160,32 @@ namespace Garagato.Logica
                          .ToListAsync();
         }
 
-
-        public async Task<List<string>> SetearDibujos(List<Dibujo> dibujos)
+        public async Task<List<string>> ObtenerDibujosABorrarAsync(int idSala, int idUsuario)
         {
-            var listadoDibujosString = new List<string>();
+             var dibujosABorrar = await _context.Dibujos
+                                     .Where(d => d.IdSala == idSala && d.IdUsuario == idUsuario)
+                                     .Select(d => d.Dibujo1!)
+                                     .ToListAsync();
 
-            foreach (var dibujo in dibujos)
+            return dibujosABorrar!;
+        }
+
+        public async Task BorrarDibujosAsync(int idSala, int idUsuario)
+        {
+            var dibujosABorrar = await _context.Dibujos
+                                     .Where(d => d.IdSala == idSala && d.IdUsuario == idUsuario)
+                                     .ToListAsync();
+            if (dibujosABorrar != null)
             {
-                listadoDibujosString.Add(dibujo.Dibujo1);
+                _context.Dibujos.RemoveRange(dibujosABorrar);
+                await _context.SaveChangesAsync();
             }
-
-            return listadoDibujosString;
         }
         //-------------------------------------------------------- Private Functions -------------------------------------------------------------------------------------
-
 
         private async Task<Sala> ObtenerUltimaSalaCreada()
         {
             return _context.Salas.ToList().LastOrDefault();
         }
-
     }
 }

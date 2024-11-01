@@ -97,10 +97,6 @@ public class signalR : Hub
         }
     }
 
-
-
-  
-
     public async Task DibujarAsync(string dibujo, int idSala)
     {
         var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
@@ -113,8 +109,16 @@ public class signalR : Hub
         }
     }
 
-    public async Task BorrarDibujoAsync(string pizarra)
+    public async Task BorrarDibujoAsync(string pizarra, int idSala)
     {
-        await Clients.All.SendAsync("BorrarDibujo", pizarra);
+        var token = Context.GetHttpContext().Request.Cookies["AuthToken"];
+
+        if (token != null)
+        {
+            Usuario UsuarioLogueado = await _usuarioService.ObtenerUsuarioLogueado(token);
+            List<string> dibujoABorrar = await _salaService.ObtenerDibujosABorrarAsync(idSala, UsuarioLogueado.Id);
+            await _salaService.BorrarDibujosAsync(idSala, UsuarioLogueado.Id);
+            await Clients.All.SendAsync("BorrarDibujo", pizarra, dibujoABorrar, UsuarioLogueado.Id);
+        } 
     }
 }
