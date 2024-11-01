@@ -51,6 +51,7 @@ public class signalR : Hub
         {
             Sala salaBuscada = await _salaService.BuscarSalaPorId(idSala);
 
+            // FALTA VALIDAR ACA QUE SI SON 5 DIBUJANTES NO SE PUEDA ENTRAR
             if (salaBuscada != null)
             {
                 Usuario UsuarioNuevoEnSala = await _usuarioService.ObtenerUsuarioLogueado(token);
