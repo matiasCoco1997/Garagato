@@ -6,4 +6,5 @@ public class SalaViewModel
     public string nombreSala { get; set; }
     public int idSala { get; set; }
     public List<string> dibujosPrevios { get; set; }
+    public int idUsuarioLogueado { get; set; }
 }

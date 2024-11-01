@@ -21,18 +21,34 @@
             @foreach (var jugador in Model.InformacionSala)
             {
                 <!-- Jugador -->
-                <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+                @if (Model.idUsuarioLogueado == jugador.idJugador)
+                {
+                    <div class="bg-secondary my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+                        <div class="h-full content-center pr-2 *** lg:flex-col">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                            </svg>
+                        </div>
 
-                    <div class="h-full content-center pr-2 *** lg:flex-col">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                        </svg>
+                        <div class="lg:flex lg:flex-wrap text-white w-full">
+                            <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
+                        </div>
                     </div>
+                }
+                else
+                {
+                   <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+                        <div class="h-full content-center pr-2 *** lg:flex-col">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                            </svg>
+                        </div>
 
-                    <div class="lg:flex lg:flex-wrap text-dark w-full">
-                        <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
-                    </div>
-                </div>
+                        <div class="lg:flex lg:flex-wrap text-dark w-full">
+                            <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
+                        </div>
+                   </div> 
+                }               
             }
 
         </div>
@@ -143,18 +159,75 @@
 
         connection.on("agregarUsuarioASala", (nuevoJugador, idSala, jugadorYaExisteEnLaSala) => {
             if (!jugadorYaExisteEnLaSala) {
+                
                 document.getElementById('posicionesContainer-' + idSala)
-                    .appendChild(crearJugador(nuevoJugador.idJugador, nuevoJugador.nombreJugador));
+                    .appendChild(crearOtroDibujante(nuevoJugador.idJugador, nuevoJugador.nombreJugador));
             }
         });
 
 
-        // Función para crear el elemento del jugador
-        function crearJugador(idJugador, nombreJugador) {
+
+        // Función para crear el elemento del dibujante (no el propio)
+        function crearOtroDibujante(idJugador, nombreJugador) {
 
             // Crear el div principal
             const jugadorDiv = document.createElement('div');
             jugadorDiv.classList.add('bg-white', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
+            jugadorDiv.id = idJugador;
+
+            // Ajustes para diferentes pantallas
+            jugadorDiv.classList.add('md:w-[70%]', 'lg:w-[15%]', 'lg:h-16');
+
+            // Crear el div del ícono
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('h-full', 'content-center', 'pr-2', 'lg:flex-col');
+
+            const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            iconSvg.setAttribute('class', 'h-8 w-8 text-dark');
+            iconSvg.setAttribute('fill', 'none');
+            iconSvg.setAttribute('viewBox', '0 0 24 24');
+            iconSvg.setAttribute('stroke', 'currentColor');
+            iconSvg.setAttribute('stroke-width', '2');
+
+            const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            iconPath.setAttribute('stroke-linecap', 'round');
+            iconPath.setAttribute('stroke-linejoin', 'round');
+            iconPath.setAttribute('d', 'M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z');
+
+            iconSvg.appendChild(iconPath);
+            iconDiv.appendChild(iconSvg);
+
+            // Crear el div de la información del jugador
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('lg:flex', 'lg:flex-wrap', 'text-dark', 'w-full');
+
+            // Nombre del jugador
+            const nombre = document.createElement('h3');
+            nombre.classList.add('h-[50%]', 'font-bold', 'lg:text-md');
+            nombre.textContent = nombreJugador;
+            infoDiv.appendChild(nombre);
+
+            // Crear el div que contiene la posición y el puntaje
+            const statsDiv = document.createElement('div');
+            statsDiv.classList.add('w-full', 'h-[50%]', 'flex', 'lg:flex-wrap', '2xl:flex-nowrap', '2xl:pt-2');
+
+            infoDiv.appendChild(statsDiv);
+
+            // Añadir los divs hijos al div principal
+            jugadorDiv.appendChild(iconDiv);
+            jugadorDiv.appendChild(infoDiv);
+
+            // Añadir el div principal al contenedor
+            return jugadorDiv;
+        }
+
+        // Función para crear el elemento del dibujante (propio)
+        function crearDibujantePropio(idJugador, nombreJugador) {
+
+            // Crear el div principal
+            const jugadorDiv = document.createElement('div');
+            jugadorDiv.classList.add('bg-red-300', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
             jugadorDiv.id = idJugador;
 
             // Ajustes para diferentes pantallas
@@ -287,8 +360,6 @@
             ctx.stroke();
         }
        
-        cargarDibujosPrevios();
-
         // Borrar la pizarra
         function borrarPizarra() {
             const pizarra = {
@@ -422,5 +493,9 @@
 
         
 
+
+
+
+            cargarDibujosPrevios();
     </script>
 }

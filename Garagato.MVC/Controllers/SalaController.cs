@@ -44,6 +44,9 @@ public class SalaController : Controller
                 };
                 salaViewModel.InformacionSala.Add(jugador);
             }
+            var token = Request.Cookies["AuthToken"];
+            var usuarioLogueado = await _usuarioService.ObtenerUsuarioLogueado(token);
+            salaViewModel.idUsuarioLogueado = usuarioLogueado.Id;
             salaViewModel.nombreSala = salaEncontrada.NombreSala;
             salaViewModel.idSala = salaEncontrada.SalaId;
             var dibujosPrevios = await _salaService.TraerDibujosDeUnaSala(salaEncontrada.SalaId);
