@@ -17,7 +17,7 @@
 
         @if (User.Identity.IsAuthenticated)
         {   
-            <a href="/home/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+            <a id="home-link" href="/home/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
 
             <a href="/home/logout" class="bg-white text-secondary p-2 rounded-md">
                 Cerrar Sesión
@@ -40,6 +40,15 @@
             <p class="font-bold">&copy; 2024 - garagato</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('home-link').addEventListener('click', function (event) {
+            if (window.location.pathname.startsWith('/Sala/Juego')) {
+                event.preventDefault(); 
+                window.location.reload();
+            }
+        });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
     <script src="https://kit.fontawesome.com/dc0786cc41.js" crossorigin="anonymous"></script>
