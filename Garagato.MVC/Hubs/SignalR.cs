@@ -70,6 +70,8 @@ public class signalR : Hub
 
                     salaBuscada = await _salaService.BuscarSalaPorId(idSala);
 
+                    cantidadDeJugadoresEnSala = salaBuscada.UsuarioSalas.Count;
+
                     if (salaBuscada.UsuarioSalas.Count == 5)
                     {
                         await Clients.All.SendAsync("deshabilitarBotonUnirseASala", salaBuscada.SalaId);
@@ -113,6 +115,7 @@ public class signalR : Hub
 
                 if (resultadoOperacion)
                 {
+                    await Clients.All.SendAsync("cambiarContadorDeJugadores", salaBuscada.SalaId, (cantidadDeJugadoresEnSala-1) );
                     await Clients.All.SendAsync("borrarUsuarioDeSala", UsuarioSalirSala.Id);
                     await Clients.Caller.SendAsync("redirect", "/Home/Index");
                 }
