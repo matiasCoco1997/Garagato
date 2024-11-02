@@ -19,7 +19,7 @@ namespace Garagato.Logica
         Task<List<string>> TraerDibujosDeUnaSala(int salaId);
         Task<List<string>> ObtenerDibujosABorrarAsync(int idSala , int idUsuario);
         Task BorrarDibujosAsync(int idSala, int idUsuario);
-
+        //Task<int> ContarUsuariosEnSalaAsync(int salaId);
     }
     public class SalaServicio : ISalaServicio
     {
@@ -181,11 +181,21 @@ namespace Garagato.Logica
                 await _context.SaveChangesAsync();
             }
         }
+
+        //public async Task<int> ContarUsuariosEnSalaAsync(int salaId)
+        //{
+        //    return await _context.UsuarioSalas
+        //        .Where(us => us.SalaId == salaId)
+        //        .CountAsync();
+        //}
+
         //-------------------------------------------------------- Private Functions -------------------------------------------------------------------------------------
 
         private async Task<Sala> ObtenerUltimaSalaCreada()
         {
             return _context.Salas.ToList().LastOrDefault();
         }
+
+        
     }
 }

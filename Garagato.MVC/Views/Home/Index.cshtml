@@ -52,29 +52,43 @@
 
                         @foreach (var sala in salasActivas)
                         {
-                           <div class="rounded-lg shadow-md p-4 flex justify-between items-center w-full max-w-lg mx-auto border border-gray-300 my-4">
+                            <div class="rounded-lg shadow-md p-4 flex justify-between items-center w-full max-w-lg mx-auto border border-gray-300 my-4">
 
-                            <div class="flex">
+                                <div class="flex">
 
-                                <div class="bg-dark w-[60px] h-[60px] flex justify-center items-center rounded-full mr-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                                    </svg>
+                                    <div class="bg-dark w-[60px] h-[60px] flex justify-center items-center rounded-full mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                                        </svg>
+                                    </div>
+
+                                    <div>
+                                        <h2 class="text-lg font-bold text-dark">Sala @sala.NombreSala</h2>
+                                        <p class="text-sm text-gray-600">Creador:  @sala.CreadorSala</p>
+                                        <p class="text-sm text-gray-600" id="cantidadJugadores-@sala.SalaId">Jugadores: @sala.UsuarioSalas.Count / 5</p>
+                                    </div>
                                 </div>
 
                                 <div>
-                                    <h2 class="text-lg font-bold text-dark">Sala @sala.NombreSala</h2>
-                                    <p class="text-sm text-gray-600">Creador:  @sala.CreadorSala</p>
-                                    <p class="text-sm text-gray-600" id="cantidadJugadores-@sala.SalaId">Jugadores: @sala.UsuarioSalas.Count / 5</p>
+
+                                    @if (sala.UsuarioSalas.Count < 5)
+                                    {
+                                        <a href="/sala/juego/@sala.SalaId"
+                                           id="btnUnirse-@sala.SalaId"
+                                           class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-[#F46036] text-sm cursor-pointer unirseBtn">
+                                            Unirse
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="bg-gray-400 cursor-not-allowed text-white py-2 px-5 rounded-md text-sm unirseBt" id="btnUnirse-@sala.SalaId" disabled>
+                                            Sala llena
+                                        </button>
+                                    }
                                 </div>
                             </div>
-
-                            <div>
-                                    <a href="/sala/juego/@sala.SalaId" class="bg-secondary text-white py-2 px-5 rounded-md hover:bg-[#F46036] text-sm cursor-pointer unirseBtn">Unirse</a>
-                            </div>
-                        </div> 
                         }
-                        
+
                     }
                     else
                     {
@@ -120,8 +134,8 @@
 
             // 4. Creo el icono
             var svgIcono = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
-                                                                        </svg>`;
+                                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                                                                                        </svg>`;
             divIcono.html(svgIcono); // Inserto el SVG adentro del div del icono (paso 3)
 
             // 5. Creo el <div> de los textos
@@ -199,7 +213,7 @@
                 event.preventDefault();
 
                 // Agarro el ID de la sala del atributo href
-               const salaId = parseInt(this.getAttribute('href').split('/').pop(), 10);
+                 const salaId = parseInt(this.getAttribute('href').split('/').pop(), 10);
 
                 connection.invoke("UnirseASalaAsync", salaId).catch(function (err) {
                     return console.error(err.toString());
@@ -219,13 +233,40 @@
         /* --------------------------------------------------- BTN CREAR SALA --------------------------------------------------- */
 
         document.getElementById("crearSalaButton").addEventListener("click", function (event) {
-            
+
             var nombreSala = document.getElementById("nombreSalaInput").value;
 
             connection.invoke("CrearSalaGaragatoAsync", nombreSala).catch(function (err) {
                 return console.error(err.toString());
             });
-        });
+                });
 
+
+
+                    connection.on("deshabilitarBotonUnirseASala", (idSala) => {
+                    const botonDeshabilitar = document.getElementById("btnUnirse-" + idSala);
+
+                    if (botonDeshabilitar) {
+                        botonDeshabilitar.disabled = true; // Deshabilita el botón
+                        botonDeshabilitar.innerText = "Sala llena"; // Cambia el texto del botón
+
+                        // Asegúrate de usar botonDeshabilitar aquí
+                        botonDeshabilitar.classList.add("bg-gray-400", "cursor-not-allowed"); // Agrega las clases
+                        botonDeshabilitar.classList.remove("bg-secondary", "hover:bg-[#F46036]"); // Elimina la clase de habilitación
+                    }
+                });
+
+
+                 connection.on("habilitarBotonUnirseSala", (idSala) => {
+                    const botonHabilitar = document.getElementById("btnUnirse-" + idSala);
+
+                    if (botonHabilitar) {
+                        botonHabilitar.disabled = false;
+                        botonHabilitar.innerText = "Unirse";
+
+                        botonHabilitar.classList.add("bg-secondary", "hover:bg-[#F46036]");
+                        botonHabilitar.classList.remove("bg-gray-400", "cursor-not-allowed");
+                    }
+                });
     </script>
 }
