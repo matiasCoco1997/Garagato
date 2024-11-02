@@ -159,10 +159,10 @@
 
         connection.on("agregarUsuarioASala", (nuevoJugador, idSala, jugadorYaExisteEnLaSala) => {
             if (!jugadorYaExisteEnLaSala) {
-                
                 document.getElementById('posicionesContainer-' + idSala)
                     .appendChild(crearOtroDibujante(nuevoJugador.idJugador, nuevoJugador.nombreJugador));
             }
+            console.log("llegue");
         });
 
 

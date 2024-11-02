@@ -10,7 +10,7 @@
         <div class="flex flex-col w-full *** md:w-[80%] md:mx-auto *** lg:w-[70%] lg:h-full lg:justify-between lg:items-center *** 2xl:w-[50%] 2xl:items-end 2xl:pr-4">
 
             @* crear sala *@
-            <form asp-controller="Sala" asp-action="Crear" method="post" class="w-full p-4 rounded-lg shadow-md bg-white *** lg:w-[90%] *** 2xl:w-[80%] 2xl:ml-auto">
+            <div class="w-full p-4 rounded-lg shadow-md bg-white *** lg:w-[90%] *** 2xl:w-[80%] 2xl:ml-auto">
                 <h2 class="text-xl font-bold text-dark text-center">Crear sala</h2>
 
                 <div class="mt-2 w-full">
@@ -21,8 +21,7 @@
                 <div class="flex items-center justify-center w-full mt-3">
                     <button type="submit" id="crearSalaButton" class="w-full bg-secondary text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer hover:bg-[#F46036] md:w-[50%]">Crear sala</button>
                 </div>
-
-            </form>
+            </div>
 
             @* Reglas del juego *@
             <div class="bg-white p-2 px-4 w-full rounded-lg shadow mt-4 lg:w-[90%] lg:p-4 *** 2xl:w-[80%] 2xl:ml-auto">
@@ -156,9 +155,20 @@
             var divBoton = $('<div></div>');
 
             // 12. Creo el boton
-            var boton = $('<a href="/sala/juego/" '+ idSala + '></a>');
+            var boton = $('<a href="/sala/juego/' + idSala + '"></a>');
             boton.text('Unirse'); // Añado el texto del boton
             boton.addClass('bg-secondary text-white py-2 px-5 rounded-md hover:bg-[#F46036] text-sm cursor-pointer'); // Agrego estilos
+
+            boton.on('click', function (event) {
+                event.preventDefault();
+
+                // Agarro el ID de la sala del atributo href
+                    const salaId = parseInt(this.href.split('/').pop(), 10);
+
+                connection.invoke("UnirseASalaAsync", salaId).catch(function (err) {
+                    return console.error(err.toString());
+                });
+            });
 
             // 13. Añado el boton al <div> (paso 11)
             divBoton.append(boton); // Añado el botón al div
@@ -215,7 +225,6 @@
             connection.invoke("CrearSalaGaragatoAsync", nombreSala).catch(function (err) {
                 return console.error(err.toString());
             });
-            event.preventDefault();
         });
 
     </script>
