@@ -66,7 +66,7 @@
                                 <div>
                                     <h2 class="text-lg font-bold text-dark">Sala @sala.NombreSala</h2>
                                     <p class="text-sm text-gray-600">Creador:  @sala.CreadorSala</p>
-                                    <p class="text-sm text-gray-600">Jugadores: @sala.UsuarioSalas.Count / 5</p>
+                                    <p class="text-sm text-gray-600" id="cantidadJugadores-@sala.SalaId">Jugadores: @sala.UsuarioSalas.Count / 5</p>
                                 </div>
                             </div>
 
@@ -197,8 +197,13 @@
             });
         });
 
-        connection.on("redirect", function (url) {
-            window.location.href = url;
+        connection.on("cambiarContadorDeJugadores", function (idSala, cantidadDeJugadoresActualizada) {
+
+            const sala = document.getElementById("cantidadJugadores-" + idSala);
+
+            if (sala) {
+                sala.textContent = "Jugadores: " + cantidadDeJugadoresActualizada + " / 5";
+            }
         });
 
         /* --------------------------------------------------- BTN CREAR SALA --------------------------------------------------- */

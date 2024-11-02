@@ -72,6 +72,8 @@ public class signalR : Hub
                     idJugador = resultado.Item2
                 };
 
+                var cantidadDeJugadoresEnSala = salaBuscada.UsuarioSalas.Count;
+                await Clients.All.SendAsync("cambiarContadorDeJugadores", salaBuscada.SalaId, cantidadDeJugadoresEnSala);
                 await Clients.Others.SendAsync("agregarUsuarioASala", nuevoJugador, salaBuscada.SalaId, jugadorYaExisteEnLaSala);
                 await Clients.Caller.SendAsync("redirect", "/Sala/Juego/" + idSala);
             }
