@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Garagato.Logica")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bcecd7f6586b35dba80eea4a145f31178c428c9f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f3aed38d64040016c81f8064f92e196956c0a3d6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Garagato.Logica")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Garagato.Logica")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

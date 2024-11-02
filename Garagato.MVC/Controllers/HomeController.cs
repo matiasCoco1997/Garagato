@@ -1,3 +1,4 @@
+using Garagato.Data.EF;
 using Garagato.Logica;
 using Garagato.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,10 @@ namespace Garagato.MVC.Controllers
 
             if (token != null)
             {
-                ViewBag.usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
+
+                var usuarioLogueado = _usuarioService.ObtenerUsuarioLogueado(token);
+
+                ViewBag.nombreUsuarioLogueado = usuarioLogueado.Result.Nombre;
 
                 var salasActivas = _salaService.ObtenerSalas();
 

@@ -13,9 +13,7 @@ namespace Garagato.Logica
     {
         List<Usuario> ObtenerUsuarios();
         void AgregarUsuario(Usuario usuario);
-
         Task<Usuario> ObtenerUsuarioLogueado(string token);
-
         Usuario ObtenerUsuarioPorId(int id);
         void ActualizarUsuario(Usuario usuario);
         Task RegistrarUsuarioAsync(string nombre, string email, string contraseña);
@@ -103,16 +101,15 @@ namespace Garagato.Logica
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
-
+            Usuario usuarioLogueado = null;
             var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
             
             if (userIdClaim != null)
             {
                 var userId = int.Parse(userIdClaim.Value);
-                var usuarioLogueado = this.ObtenerUsuarioPorId(userId);
-                return usuarioLogueado;
+                usuarioLogueado = ObtenerUsuarioPorId(userId);
             }
-            return null;
+            return usuarioLogueado;
         }
     }
 }
