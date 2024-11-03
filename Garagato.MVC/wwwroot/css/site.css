@@ -20,3 +20,77 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*Colores de la página*/
+.bg-primary {
+    background-color: #FCD1C5; /*Rosa*/
+}
+
+.bg-secondary {
+    background-color: #D7263D; /*Rojo*/
+}
+
+.bg-special {
+    background-color: #F46036; /*Naranja*/
+}
+
+.bg-dark {
+    background-color: #2E294E; /*Azul*/
+}
+
+.text-primary {
+    color: #FCD1C5; /*Rosa*/
+}
+
+.text-dark {
+    color: #2E294E; /*Azul*/
+}
+
+.text-secondary {
+    color: #D7263D; /*Rojo*/
+}
+
+/* Estilo para la barra de desplazamiento */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #fff;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+
+.trianguloIzquierdoChat {
+    border: 10px solid #FCD1C5;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    left: 0;
+    bottom: 0px;
+}
+
+.trianguloDerechoChat {
+    border: 10px solid #FCD1C5;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    right: 0;
+    bottom: 0px;
+}
+
+
+/*#pizarra {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}*/

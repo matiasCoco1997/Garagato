@@ -1,0 +1,509 @@
+﻿@model SalaViewModel
+@{
+    ViewData["Title"] = "Sala";
+
+}
+
+<section class="flex flex-row items-center flex-wrap px-3 md:px-0 lg:h-[22%]">
+
+    <div class="w-full flex flex-col justify-center items-center bg-dark rounded-lg mx-auto mt-3 *** md:w-[80%] md:mx-auto md:p-2 md:py-1 *** lg:w-[90%] lg:mt-0 lg:py-0">
+
+        <div class="flex w-full">
+            <h2 class="text-center font-bold text-white p-3 w-full lg:p-0 2xl:p-2">Dibujantes</h2>
+            <button id="posicionesButton" class="p-3 lg:hidden">
+                <i id="arrow" class="fa-solid fa-chevron-up text-lg font-bold text-white"></i>
+            </button>
+        </div>
+
+        <!-- Tabla de posiciones de jugadores -->
+        <div id="posicionesContainer-@Model.idSala" class="flex flex-col w-[90%] transition-all duration-500 overflow-hidden max-h-0 *** lg:max-h-none *** md:items-center *** lg:w-full lg:flex-row lg:flex-wrap lg:justify-around">
+
+            @foreach (var jugador in Model.InformacionSala)
+            {
+                <!-- Jugador -->
+                @if (Model.idUsuarioLogueado == jugador.idJugador)
+                {
+                    <div class="bg-secondary my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+                        <div class="h-full content-center pr-2 *** lg:flex-col">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                            </svg>
+                        </div>
+
+                        <div class="lg:flex lg:flex-wrap text-white w-full">
+                            <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                   <div class="bg-white my-2 flex items-center px-4 rounded-md h-20 w-full p-2 *** md:w-[70%] *** lg:w-[15%] lg:h-16" id="@jugador.idJugador">
+                        <div class="h-full content-center pr-2 *** lg:flex-col">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z" />
+                            </svg>
+                        </div>
+
+                        <div class="lg:flex lg:flex-wrap text-dark w-full">
+                            <h3 class="font-bold lg:text-md">@jugador.NombreJugador</h3>
+                        </div>
+                   </div> 
+                }               
+            }
+
+        </div>
+    </div>
+
+</section>
+
+
+<section class="flex flex-col justify-center items-center px-3 p-4 w-full *** md:w-[80%] md:mx-auto md:px-0 *** lg:flex-row lg:w-[90%] lg:items-center lg:h-[78%] lg:py-2">
+
+    <!--Pizarra y Palabra-->
+    <div class="w-full h-full flex flex-col items-center justify-center flex-wrap mb-4 min-h-[60vh] max-h-[60vh] *** md:p-0 *** lg:w-[70%] lg:pr-3 lg:mb-0">
+
+        <h2 class="w-full text-center p-3 tracking-[0.2em] bold text-lg bg-secondary text-white font-bold rounded-t-lg">
+            Garagato
+        </h2>
+
+
+        <!--Pizarra-->
+        <div class="w-full flex-grow text-center rounded-b-lg border border-4 border-[#D7263D] bg-white relative" id="contenedorPizarra">
+            <canvas id="pizarra" class="block bg-white m-0 absolute top-0 left-0 sala-@Model.idSala" width="1190px" height="430px"></canvas>
+            <button id="borrarPizarra" class="absolute top-2 left-2 bg-red-400 px-3 py-2 rounded-full text-white hover:bg-red-600"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+
+        <!-- Paleta de Colores -->
+        <div class="w-full flex justify-between items-center bg-gray-100 p-4 rounded-b-lg">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold mr-2">Color:</span>
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#FF0000" style="background-color: #FF0000;"></button> <!-- Rojo -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#FFFF00" style="background-color: #FFFF00;"></button> <!-- Amarillo -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#0000FF" style="background-color: #0000FF;"></button> <!-- Azul -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#008000" style="background-color: #008000;"></button> <!-- Verde -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#FFA500" style="background-color: #FFA500;"></button> <!-- Naranja -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#EE82EE" style="background-color: #EE82EE;"></button> <!-- Violeta -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#8B4513" style="background-color: #8B4513;"></button> <!-- Marrón -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#000000" style="background-color: #000000;"></button> <!-- Negro -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#FFFFFF" style="background-color: #FFFFFF;"></button> <!-- Blanco -->
+                <button class="color-button w-5 h-5 lg:w-8 lg:h-8 rounded-full border-2 border-black transition-all duration-200 ease-in-out hover:border-gray-600" data-color="#87CEEB" style="background-color: #87CEEB;"></button> <!-- Celeste -->
+            </div>
+
+            <!-- Selector de Grosor -->
+            <div class="flex items-center space-x-2 hidden md:block">
+                <label for="grosorPicker" class="font-bold">Grosor:</label>
+                <input type="range" id="grosorPicker" min="1" max="20" value="5" class="w-32" />
+            </div>
+        </div>
+
+    </div>
+
+    <!--Chat-->
+    <div class="w-full h-full flex flex-col justify-center min-h-[50vh] *** lg:w-[30%] lg:min-h-[60vh] lg:max-h-[60vh]">
+
+        <!--Mensajes enviados-->
+        <div class="bg-white w-full h-full flex-col flex-grow border border-4 border-[#D7263D] border-b-0 rounded-t-lg overflow-y-auto lg:min-h-[55vh] lg:max-h-[55vh]">
+            <div class="w-full text-center font-white rounded-sm border border-b-4 border-b-[#D7263D] border-x-0 flex items-center p-2">
+                <h2 class="text-dark text-lg font-semibold w-full">Sala @Model.nombreSala</h2>
+                <button class="px-2 py-1 text-white text-md font-semibold bg-dark rounded-md hover:bg-red-600" id="salirSalaBtn">Salir</button>
+            </div>
+
+            <div id="chatContainer" class="p-3"></div>
+        </div>
+
+        <!--input para enviar los mensajes-->
+        <div class="w-full flex">
+            <input type="type" name="name" id="respuestaInput" class="w-[80%] rounded-bl-lg border border-4 border-[#D7263D] focus:outline-none p-2 text-dark" placeholder="Ingrese su respuesta" />
+
+            <button class="bg-secondary w-[20%] rounded-br-lg border-none hover:bg-[#F46036]" id="enviarRespuestaButton">
+                <i class="fa-regular fa-paper-plane text-center text-white text-md md:text-lg"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<div id="prueba"></div>
+
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+
+    <script>
+        //conexion SignalR Hub
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/SignalR")
+            .build();
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+        /* --------------------------------------------------- DIBUJANTES --------------------------------------------------- */
+        const posicionesButton = document.getElementById('posicionesButton');
+        const posicionesContainer = document.getElementById('posicionesContainer-@Model.idSala');
+        const chevronIcon = document.getElementById('arrow');
+
+        posicionesButton.addEventListener('click', () => {
+            if (posicionesContainer.style.maxHeight) {
+                posicionesContainer.style.maxHeight = null;
+                chevronIcon.classList.remove('fa-chevron-down');
+                chevronIcon.classList.add('fa-chevron-up');
+            } else {
+                posicionesContainer.style.maxHeight = posicionesContainer.scrollHeight + 'px';
+                chevronIcon.classList.remove('fa-chevron-up');
+                chevronIcon.classList.add('fa-chevron-down');
+            }
+        });
+
+
+        connection.on("agregarUsuarioASala", (nuevoJugador, idSala, jugadorYaExisteEnLaSala) => {
+            if (!jugadorYaExisteEnLaSala) {
+                document.getElementById('posicionesContainer-' + idSala)
+                    .appendChild(crearOtroDibujante(nuevoJugador.idJugador, nuevoJugador.nombreJugador));
+            }
+            console.log("llegue");
+        });
+
+
+
+        // Función para crear el elemento del dibujante (no el propio)
+        function crearOtroDibujante(idJugador, nombreJugador) {
+
+            // Crear el div principal
+            const jugadorDiv = document.createElement('div');
+            jugadorDiv.classList.add('bg-white', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
+            jugadorDiv.id = idJugador;
+
+            // Ajustes para diferentes pantallas
+            jugadorDiv.classList.add('md:w-[70%]', 'lg:w-[15%]', 'lg:h-16');
+
+            // Crear el div del ícono
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('h-full', 'content-center', 'pr-2', 'lg:flex-col');
+
+            const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            iconSvg.setAttribute('class', 'h-8 w-8 text-dark');
+            iconSvg.setAttribute('fill', 'none');
+            iconSvg.setAttribute('viewBox', '0 0 24 24');
+            iconSvg.setAttribute('stroke', 'currentColor');
+            iconSvg.setAttribute('stroke-width', '2');
+
+            const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            iconPath.setAttribute('stroke-linecap', 'round');
+            iconPath.setAttribute('stroke-linejoin', 'round');
+            iconPath.setAttribute('d', 'M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z');
+
+            iconSvg.appendChild(iconPath);
+            iconDiv.appendChild(iconSvg);
+
+            // Crear el div de la información del jugador
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('lg:flex', 'lg:flex-wrap', 'text-dark', 'w-full');
+
+            // Nombre del jugador
+            const nombre = document.createElement('h3');
+            nombre.classList.add('h-[50%]', 'font-bold', 'lg:text-md');
+            nombre.textContent = nombreJugador;
+            infoDiv.appendChild(nombre);
+
+            // Crear el div que contiene la posición y el puntaje
+            const statsDiv = document.createElement('div');
+            statsDiv.classList.add('w-full', 'h-[50%]', 'flex', 'lg:flex-wrap', '2xl:flex-nowrap', '2xl:pt-2');
+
+            infoDiv.appendChild(statsDiv);
+
+            // Añadir los divs hijos al div principal
+            jugadorDiv.appendChild(iconDiv);
+            jugadorDiv.appendChild(infoDiv);
+
+            // Añadir el div principal al contenedor
+            return jugadorDiv;
+        }
+
+        // Función para crear el elemento del dibujante (propio)
+        function crearDibujantePropio(idJugador, nombreJugador) {
+
+            // Crear el div principal
+            const jugadorDiv = document.createElement('div');
+            jugadorDiv.classList.add('bg-red-300', 'my-2', 'flex', 'items-center', 'px-4', 'rounded-md', 'h-20', 'w-full', 'p-2');
+            jugadorDiv.id = idJugador;
+
+            // Ajustes para diferentes pantallas
+            jugadorDiv.classList.add('md:w-[70%]', 'lg:w-[15%]', 'lg:h-16');
+
+            // Crear el div del ícono
+            const iconDiv = document.createElement('div');
+            iconDiv.classList.add('h-full', 'content-center', 'pr-2', 'lg:flex-col');
+
+            const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            iconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            iconSvg.setAttribute('class', 'h-8 w-8 text-dark');
+            iconSvg.setAttribute('fill', 'none');
+            iconSvg.setAttribute('viewBox', '0 0 24 24');
+            iconSvg.setAttribute('stroke', 'currentColor');
+            iconSvg.setAttribute('stroke-width', '2');
+
+            const iconPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            iconPath.setAttribute('stroke-linecap', 'round');
+            iconPath.setAttribute('stroke-linejoin', 'round');
+            iconPath.setAttribute('d', 'M5.121 17.804A3 3 0 017 16h10a3 3 0 012.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0zM12 1a11 11 0 110 22A11 11 0 0112 1z');
+
+            iconSvg.appendChild(iconPath);
+            iconDiv.appendChild(iconSvg);
+
+            // Crear el div de la información del jugador
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('lg:flex', 'lg:flex-wrap', 'text-dark', 'w-full');
+
+            // Nombre del jugador
+            const nombre = document.createElement('h3');
+            nombre.classList.add('h-[50%]', 'font-bold', 'lg:text-md');
+            nombre.textContent = nombreJugador;
+            infoDiv.appendChild(nombre);
+
+            // Crear el div que contiene la posición y el puntaje
+            const statsDiv = document.createElement('div');
+            statsDiv.classList.add('w-full', 'h-[50%]', 'flex', 'lg:flex-wrap', '2xl:flex-nowrap', '2xl:pt-2');
+
+            infoDiv.appendChild(statsDiv);
+
+            // Añadir los divs hijos al div principal
+            jugadorDiv.appendChild(iconDiv);
+            jugadorDiv.appendChild(infoDiv);
+
+            // Añadir el div principal al contenedor
+            return jugadorDiv;
+        }
+
+        /* --------------------------------------------------- PIZARRA --------------------------------------------------- */
+        let canvas = document.getElementsByClassName('sala-' + @Model.idSala)[0];
+        let ctx = canvas.getContext('2d');
+
+        // Variables de dibujo
+        let isDrawing = false;
+        let lastX = 0, lastY = 0;
+        let colorSeleccionado = '#000000';
+        let grosorSeleccionado = 5;        
+
+        // Iniciar dibujo
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        // Terminar dibujo
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.beginPath();
+        });
+
+
+        // Dibujar en el canvas
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return; //Si el usuario no hizo click para dibujar no hago nada
+            
+            const dibujo = { 
+                x: e.offsetX, 
+                y: e.offsetY ,
+                grosor: grosorSeleccionado,
+                color: colorSeleccionado,
+                lastY: lastY,
+                lastX: lastX
+            };
+
+            connection.invoke("DibujarAsync", JSON.stringify(dibujo), @Model.idSala);
+
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        // Función para recibir dibujos de otros usuarios SIGNALR *******************
+        connection.on("CrearDibujo", (data, idSala) => {
+            if(@Model.idSala == idSala){
+                const dataDibujo = JSON.parse(data);
+                dibujar(dataDibujo.x, dataDibujo.y, dataDibujo.lastX, dataDibujo.lastY, dataDibujo.grosor, dataDibujo.color);
+            }    
+        });
+        
+        // Función para recibir dibujos de otros usuarios *******************
+        
+        function cargarDibujosPrevios(){
+
+            var dibujosPrevios = @Html.Raw(Json.Serialize(Model.dibujosPrevios));
+
+            if(ctx && dibujosPrevios != null){
+                dibujosPrevios.forEach(function(dibujoJSON) {
+                    var lineaDibujoJSON = JSON.parse(dibujoJSON);
+                    var x = lineaDibujoJSON.x;
+                    var y = lineaDibujoJSON.y;
+                    var grosor = lineaDibujoJSON.grosor;
+                    var color = lineaDibujoJSON.color;
+                    var lastX = lineaDibujoJSON.lastX;
+                    var lastY = lineaDibujoJSON.lastY;
+
+                    if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
+                        dibujar(x, y, lastX, lastY, grosor, color);
+                    }
+                });
+            }
+        }
+
+        //funcion para dibujar en la pizarra
+        function dibujar(x, y, lastX, lastY, grosor, color){
+            ctx.lineWidth = grosor;
+            ctx.strokeStyle = color;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+       
+        // Borrar la pizarra
+        document.getElementById('borrarPizarra').addEventListener('click', () => {
+            const pizarra = {
+                anchoPizarra: canvas.width,
+                AltoPizarra: canvas.height,
+            };
+            connection.invoke("BorrarDibujoAsync", JSON.stringify(pizarra), @Model.idSala);
+        });
+        
+        connection.on("BorrarDibujo", (data, dibujosABorrar, idUsuarioQueBorro) => {
+            
+            const dataPizarra = JSON.parse(data);
+
+            dibujosABorrar.forEach(function(dibujo) {
+
+                    for(let i = 0; i < 2 ; i++){
+                        var lineaDibujoJSON = JSON.parse(dibujo);
+                        var x = lineaDibujoJSON.x;
+                        var y = lineaDibujoJSON.y;
+                        var grosor = lineaDibujoJSON.grosor+1;
+                        var color = '#ffffff';
+                        var lastX = lineaDibujoJSON.lastX;
+                        var lastY = lineaDibujoJSON.lastY;
+
+                        if (x !== undefined && y !== undefined && lastX !== undefined && lastY !== undefined && grosor > 0) {
+                            dibujar(x, y, lastX, lastY, grosor, color);
+                    }
+             }
+                    
+            });
+        });
+
+        // Cambiar color del lápiz
+        const colorButtons = document.querySelectorAll('.color-button');
+        colorButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                colorSeleccionado = e.target.getAttribute('data-color');
+            });
+        });
+
+        // Cambiar grosor del lápiz
+        const grosorPicker = document.getElementById('grosorPicker');
+        grosorPicker.addEventListener('input', (e) => {
+            grosorSeleccionado = parseInt(e.target.value);
+        });
+
+        /* --------------------------------------------------- MENSAJES --------------------------------------------------- */
+        // Función para crear mensaje propio
+        function crearMensajePropio(respuesta) {
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('relative', 'flex', 'items-center', 'justify-end');
+
+            const contenedorMensaje = document.createElement('div');
+            contenedorMensaje.classList.add('bg-secondary', 'text-white', 'rounded-lg', 'p-3', 'max-w-xs', 'text-sm', 'my-2');
+
+            const texto = document.createElement('p');
+            texto.textContent = respuesta;
+
+            // Crear el triángulo de la derecha
+            const triangulo = document.createElement('div');
+            triangulo.classList.add('absolute', '-right-1', 'bottom-3', 'bg-secondary', 'rotate-45', 'w-4', 'h-4','z-1');
+
+            // Anidar los elementos
+            contenedorMensaje.appendChild(texto);
+            chatDiv.appendChild(contenedorMensaje);
+            chatDiv.appendChild(triangulo);
+
+            // Agregar al contenedor del chat
+            document.getElementById('chatContainer').appendChild(chatDiv);
+        }
+
+        // Función para crear mensaje de otro usuario
+        function crearMensaje(nombreUsuario, respuesta) {
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('relative', 'flex', 'items-center', 'justify-start');
+
+            const contenedorMensaje = document.createElement('div');
+            contenedorMensaje.classList.add('bg-gray-200', 'text-black', 'rounded-lg', 'p-3', 'max-w-xs', 'text-sm' , 'my-2');
+
+            const texto = document.createElement('p');
+            texto.textContent = `${nombreUsuario}: ${respuesta}`;
+
+            // Crear el triángulo de la izquierda
+            const triangulo = document.createElement('div');
+            triangulo.classList.add('absolute', '-left-1', 'bottom-3', 'bg-gray-200', 'rotate-45', 'w-4', 'h-4', 'z-1');
+
+            // Anidar los elementos
+            contenedorMensaje.appendChild(texto);
+            chatDiv.appendChild(triangulo);
+            chatDiv.appendChild(contenedorMensaje);
+
+            // Agregar al contenedor del chat
+            document.getElementById('chatContainer').appendChild(chatDiv);
+        }
+
+        // Evento de envío de respuesta
+        document.getElementById('enviarRespuestaButton').addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            const respuesta = document.getElementById('respuestaInput').value;
+            if (respuesta) {
+                try {
+                    await connection.invoke("EnviarRespuestaAsync", respuesta);
+                    document.getElementById('respuestaInput').value = ''; // Limpia el input
+                } catch (err) {
+                    console.error(err.toString());
+                }
+            }
+        });
+
+        // Muestra la respuesta en el chat, diferenciando si es propia o de otro usuario
+        connection.on("MostrarRespuesta", (nombreUsuario, respuesta) => {
+            // Verificar si el mensaje es del usuario actual
+            if (nombreUsuario === "Tú") {
+                crearMensajePropio(respuesta);
+            } else {
+                crearMensaje(nombreUsuario, respuesta);
+            }
+        });
+        /* --------------------------------------------------- BTN SALIR --------------------------------------------------- */
+
+        document.getElementById("salirSalaBtn").addEventListener("click", function (event) {
+            connection.invoke("salirDeSalaAsync", @Model.idSala ).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+
+        connection.on("borrarUsuarioDeSala" , function (idUsuarioABorrar) {
+            borrarJugador(idUsuarioABorrar);          
+        });
+
+        connection.on("redirect", function(url) {
+            window.location.href = url;
+        });
+
+        function borrarJugador(idUsuarioABorrar) {
+            var usuarioAEliminar = document.getElementById(idUsuarioABorrar);
+            
+            if (usuarioAEliminar) {
+                usuarioAEliminar.remove();
+            } 
+        }
+
+        cargarDibujosPrevios();
+    </script>
+}

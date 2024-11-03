@@ -3,43 +3,55 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Garagato.MVC</title>
+    <title>Garagato - @ViewData["Title"]</title>
+    <link rel="icon" href="~/assets/imgs/imgsOrne/icono32x32.png" type="image/x-icon">
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Garagato.MVC.styles.css" asp-append-version="true" />
+    @* tailwind *@
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-
-        .bg-primary{
-            background-color: #FCD1C5;
-        }
-        .bg-secondary{
-            background-color: #D7263D;
-        }
-
-        .bg-special {
-            background-color: #F46036;
-        }
-
-        .bg-dark {
-            background-color: #2E294E;
-        }
-    </style>
 </head>
-<body class="bg-primary">
-    <header class="bg-secondary p-5 mb-2">
-        <h1 class="text-white text-2xl font-bold">Garagato</h1>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<body class="bg-primary flex flex-col h-screen">
 
-    <footer class="border-top footer text-muted bg-dark p-5">
-        <div class="container text-xl font-bold text-white">
-            &copy; 2024 - Garagato.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <header class="bg-secondary p-5 w-full flex justify-between items-center">
+
+        @if (User.Identity.IsAuthenticated)
+        {   
+            <a id="home-link" href="/home/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+
+            <a href="/home/logout" class="bg-white text-secondary p-2 rounded-md">
+                Cerrar Sesión
+            </a>
+
+        }
+        else
+        {
+            <a href="/login/index"><h1 class="text-white text-2xl font-bold ">garagato</h1></a>
+        }
+    </header>
+
+    <main role="main" class="grow">
+        @RenderBody()
+    </main>
+
+
+    <footer class="bg-dark p-5 w-full">
+        <div class="text-base text-white text-center">
+            <p class="font-bold">&copy; 2024 - garagato</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('home-link').addEventListener('click', function (event) {
+            if (window.location.pathname.startsWith('/Sala/Juego')) {
+                event.preventDefault(); 
+                window.location.reload();
+            }
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.11/signalr.min.js"></script>
+    <script src="https://kit.fontawesome.com/dc0786cc41.js" crossorigin="anonymous"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
